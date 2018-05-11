@@ -1,0 +1,22 @@
+{
+	"name": "aurorafw",
+	"description": "A Powerful General Purpose Framework",
+	"copyright": "Copyright © 2018, Aurora Framework",
+	"license": "LGPL-3.0",
+	"authors": [
+		"Luís Ferreira"
+	],
+	"targetType": "library",
+	"targetPath": "out/bin",
+	"targetName": "aurorafw",
+	"sourcePaths": [ "src/source" ],
+	"importPaths": [ "src/source" ],
+	"dependencies": {
+		":math": "*",
+		":core": "*"
+	},
+	"subPackages": [
+		"src/core",
+		"src/math"
+	]
+}
