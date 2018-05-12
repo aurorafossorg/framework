@@ -16,6 +16,7 @@
 
 # DUB
 .dub
+dub.selections.json
 
 # Code coverage
 *.lst
