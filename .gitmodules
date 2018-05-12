@@ -8,8 +8,9 @@
 	pushurl = git@github.com:aurorafw/sdk.git
 [submodule "design"]
 	path = design
-	url = git@github.com:aurorafw/design.git
+	url = https://github.com/aurorafw/design
 	pushurl = git@github.com:aurorafw/design.git
 [submodule "src/bind-d"]
 	path = src/bind-d
-	url = git@github.com:aurorafw/bind-d.git
+	url = https://github.com/aurorafw/bind-d
+	pushurl = git@github.com:aurorafw/bind-d.git
