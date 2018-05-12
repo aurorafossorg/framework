@@ -1,6 +1,12 @@
 [submodule "website"]
 	path = website
-	url = git@github.com:aurorafw/website.git
+	url = https://github.com/aurorafw/website
+	pushurl = git@github.com:aurorafw/website.git
 [submodule "sdk"]
 	path = sdk
-	url = git@github.com:aurorafw/sdk.git
+	url = https://github.com/aurorafw/sdk
+	pushurl = git@github.com:aurorafw/sdk.git
+[submodule "design"]
+	path = design
+	url = https://github.com/aurorafw/design
+	pushurl = git@github.com:aurorafw/design.git
