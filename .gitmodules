@@ -8,5 +8,5 @@
 	pushurl = git@github.com:aurorafw/sdk.git
 [submodule "design"]
 	path = design
-	url = https://github.com/aurorafw/design
+	url = git@github.com:aurorafw/design.git
 	pushurl = git@github.com:aurorafw/design.git
