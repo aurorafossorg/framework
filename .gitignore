@@ -20,4 +20,8 @@
 # Code coverage
 *.lst
 
-.out
+.out/
+
+#Documentation
+.doxygen_warn.log
+docs/.out_*
