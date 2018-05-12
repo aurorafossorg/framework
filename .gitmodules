@@ -10,3 +10,6 @@
 	path = design
 	url = git@github.com:aurorafw/design.git
 	pushurl = git@github.com:aurorafw/design.git
+[submodule "src/bind-d"]
+	path = src/bind-d
+	url = git@github.com:aurorafw/bind-d.git
