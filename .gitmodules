@@ -1,0 +1,6 @@
+[submodule "website"]
+	path = website
+	url = git@github.com:aurorafw/website.git
+[submodule "sdk"]
+	path = sdk
+	url = git@github.com:aurorafw/sdk.git
