@@ -13,10 +13,12 @@
 	"importPaths": [ "src/source" ],
 	"dependencies": {
 		":math": "*",
-		":core": "*"
+		":core": "*",
+		":audio": "*"
 	},
 	"subPackages": [
 		"src/core",
-		"src/math"
+		"src/math",
+		"src/audio"
 	]
 }
