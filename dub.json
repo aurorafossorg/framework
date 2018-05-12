@@ -7,7 +7,7 @@
 		"Luís Ferreira"
 	],
 	"targetType": "library",
-	"targetPath": "out/bin",
+	"targetPath": ".out/bin",
 	"targetName": "aurorafw",
 	"sourcePaths": [ "src/source" ],
 	"importPaths": [ "src/source" ],
