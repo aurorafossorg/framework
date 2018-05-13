@@ -2,9 +2,8 @@ language: d
 
 d:
   - dmd
-  - gdc
   - ldc
 
 os:
- - linux
- - osx
+  - linux
+  - osx
