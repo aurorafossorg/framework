@@ -1,10 +1,12 @@
 {
 	"name": "aurorafw",
 	"description": "A Powerful General Purpose Framework",
-	"copyright": "Copyright © 2018, Aurora Framework",
+	"copyright": "Copyright © 2018, Aurora Free Open Source Software",
 	"license": "LGPL-3.0",
 	"authors": [
-		"Luís Ferreira"
+		"Luís Ferreira",
+		"Filipe Laíns",
+		"Ricardo Subtil"
 	],
 	"targetType": "library",
 	"targetPath": ".out/bin",
