@@ -30,19 +30,11 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+aurorafw_legacy_gengine_direct3d_inc = include_directories('include')
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
-
-subdir('docs')
-subdir('examples')
-subdir('src')
+aurorafw_legacy_gengine_direct3d_dep = declare_dependency(
+	#link_with: [aurorafw_legacy_gengine_direct3d_lib],
+	include_directories: [aurorafw_legacy_gengine_direct3d_inc]
+)

@@ -30,19 +30,50 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+legacy_gengine_opengl_src = [
+	'src/ImGui/GLImGuiLoader.cpp',
+	'src/GLBuffer.cpp',
+	'src/GLContext.cpp',
+	'src/GLGlobal.cpp',
+	'src/GLIndexBuffer.cpp',
+	'src/GLRenderer.cpp',
+	'src/GLRTShader.cpp',
+	'src/GLRTShaderPipeline.cpp',
+	'src/GLTexture2D.cpp',
+	'src/GLVertexArray.cpp'
+]
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
+glew_dep = dependency('glew', required : true)
 
-subdir('docs')
-subdir('examples')
-subdir('src')
+legacy_gengine_opengl_lib = static_library('aurorafw-gengine-opengl-legacy',
+	legacy_gengine_opengl_src,
+	include_directories: [
+		legacy_gengine_opengl_inc,
+		legacy_gengine_core_inc,
+		legacy_corelib_inc,
+		legacy_stdl_inc
+	],
+	dependencies: [
+		glew_dep
+	],
+	install: true
+)
+
+pkgc.generate(name: 'aurorafw-gengine-opengl-legacy',
+	libraries: [legacy_gengine_opengl_lib],
+	subdirs: 'AuroraFW',
+	version: project_version,
+	description: ''
+)
+
+legacy_gengine_opengl_dep = declare_dependency(
+	link_with: [legacy_gengine_opengl_lib],
+	include_directories: [
+		legacy_gengine_opengl_inc,
+		legacy_gengine_core_inc,
+		legacy_corelib_inc,
+		legacy_stdl_inc
+	]
+)

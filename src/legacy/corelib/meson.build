@@ -30,19 +30,38 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+legacy_corelib_src = [
+	'src/Allocator.cpp',
+	'src/CircularShift.cpp',
+	'src/MemoryManager.cpp',
+	'src/String.cpp'
+]
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
+legacy_corelib_lib = library('aurorafw-corelib-legacy',
+	legacy_corelib_src,
+	include_directories: [legacy_corelib_inc, legacy_core_inc, legacy_stdl_inc],
+	dependencies: [
+		legacy_stdl_dep,
+		legacy_core_dep
+	],
+	install: true,
+	version: project_version
+)
 
-subdir('docs')
-subdir('examples')
-subdir('src')
+pkgc.generate(name: 'aurorafw-corelib-legacy',
+	libraries: [legacy_corelib_lib],
+	subdirs: 'AuroraFW',
+	version: project_version,
+	description: ''
+)
+
+legacy_corelib_dep = declare_dependency(
+	link_with: [legacy_corelib_lib],
+	dependencies: [
+		legacy_stdl_dep,
+		legacy_core_dep
+	],
+	include_directories: [legacy_corelib_inc, legacy_core_inc, legacy_stdl_inc]
+)

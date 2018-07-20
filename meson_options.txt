@@ -1,0 +1,1 @@
+option('build_legacy', type : 'boolean', value : false)

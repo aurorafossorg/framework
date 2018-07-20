@@ -30,19 +30,49 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+legacy_gengine_2d_inc = include_directories('include')
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+legacy_gengine_2d_src = [
+	'src/API/Texture2D.cpp',
+	'src/Renderable2D.cpp',
+	'src/Renderer2D.cpp',
+	'src/Sprite.cpp'
+]
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
+install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
-subdir('docs')
-subdir('examples')
-subdir('src')
+legacy_gengine_2d_lib = static_library('aurorafw-gengine-2d-legacy',
+	legacy_gengine_2d_src,
+	include_directories: [
+		legacy_gengine_2d_inc,
+		legacy_gengine_core_inc,
+		legacy_gengine_opengl_inc,
+		legacy_image_inc,
+		legacy_corelib_inc,
+		legacy_stdl_inc,
+		legacy_math_inc
+	],
+	dependencies: [legacy_core_dep],
+	install: true
+)
+
+pkgc.generate(name: 'aurorafw-gengine-2d-legacy',
+	libraries: [legacy_gengine_2d_lib],
+	subdirs: 'AuroraFW',
+	version: project_version,
+	description: ''
+)
+
+legacy_gengine_2d_dep = declare_dependency(
+	link_with: [legacy_gengine_2d_lib],
+	dependencies: [legacy_core_dep],
+	include_directories: [
+		legacy_gengine_2d_inc,
+		legacy_gengine_core_inc,
+		legacy_gengine_opengl_inc,
+		legacy_image_inc,
+		legacy_corelib_inc,
+		legacy_stdl_inc,
+		legacy_math_inc
+	]
+)

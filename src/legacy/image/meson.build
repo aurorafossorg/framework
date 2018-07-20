@@ -30,19 +30,53 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+legacy_image_inc = include_directories('include')
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+legacy_image_src = [
+	'src/STB/Image.cpp',
+	'src/BaseColor.cpp',
+	'src/Image.cpp'
+]
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
+install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
-subdir('docs')
-subdir('examples')
-subdir('src')
+freeimage_dep = c.find_library('freeimage')
+
+legacy_image_lib = library('aurorafw-image-legacy',
+	legacy_image_src,
+	include_directories: [
+		legacy_image_inc,
+		legacy_corelib_inc,
+		legacy_stdl_inc,
+		legacy_math_inc
+	],
+	dependencies: [
+		legacy_core_dep,
+		legacy_cli_dep,
+		freeimage_dep
+	],
+	install: true,
+	version: project_version
+)
+
+pkgc.generate(name: 'aurorafw-image-legacy',
+	libraries: [legacy_image_lib],
+	subdirs: 'AuroraFW',
+	version: project_version,
+	description: ''
+)
+
+legacy_image_dep = declare_dependency(
+	link_with: [legacy_image_lib],
+	dependencies: [
+		legacy_core_dep,
+		legacy_cli_dep,
+		freeimage_dep
+	],
+	include_directories: [
+		legacy_image_inc,
+		legacy_corelib_inc,
+		legacy_stdl_inc,
+		legacy_math_inc
+	]
+)

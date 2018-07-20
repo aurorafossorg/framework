@@ -30,19 +30,29 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+legacy_cli_src = [
+	'src/Color.cpp',
+	'src/Input.cpp',
+	'src/Output.cpp'
+]
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
+legacy_cli_lib = library('aurorafw-cli-legacy',
+	legacy_cli_src,
+	include_directories: [legacy_cli_inc, legacy_corelib_inc, legacy_stdl_inc, legacy_core_inc],
+	install: true,
+	version: project_version
+)
 
-subdir('docs')
-subdir('examples')
-subdir('src')
+pkgc.generate(name: 'aurorafw-cli-legacy',
+	libraries: [legacy_cli_lib],
+	subdirs: 'AuroraFW',
+	version: project_version,
+	description: ''
+)
+
+legacy_cli_dep = declare_dependency(
+	link_with: [legacy_cli_lib],
+	include_directories: [legacy_cli_inc, legacy_corelib_inc, legacy_stdl_inc, legacy_core_inc],
+)

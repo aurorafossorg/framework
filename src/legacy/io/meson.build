@@ -30,19 +30,32 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+legacy_io_inc = include_directories('include')
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+legacy_io_src = [
+	'src/File.cpp',
+	'src/InfoMemory.cpp',
+	'src/InfoSystem.cpp',
+	'src/Timer.cpp'
+]
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
+install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
-subdir('docs')
-subdir('examples')
-subdir('src')
+legacy_io_lib = library('aurorafw-io-legacy',
+	legacy_io_src,
+	include_directories: [legacy_io_inc],
+	install: true,
+	version: project_version
+)
+
+pkgc.generate(name: 'aurorafw-io-legacy',
+	libraries: [legacy_io_lib],
+	subdirs: 'AuroraFW',
+	version: project_version,
+	description: ''
+)
+
+legacy_io_dep = declare_dependency(
+	link_with: [legacy_io_lib],
+	include_directories: [legacy_io_inc]
+)

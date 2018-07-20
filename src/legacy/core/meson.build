@@ -30,19 +30,45 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+legacy_core_src = [
+	'src/Application.cpp',
+	'src/ApplicationContext.cpp',
+	'src/DebugManager.cpp',
+	'src/InputListener.cpp',
+	'src/OptionHandler.cpp'
+]
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
+legacy_core_lib = library('aurorafw-core-legacy',
+	legacy_core_src,
+	include_directories: [
+		legacy_core_inc,
+		legacy_corelib_inc,
+		legacy_stdl_inc,
+		legacy_cli_inc,
+		legacy_gengine_core_inc,
+		legacy_gengine_opengl_inc
+	],
+	install: true,
+	version: project_version
+)
 
-subdir('docs')
-subdir('examples')
-subdir('src')
+pkgc.generate(name: 'aurorafw-core-legacy',
+	libraries: [legacy_core_lib],
+	subdirs: 'AuroraFW',
+	version: project_version,
+	description: ''
+)
+
+legacy_core_dep = declare_dependency(
+	link_with: [legacy_core_lib],
+	include_directories: [
+		legacy_core_inc,
+		legacy_corelib_inc,
+		legacy_stdl_inc,
+		legacy_cli_inc,
+		legacy_gengine_core_inc,
+		legacy_gengine_opengl_inc
+	]
+)

@@ -30,19 +30,27 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+add_global_arguments('-std=c++17', language : 'cpp')
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+legacy_stdl_inc = include_directories('stdl/include')
+legacy_corelib_inc = include_directories('corelib/include')
+legacy_core_inc = include_directories('core/include')
+legacy_cli_inc = include_directories('cli/include')
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
+legacy_gengine_core_inc = include_directories('gengine/core/include')
+legacy_gengine_vulkan_inc = include_directories('gengine/vulkan/include')
+legacy_gengine_opengl_inc = include_directories('gengine/opengl/include')
 
-subdir('docs')
-subdir('examples')
-subdir('src')
+subdir('stdl')
+subdir('core')
+subdir('corelib')
+subdir('cli')
+subdir('math')
+subdir('audio')
+subdir('crypto')
+subdir('image')
+subdir('gengine')
+subdir('gui')
+subdir('io')
+subdir('netsocks')
+#subdir('parser')

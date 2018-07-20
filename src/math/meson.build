@@ -30,19 +30,38 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+d_math_inc = include_directories('source')
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+d_math_src = [
+	'source/aurorafw/math/package.d',
+	'source/aurorafw/math/matrix.d',
+	'source/aurorafw/math/vector.d'
+]
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
+install_subdir('source/aurorafw/', install_dir: 'include/d/aurorafw/')
 
-subdir('docs')
-subdir('examples')
-subdir('src')
+d_math_lib = library('aurorafw-math',
+	d_math_src,
+	include_directories: [d_math_inc],
+	install: true,
+	version: project_version
+)
+
+pkgc.generate(name: 'aurorafw-math',
+	libraries: [d_math_lib],
+	subdirs: 'd/aurorafw',
+	version: project_version,
+	description: ''
+)
+
+d_math_dep = declare_dependency(
+	link_with: [d_math_lib],
+	include_directories: [d_math_inc]
+)
+
+d_math_exe = executable('aurorafw-math-test',
+	[d_math_src],
+	include_directories: [d_math_inc],
+	d_args: meson.get_compiler('d').unittest_args(),
+	link_args: '-main'
+)

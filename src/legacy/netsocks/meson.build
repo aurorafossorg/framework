@@ -30,19 +30,29 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+legacy_netsocks_inc = include_directories('include')
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+legacy_netsocks_src = [
+	'src/Socket.cpp'
+]
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
+install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
-subdir('docs')
-subdir('examples')
-subdir('src')
+legacy_netsocks_lib = library('aurorafw-netsocks-legacy',
+	legacy_netsocks_src,
+	include_directories: [legacy_netsocks_inc],
+	install: true,
+	version: project_version
+)
+
+pkgc.generate(name: 'aurorafw-netsocks-legacy',
+	libraries: [legacy_netsocks_lib],
+	subdirs: 'AuroraFW',
+	version: project_version,
+	description: ''
+)
+
+legacy_netsocks_dep = declare_dependency(
+	link_with: [legacy_netsocks_lib],
+	include_directories: [legacy_netsocks_inc]
+)

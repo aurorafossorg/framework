@@ -30,19 +30,34 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+legacy_gui_inc = include_directories('include')
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+legacy_gui_src = [
+	'src/Application.cpp',
+	'src/Button.cpp',
+	'src/Label.cpp',
+	'src/Style.cpp',
+	'src/Widget.cpp',
+	'src/Window.cpp'
+]
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
+install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
-subdir('docs')
-subdir('examples')
-subdir('src')
+legacy_gui_lib = library('aurorafw-gui-legacy',
+	legacy_gui_src,
+	include_directories: [legacy_gui_inc],
+	install: true,
+	version: project_version
+)
+
+pkgc.generate(name: 'aurorafw-gui-legacy',
+	libraries: [legacy_gui_lib],
+	subdirs: 'AuroraFW',
+	version: project_version,
+	description: ''
+)
+
+legacy_gui_dep = declare_dependency(
+	link_with: [legacy_gui_lib],
+	include_directories: [legacy_gui_inc]
+)

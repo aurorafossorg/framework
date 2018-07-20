@@ -30,19 +30,45 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+legacy_gengine_core_src = [
+	'src/API/BufferLayout.cpp',
+	'src/API/Context.cpp',
+	'src/API/IndexBuffer.cpp',
+	'src/API/RTShader.cpp',
+	'src/API/RTShaderPipeline.cpp',
+	'src/API/VertexArray.cpp',
+	'src/API/VertexBuffer.cpp',
+	'src/Application.cpp',
+	'src/AssetManager.cpp',
+	'src/AssetType.cpp',
+	'src/GraphicsContext.cpp',
+	'src/Input.cpp',
+	'src/Renderer.cpp',
+	'src/RTShaderConverterGLSL.cpp',
+	'src/RTShaderConverterHLSL.cpp',
+	'src/RTShaderConverterSPIRV.cpp',
+	'src/Window.cpp'
+]
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
+legacy_gengine_core_lib = library('aurorafw-gengine-core-legacy',
+	legacy_gengine_core_src,
+	include_directories: [legacy_gengine_core_inc, legacy_corelib_inc, legacy_stdl_inc],
+	dependencies: [legacy_gengine_opengl_dep],
+	install: true,
+	version: project_version
+)
 
-subdir('docs')
-subdir('examples')
-subdir('src')
+pkgc.generate(name: 'aurorafw-gengine-core-legacy',
+	libraries: [legacy_gengine_core_lib],
+	subdirs: 'AuroraFW',
+	version: project_version,
+	description: ''
+)
+
+legacy_gengine_core_dep = declare_dependency(
+	link_with: [legacy_gengine_core_lib],
+	dependencies: [legacy_gengine_opengl_dep],
+	include_directories: [legacy_gengine_core_inc, legacy_corelib_inc, legacy_stdl_inc]
+)

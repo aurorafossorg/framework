@@ -30,19 +30,46 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+subdir('legacy')
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+subdir('core')
+subdir('math')
+#subdir('audio')
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
+d_inc = include_directories('source')
 
-subdir('docs')
-subdir('examples')
-subdir('src')
+d_src = [
+	'source/aurorafw/package.d'
+]
+
+install_subdir('source/aurorafw/', install_dir: 'include/d/aurorafw/')
+
+d_lib = library('aurorafw',
+	[d_src],
+	include_directories: [d_inc],
+	install: true,
+	dependencies: [d_core_dep, d_math_dep],
+	version: meson.project_version()
+)
+
+pkgc.generate(name: 'aurorafw',
+	libraries: [d_lib],
+	requires: ['aurorafw-core'],
+	subdirs: 'd/aurorafw',
+	version: meson.project_version(),
+	description: ''
+)
+
+d_dep = declare_dependency(
+	link_with: [d_lib],
+	include_directories: [d_inc],
+	dependencies: [d_core_dep, d_math_dep]
+)
+
+d_exe = executable('aurorafw-test',
+	[d_src],
+	include_directories: [d_inc],
+	dependencies: [d_core_dep, d_math_dep],
+	d_args: meson.get_compiler('d').unittest_args(),
+	link_args: '-main'
+)

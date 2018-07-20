@@ -30,19 +30,36 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
-	subproject_dir: 'lib/subprojects',
-	version: '0.0.1',
-	license: 'LGPL-3.0')
+legacy_audio_inc = include_directories('include')
 
-c = meson.get_compiler('c')
-pkgc = import('pkgconfig')
+#TODO: Add sndfile
 
-project_version_suffix = '~alpha1'
-project_version = meson.project_version()
-project_version_full = project_version + project_version_suffix
+legacy_audio_src = [
+	'src/AudioBackend.cpp',
+	'src/AudioInput.cpp',
+	'src/AudioOutput.cpp',
+	'src/AudioUtils.cpp'
+]
 
-subdir('docs')
-subdir('examples')
-subdir('src')
+install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
+
+legacy_audio_lib = library('aurorafw-audio-legacy',
+	legacy_audio_src,
+	include_directories: [legacy_audio_inc, legacy_core_inc, legacy_cli_inc, legacy_math_inc],
+	dependencies: [legacy_corelib_dep],
+	install: true,
+	version: project_version
+)
+
+pkgc.generate(name: 'aurorafw-audio-legacy',
+	libraries: [legacy_audio_lib],
+	subdirs: 'AuroraFW',
+	version: project_version,
+	description: ''
+)
+
+legacy_audio_dep = declare_dependency(
+	link_with: [legacy_audio_lib],
+	dependencies: [legacy_corelib_dep],
+	include_directories: [legacy_audio_inc, legacy_core_inc, legacy_cli_inc, legacy_math_inc]
+)
