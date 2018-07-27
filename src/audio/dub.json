@@ -3,8 +3,5 @@
 	"targetType": "library",
 	"targetPath": ".out/bin",
 	"sourcePaths": [ "source" ],
-	"importPaths": [ "source" ],
-	"libs": [
-		"portaudio"
-	]
+	"importPaths": [ "source" ]
 }
