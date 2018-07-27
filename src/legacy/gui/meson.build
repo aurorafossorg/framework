@@ -43,9 +43,22 @@ legacy_gui_src = [
 
 install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
+gtk_dep = dependency('gtk+-3.0', method : 'pkg-config')
+
 legacy_gui_lib = library('aurorafw-gui-legacy',
 	legacy_gui_src,
-	include_directories: [legacy_gui_inc],
+	include_directories: [
+		legacy_gui_inc,
+		legacy_corelib_inc,
+		legacy_stdl_inc,
+		legacy_core_inc
+	],
+	dependencies: [
+		gtk_dep,
+		legacy_cli_dep,
+		legacy_math_dep,
+		legacy_image_dep
+	],
 	install: true,
 	version: project_version
 )
@@ -59,5 +72,16 @@ pkgc.generate(name: 'aurorafw-gui-legacy',
 
 legacy_gui_dep = declare_dependency(
 	link_with: [legacy_gui_lib],
-	include_directories: [legacy_gui_inc]
+	dependencies: [
+		gtk_dep,
+		legacy_cli_dep,
+		legacy_math_dep,
+		legacy_image_dep
+	],
+	include_directories: [
+		legacy_gui_inc,
+		legacy_corelib_inc,
+		legacy_stdl_inc,
+		legacy_core_inc
+	]
 )

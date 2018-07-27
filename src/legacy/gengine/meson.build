@@ -30,6 +30,8 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
+glfw_dep = c.find_library('glfw', required : true)
+
 subdir('2d')
 subdir('direct3d')
 subdir('opengl')

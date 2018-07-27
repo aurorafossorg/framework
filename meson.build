@@ -37,12 +37,14 @@ project('aurorafw', 'd', 'c', 'cpp',
 	license: 'LGPL-3.0')
 
 c = meson.get_compiler('c')
+cpp = meson.get_compiler('cpp')
 pkgc = import('pkgconfig')
 
+project_soversion = '0'
 project_version_suffix = '~alpha1'
 project_version = meson.project_version()
 project_version_full = project_version + project_version_suffix
 
-subdir('docs')
-subdir('examples')
 subdir('src')
+subdir('examples')
+subdir('docs')

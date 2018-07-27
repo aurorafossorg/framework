@@ -37,9 +37,24 @@ legacy_gengine_vulkan_src = [
 
 install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
+vulkan_dep = c.find_library('vulkan', required: true)
+
 legacy_gengine_vulkan_lib = library('aurorafw-gengine-vulkan-legacy',
 	legacy_gengine_vulkan_src,
-	include_directories: [legacy_gengine_vulkan_inc],
+	include_directories: [
+		legacy_gengine_vulkan_inc,
+		legacy_gengine_core_inc,
+		legacy_gengine_opengl_inc,
+		legacy_corelib_inc,
+		legacy_image_inc,
+		legacy_stdl_inc,
+		legacy_core_inc
+	],
+	dependencies: [
+		vulkan_dep,
+		legacy_math_dep,
+		glfw_dep
+	],
 	install: true,
 	version: project_version
 )
@@ -53,5 +68,18 @@ pkgc.generate(name: 'aurorafw-gengine-vulkan-legacy',
 
 legacy_gengine_vulkan_dep = declare_dependency(
 	link_with: [legacy_gengine_vulkan_lib],
-	include_directories: [legacy_gengine_vulkan_inc]
+	include_directories: [
+		legacy_gengine_vulkan_inc,
+		legacy_gengine_core_inc,
+		legacy_gengine_opengl_inc,
+		legacy_corelib_inc,
+		legacy_image_inc,
+		legacy_stdl_inc,
+		legacy_core_inc
+	],
+	dependencies: [
+		vulkan_dep,
+		legacy_math_dep,
+		glfw_dep
+	]
 )

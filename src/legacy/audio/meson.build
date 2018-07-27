@@ -43,10 +43,18 @@ legacy_audio_src = [
 
 install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
+portaudio_dep = c.find_library('portaudio')
+sndfile_dep = c.find_library('sndfile')
+
 legacy_audio_lib = library('aurorafw-audio-legacy',
 	legacy_audio_src,
-	include_directories: [legacy_audio_inc, legacy_core_inc, legacy_cli_inc, legacy_math_inc],
-	dependencies: [legacy_corelib_dep],
+	include_directories: [legacy_audio_inc, legacy_core_inc, legacy_math_inc],
+	dependencies: [
+		legacy_corelib_dep,
+		legacy_cli_dep,
+		portaudio_dep,
+		sndfile_dep
+	],
 	install: true,
 	version: project_version
 )
@@ -60,6 +68,11 @@ pkgc.generate(name: 'aurorafw-audio-legacy',
 
 legacy_audio_dep = declare_dependency(
 	link_with: [legacy_audio_lib],
-	dependencies: [legacy_corelib_dep],
-	include_directories: [legacy_audio_inc, legacy_core_inc, legacy_cli_inc, legacy_math_inc]
+	dependencies: [
+		legacy_corelib_dep,
+		legacy_cli_dep,
+		portaudio_dep,
+		sndfile_dep
+	],
+	include_directories: [legacy_audio_inc, legacy_core_inc, legacy_math_inc]
 )

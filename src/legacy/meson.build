@@ -49,8 +49,25 @@ subdir('math')
 subdir('audio')
 subdir('crypto')
 subdir('image')
-subdir('gengine')
-subdir('gui')
 subdir('io')
+subdir('gui')
+subdir('gengine')
 subdir('netsocks')
 #subdir('parser')
+
+aurorafw_legacy_dep = declare_dependency(
+	dependencies: [
+		legacy_gengine_core_dep,
+		legacy_audio_dep,
+		legacy_cli_dep,
+		legacy_image_dep,
+		legacy_core_dep,
+		legacy_corelib_dep,
+		legacy_stdl_dep,
+		legacy_crypto_dep,
+		legacy_gui_dep,
+		legacy_io_dep,
+		legacy_math_dep,
+		legacy_netsocks_dep
+	]
+)

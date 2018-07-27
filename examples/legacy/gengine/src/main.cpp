@@ -47,8 +47,8 @@ public:
 		root->getRenderer()->setBlendFunction(API::Renderer::BlendFunction::SourceAlpha, API::Renderer::BlendFunction::OneMinusSourceAlpha);
 		root->getRenderer()->setBlend(true);
 
-		std::unique_ptr<API::RTShader> sunshader_vert = std::unique_ptr<API::RTShader>(API::RTShader::Load(Shader::Type::Vertex, "apps/tests/gengine/rsrc/sun/glsl330_core/shader.vert", API::RTShader::Language::GLSL, API::RTShader::LangVersion::GLSL330_CORE));
-		std::unique_ptr<API::RTShader> sunshader_frag = std::unique_ptr<API::RTShader>(API::RTShader::Load(Shader::Type::Fragment, "apps/tests/gengine/rsrc/sun/glsl330_core/shader.frag", API::RTShader::Language::GLSL, API::RTShader::LangVersion::GLSL330_CORE));
+		std::unique_ptr<API::RTShader> sunshader_vert = std::unique_ptr<API::RTShader>(API::RTShader::Load(Shader::Type::Vertex, "examples/legacy/gengine/rsrc/sun/glsl330_core/shader.vert", API::RTShader::Language::GLSL, API::RTShader::LangVersion::GLSL330_CORE));
+		std::unique_ptr<API::RTShader> sunshader_frag = std::unique_ptr<API::RTShader>(API::RTShader::Load(Shader::Type::Fragment, "examples/legacy/gengine/rsrc/sun/glsl330_core/shader.frag", API::RTShader::Language::GLSL, API::RTShader::LangVersion::GLSL330_CORE));
 
 		_sunpipeline = std::unique_ptr<API::RTShaderPipeline>(API::RTShaderPipeline::Load({sunshader_vert.get(), sunshader_frag.get()}));
 

@@ -52,10 +52,15 @@ legacy_gengine_opengl_lib = static_library('aurorafw-gengine-opengl-legacy',
 	include_directories: [
 		legacy_gengine_opengl_inc,
 		legacy_gengine_core_inc,
+		legacy_gengine_2d_inc,
 		legacy_corelib_inc,
-		legacy_stdl_inc
+		legacy_stdl_inc,
+		legacy_image_inc,
+		legacy_math_inc
 	],
 	dependencies: [
+		legacy_cli_dep,
+		legacy_io_dep,
 		glew_dep
 	],
 	install: true
@@ -73,7 +78,15 @@ legacy_gengine_opengl_dep = declare_dependency(
 	include_directories: [
 		legacy_gengine_opengl_inc,
 		legacy_gengine_core_inc,
+		legacy_gengine_2d_inc,
 		legacy_corelib_inc,
-		legacy_stdl_inc
+		legacy_stdl_inc,
+		legacy_math_inc,
+		legacy_image_inc
+	],
+	dependencies: [
+		legacy_cli_dep,
+		legacy_io_dep,
+		glew_dep
 	]
 )

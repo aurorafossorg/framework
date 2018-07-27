@@ -43,7 +43,7 @@ install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
 legacy_io_lib = library('aurorafw-io-legacy',
 	legacy_io_src,
-	include_directories: [legacy_io_inc],
+	include_directories: [legacy_io_inc, legacy_corelib_inc, legacy_stdl_inc, legacy_core_inc],
 	install: true,
 	version: project_version
 )
@@ -57,5 +57,5 @@ pkgc.generate(name: 'aurorafw-io-legacy',
 
 legacy_io_dep = declare_dependency(
 	link_with: [legacy_io_lib],
-	include_directories: [legacy_io_inc]
+	include_directories: [legacy_io_inc, legacy_corelib_inc, legacy_stdl_inc, legacy_core_inc]
 )

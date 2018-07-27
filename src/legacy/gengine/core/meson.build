@@ -38,6 +38,16 @@ legacy_gengine_core_src = [
 	'src/API/RTShaderPipeline.cpp',
 	'src/API/VertexArray.cpp',
 	'src/API/VertexBuffer.cpp',
+	'src/ImGui/ImGui.cpp',
+	'src/ImGui/Draw.cpp',
+	'src/ImGui/Loader.cpp',
+	'src/SPIR-V/CFG.cpp',
+	'src/SPIR-V/CPP.cpp',
+	'src/SPIR-V/Cross.cpp',
+	'src/SPIR-V/CrossUtil.cpp',
+	'src/SPIR-V/GLSL.cpp',
+	'src/SPIR-V/HLSL.cpp',
+	'src/SPIR-V/MSL.cpp',
 	'src/Application.cpp',
 	'src/AssetManager.cpp',
 	'src/AssetType.cpp',
@@ -54,8 +64,19 @@ install_subdir('include/AuroraFW', install_dir: 'include/AuroraFW')
 
 legacy_gengine_core_lib = library('aurorafw-gengine-core-legacy',
 	legacy_gengine_core_src,
-	include_directories: [legacy_gengine_core_inc, legacy_corelib_inc, legacy_stdl_inc],
-	dependencies: [legacy_gengine_opengl_dep],
+	include_directories: [
+		legacy_gengine_core_inc,
+		legacy_gengine_opengl_inc,
+		legacy_corelib_inc,
+		legacy_stdl_inc
+	],
+	dependencies: [
+		legacy_gengine_opengl_dep,
+		legacy_gengine_2d_dep,
+		legacy_gengine_vulkan_dep,
+		legacy_gui_dep,
+		glfw_dep
+	],
 	install: true,
 	version: project_version
 )
@@ -69,6 +90,17 @@ pkgc.generate(name: 'aurorafw-gengine-core-legacy',
 
 legacy_gengine_core_dep = declare_dependency(
 	link_with: [legacy_gengine_core_lib],
-	dependencies: [legacy_gengine_opengl_dep],
-	include_directories: [legacy_gengine_core_inc, legacy_corelib_inc, legacy_stdl_inc]
+	dependencies: [
+		legacy_gengine_opengl_dep,
+		legacy_gengine_vulkan_dep,
+		legacy_gengine_2d_dep,
+		legacy_gui_dep,
+		glfw_dep
+	],
+	include_directories: [
+		legacy_gengine_core_inc,
+		legacy_gengine_opengl_inc,
+		legacy_corelib_inc,
+		legacy_stdl_inc
+	]
 )
