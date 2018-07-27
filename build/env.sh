@@ -30,5 +30,6 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
+function p() { meson . .build }
 function b() { cd .build && ninja && cd .. }
 function c() { cd .build && ninja clean && cd .. }
