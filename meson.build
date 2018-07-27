@@ -41,7 +41,7 @@ cpp = meson.get_compiler('cpp')
 pkgc = import('pkgconfig')
 
 project_soversion = '0'
-project_version_suffix = '~alpha1'
+project_version_suffix = '~alpha2'
 project_version = meson.project_version()
 project_version_full = project_version + project_version_suffix
 
