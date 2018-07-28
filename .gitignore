@@ -27,3 +27,6 @@ dub.selections.json
 #Documentation
 .doxygen_warn.log
 docs/.out_*
+
+#ImGui Config
+imgui.ini
