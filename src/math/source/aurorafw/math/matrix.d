@@ -1,22 +1,38 @@
-module aurorafw.math.matrix;
+/*
+								   / _|
+  __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
+ / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
+| (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
+ \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
-/****************************************************************************
-** ┌─┐┬ ┬┬─┐┌─┐┬─┐┌─┐  ┌─┐┬─┐┌─┐┌┬┐┌─┐┬ ┬┌─┐┬─┐┬┌─
-** ├─┤│ │├┬┘│ │├┬┘├─┤  ├┤ ├┬┘├─┤│││├┤ ││││ │├┬┘├┴┐
-** ┴ ┴└─┘┴└─└─┘┴└─┴ ┴  └  ┴└─┴ ┴┴ ┴└─┘└┴┘└─┘┴└─┴ ┴
-** A Powerful General Purpose Framework
-** More information in: https://aurora-fw.github.io/
-**
-** Copyright (C) 2018 Aurora Framework, All rights reserved.
-**
-** This file is part of the Aurora Framework. This framework is free
-** software; you can redistribute it and/or modify it under the terms of
-** the GNU Lesser General Public License version 3 as published by the
-** Free Software Foundation and appearing in the file LICENSE included in
-** the packaging of this file. Please review the following information to
-** ensure the GNU Lesser General Public License version 3 requirements
-** will be met: https://www.gnu.org/licenses/lgpl-3.0.html.
-****************************************************************************/
+Copyright (C) 2018 Aurora Free Open Source Software.
+
+This file is part of the Aurora Free Open Source Software. This
+organization promote free and open source software that you can
+redistribute and/or modify under the terms of the GNU Lesser General
+Public License Version 3 as published by the Free Software Foundation or
+(at your option) any later version approved by the Aurora Free Open Source
+Software Organization. The license is available in the package root path
+as 'LICENSE' file. Please review the following information to ensure the
+GNU Lesser General Public License version 3 requirements will be met:
+https://www.gnu.org/licenses/lgpl.html .
+
+Alternatively, this file may be used under the terms of the GNU General
+Public License version 3 or later as published by the Free Software
+Foundation. Please review the following information to ensure the GNU
+General Public License requirements will be met:
+http://www.gnu.org/licenses/gpl-3.0.html.
+
+NOTE: All products, services or anything associated to trademarks and
+service marks used or referenced on this file are the property of their
+respective companies/owners or its subsidiaries. Other names and brands
+may be claimed as the property of others.
+
+For more info about intellectual property visit: aurorafoss.org or
+directly send an email to: contact (at) aurorafoss.org .
+*/
+
+module aurorafw.math.matrix;
 
 /** @file aurorafw/math/matrix.d
  * Variable Matrix file. This contains a variable matrix struct that
@@ -46,7 +62,7 @@ module aurorafw.math.matrix;
 
 	this(T[M*N] arr)
 	{
-		matrix[] = arr;
+		matrix = arr;
 	}
 
 	this(T[] arr)
@@ -129,6 +145,75 @@ module aurorafw.math.matrix;
 	T[] opSliceAssign(in T val)
 	{
 		return (matrix[] = val);
+	}
+
+	mat!(T, M, N) opAdd(mat!(T, M, N) val)
+	{
+		auto res = mat!(T, M, N)();
+		foreach(i; 0 .. M)
+			foreach(j; 0 .. N)
+				res[i, j] = this[i, j] + val[i, j];
+
+		return res;
+	}
+
+	mat!(T, M, N) opSub(mat!(T, M, N) val)
+	{
+		auto res = mat!(T, M, N)();
+		foreach(i; 0 .. M)
+			foreach(j; 0 .. N)
+				res[i, j] = this[i, j] - val[i, j];
+
+		return res;
+	}
+
+	mat!(T, M, N) opMul(mat!(T, M, N) val)
+	{
+		auto res = mat!(T, M, N)();
+
+		foreach (i; 0 .. M)
+			foreach (j; 0 .. N)
+			{
+				T sumProduct = 0;
+				foreach (k; 0 .. N)
+					sumProduct += this[i, k] * val[k, j];
+				res[i, j] = sumProduct;
+			}
+
+		return res;
+	}
+
+	mat!(T, M, N) opAddAssign(mat!(T, M, N) val)
+	{
+		this += val;
+		return this;
+	}
+
+	mat!(T, M, N) opSubAssign(mat!(T, M, N) val)
+	{
+		this -= val;
+		return this;
+	}
+
+	mat!(T, M, N) opMulAssign(mat!(T, M, N) val)
+	{
+		this *= val;
+		return this;
+	}
+
+	mat!(T, M, N) opMul(T val)
+	{
+		auto res = mat!(T, M, N)();
+		foreach(i, v; matrix)
+			res.matrix[i] = v * val;
+		return res;
+	}
+
+	mat!(T, M, N) opMulAssign(T val)
+	{
+		foreach(ref v; matrix)
+			v*= val;
+		return this;
 	}
 
 	T[M*N] matrix;
