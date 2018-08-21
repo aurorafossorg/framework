@@ -1,0 +1,14 @@
+{
+	"name": "gui",
+	"targetType": "library",
+	"targetPath": ".out/bin",
+	"sourcePaths": [ "source" ],
+	"importPaths": [ "source" ],
+	"dependencies": {
+		"aurorafw:core": "*",
+		"aurorafw:math": "*"
+	},
+	"libs": [
+		"X11"
+	]
+}
