@@ -1,0 +1,10 @@
+{
+	"name": "gui-simple_nativewindow",
+	"targetType": "executable",
+	"targetPath": ".out/bin",
+	"sourcePaths": [ "source" ],
+	"importPaths": [ "source" ],
+	"dependencies": {
+		"aurorafw:gui": {"path": "../../"}
+	}
+}

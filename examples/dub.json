@@ -1,0 +1,15 @@
+{
+	"name": "aurorafw-examples",
+	"copyright": "Copyright © 2018, Aurora Free Open Source Software",
+	"license": "GPL-3.0",
+	"authors": [
+		"Luís Ferreira"
+	],
+	"targetType": "none",
+	"dependencies": {
+		":gui-simple_nativewindow": "*"
+	},
+	"subPackages": [
+		"gui-simple_nativewindow"
+	]
+}
