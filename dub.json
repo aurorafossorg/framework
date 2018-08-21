@@ -16,11 +16,17 @@
 	"dependencies": {
 		":math": "*",
 		":core": "*",
-		":audio": "*"
+		":audio": "*",
+		":graphics": "*",
+		":image": "*",
+		":gui": "*"
 	},
 	"subPackages": [
 		"src/core",
 		"src/math",
-		"src/audio"
+		"src/audio",
+		"src/image",
+		"src/graphics",
+		"src/gui"
 	]
 }
