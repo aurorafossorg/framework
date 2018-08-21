@@ -1,0 +1,10 @@
+{
+	"name": "graphics",
+	"targetType": "library",
+	"targetPath": ".out/bin",
+	"sourcePaths": [ "source" ],
+	"importPaths": [ "source" ],
+	"dependencies": {
+		"aurorafw:image": "*"
+	}
+}
