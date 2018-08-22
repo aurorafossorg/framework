@@ -42,7 +42,7 @@ class Context {
 		OpenGL,
 		Direct3D,
 		Vulkan
-	};
+	}
 
 	enum RenderAPIVersion : uint {
 		Unknown = 0,
@@ -53,7 +53,7 @@ class Context {
 		GL_3_2,
 		GL_3_3,
 		GL_3_3_CORE
-	};
+	}
 
 	static void create(WindowProperties wp, string name)
 	{

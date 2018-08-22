@@ -39,7 +39,7 @@ enum RendererBufferType : uint {
 	Color = (1 << 0),
 	Depth = (1 << 1),
 	Stencil = (1 << 2)
-};
+}
 
 import aurorafw.image.color : ColorF;
 import aurorafw.graphics.api.vertexarray : VertexArray;
@@ -54,14 +54,14 @@ pure @safe abstract class Renderer {
 		SourceAlpha,
 		DestinationAlpha,
 		OneMinusSourceAlpha
-	};
+	}
 
 	enum BlendEquation : uint {
 		None,
 		Add,
 		Subtract,
 		ReverseSubtract
-	};
+	}
 
 	final static Renderer Load()
 	{

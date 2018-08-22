@@ -48,7 +48,7 @@ abstract class Window {
 			import std.process : environment;
 			import aurorafw.gui.platform.x11.window : X11Window;
 			import aurorafw.gui.platform.wayland.window : WLWindow;
-			auto xdg_session_type = environment.get("XDG_SESSION_TYPE");
+			immutable auto xdg_session_type = environment.get("XDG_SESSION_TYPE");
 			if(xdg_session_type == "x11")
 				_instance = new X11Window();
 			else if(xdg_session_type == "wayland")
