@@ -219,13 +219,9 @@ module aurorafw.math.matrix;
 	T[M*N] matrix;
 }
 
-alias mat!(float, 2, 2) Matrix2x2f, Matrix2f;
-alias mat!(float, 3, 3) Matrix3x3f, Matrix3f;
-alias mat!(float, 4, 4) Matrix4x4f, Matrix4f;
+alias mat!(float, 2, 2) Matrix2x2f, Matrix2f, mat2;
+alias mat!(float, 3, 3) Matrix3x3f, Matrix3f, mat3;
+alias mat!(float, 4, 4) Matrix4x4f, Matrix4f, mat4;
 alias mat!(double, 2, 2) Matrix2x2d, Matrix2d;
 alias mat!(double, 3, 3) Matrix3x3d, Matrix3d;
 alias mat!(double, 4, 4) Matrix4x4d, Matrix4d;
-
-alias Matrix2x2f mat2;
-alias Matrix3x3f mat3;
-alias Matrix4x4f mat4;

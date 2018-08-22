@@ -57,32 +57,17 @@ module aurorafw.math.vector;
 	}
 }
 
-alias vec!(int, 2) Vector2i;
-alias vec!(uint, 2) Vector2u;
-alias vec!(float, 2) Vector2f;
-alias vec!(double, 2) Vector2d;
+alias vec!(int, 2) Vector2i, ivec2;
+alias vec!(uint, 2) Vector2u, uvec2;
+alias vec!(float, 2) Vector2f, vec2;
+alias vec!(double, 2) Vector2d, dvec2;
 
-alias vec!(int, 3) Vector3i;
-alias vec!(uint, 3) Vector3u;
-alias vec!(float, 3) Vector3f;
-alias vec!(double, 3) Vector3d;
+alias vec!(int, 3) Vector3i, ivec3;
+alias vec!(uint, 3) Vector3u, uvec3;
+alias vec!(float, 3) Vector3f, vec3;
+alias vec!(double, 3) Vector3d, dvec3;
 
-alias vec!(int, 4) Vector4i;
-alias vec!(uint, 4) Vector4u;
-alias vec!(float, 4) Vector4f;
-alias vec!(double, 4) Vector4d;
-
-alias Vector2i ivec2;
-alias Vector2u uvec2;
-alias Vector2f vec2;
-alias Vector2d dvec2;
-
-alias Vector3i ivec3;
-alias Vector3u uvec3;
-alias Vector3f vec3;
-alias Vector3d dvec3;
-
-alias Vector4i ivec4;
-alias Vector4u uvec4;
-alias Vector4f vec4;
-alias Vector4d dvec4;
+alias vec!(int, 4) Vector4i, ivec4;
+alias vec!(uint, 4) Vector4u, uvec4;
+alias vec!(float, 4) Vector4f, vec4;
+alias vec!(double, 4) Vector4d, dvec4;
