@@ -34,9 +34,7 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.image.color;
 
-enum uint rgb(uint r, uint g, uint b) {
-	return (r << 32) | (g << 16) | (b << 8);
-}
+alias rgb = (uint r, uint g, uint b) => ((r << 31) | (g << 15) | (b << 7));
 
 enum CommonColor : uint {
 	Black = 0x000000,
@@ -69,7 +67,7 @@ enum CommonColor : uint {
 	BurlyWood = 0xDEB887,
 	CadetBlue = 0x5F9EA0,
 	Chartreuse = 0x7FFF00
-};
+}
 
 struct BaseColor(T) {
 	this(T r, T g, T b, T a);

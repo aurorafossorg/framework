@@ -32,11 +32,22 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.graphics.opengl.context;
+module aurorafw.graphics.api.vulkan.context;
 
 import aurorafw.graphics.api.context : Context;
+import aurorafw.gui.window : Window;
 
-class GLContext : Context
+class VKContext : Context
 {
-	this(WindowProperties );
+	this(string )
+	{}
+
+	~this()
+	{}
+
+	override void _init(Window )
+	{}
+
+	override void _destroy()
+	{}
 }

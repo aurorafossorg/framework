@@ -1,5 +1,5 @@
 /*
-                                   / _|
+								   / _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
@@ -38,4 +38,9 @@ module aurorafw.gui.platform.wayland.window;
 import aurorafw.gui.window : Window;
 
 class WLWindow : Window {
+	this()
+	{}
+
+	~this()
+	{}
 }

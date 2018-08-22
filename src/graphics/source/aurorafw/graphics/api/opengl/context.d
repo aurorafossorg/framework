@@ -1,5 +1,5 @@
 /*
-                                   / _|
+								   / _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
@@ -32,70 +32,22 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.graphics.api.context;
+module aurorafw.graphics.api.opengl.context;
 
-import aurorafw.graphics.api.opengl.context : GLContext;
-import aurorafw.graphics.api.vulkan.context : VKContext;
+import aurorafw.graphics.api.context : Context;
 import aurorafw.gui.window;
 
-abstract class Context {
-	enum RenderAPI {
-		OpenGL,
-		Direct3D,
-		Vulkan
-	}
+class GLContext : Context
+{
+	this(WindowProperties )
+	{}
 
-	enum RenderAPIVersion : uint {
-		Unknown = 0,
-		GL_2_0,
-		GL_2_1,
-		GL_3_0,
-		GL_3_1,
-		GL_3_2,
-		GL_3_3,
-		GL_3_3_CORE
-	}
+	~this()
+	{}
 
-	static void create(WindowProperties wp, string name)
-	{
-		switch(getRenderAPI())
-		{
-			case RenderAPI.OpenGL: _instance = new GLContext(wp); break;
-			case RenderAPI.Vulkan: _instance = new VKContext(name); break;
-			default: assert(0);
-		}
-	}
+	override void _init(Window )
+	{}
 
-	static void init(Window win)
-	{
-		_instance._init(win);
-	}
-
-	static void destroy()
-	{
-		_instance._destroy();
-	}
-
-	pragma(inline) static RenderAPI getRenderAPI()
-	{
-		return _rapi;
-	}
-
-	pragma(inline) static RenderAPIVersion getAPIVersion()
-	{
-		return _version;
-	}
-
-	pragma(inline) static void setRenderAPI(RenderAPI api)
-	{
-		_rapi = api;
-	}
-
-protected:
-	void _init(Window );
-	void _destroy();
-
-	static Context _instance;
-	static RenderAPI _rapi = RenderAPI.OpenGL;
-	static RenderAPIVersion _version;
+	override void _destroy()
+	{}
 }

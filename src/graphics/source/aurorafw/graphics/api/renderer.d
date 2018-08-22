@@ -63,7 +63,7 @@ pure @safe abstract class Renderer {
 		ReverseSubtract
 	}
 
-	final static Renderer Load()
+	final static void /*Renderer*/ Load()
 	{
 		
 	}

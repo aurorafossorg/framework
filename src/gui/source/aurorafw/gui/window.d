@@ -41,7 +41,7 @@ struct WindowProperties {
 }
 
 abstract class Window {
-	static Window create(string name, WindowProperties wp)
+	static final Window create(string name, WindowProperties wp)
 	{
 		version(Posix)
 		{
