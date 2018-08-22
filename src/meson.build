@@ -87,7 +87,14 @@ d_dep = declare_dependency(
 #d_exe = executable('aurorafw-test',
 #	[d_src],
 #	include_directories: [d_inc],
-#	dependencies: [d_core_dep, d_math_dep],
+#	dependencies: [
+#		d_core_dep,
+#		d_math_dep,
+#		d_audio_dep,
+#		d_graphics_dep,
+#		d_image_dep,
+#		d_gui_dep
+#	],
 #	d_unittest: true,
 #	link_args: '-main'
 #)
