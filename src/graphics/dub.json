@@ -5,6 +5,7 @@
 	"sourcePaths": [ "source" ],
 	"importPaths": [ "source" ],
 	"dependencies": {
-		"aurorafw:image": "*"
+		"aurorafw:image": "*",
+		"aurorafw:gui": "*"
 	}
 }
