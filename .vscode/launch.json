@@ -10,6 +10,13 @@
 			"request": "launch",
 			"target": "./examples/gui-simple_nativewindow/.out/bin/aurorafw-examples_gui-simple_nativewindow",
 			"cwd": "${workspaceRoot}"
+		},
+		{
+			"name": "legacy_examples_gengine",
+			"type": "gdb",
+			"request": "launch",
+			"target": "./.build/examples/legacy/gengine/aurorafw-gengine-legacy-example",
+			"cwd": "${workspaceRoot}"
 		}
 	]
 }

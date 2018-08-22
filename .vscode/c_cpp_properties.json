@@ -1,0 +1,17 @@
+{
+	"configurations": [
+		{
+			"name": "Linux",
+			"includePath": [
+				"${workspaceFolder}/src/legacy/**"
+			],
+			"defines": [],
+			"compilerPath": "/usr/bin/gcc",
+			"cStandard": "c11",
+			"cppStandard": "c++17",
+			"intelliSenseMode": "${default}",
+			"compileCommands": "${workspaceFolder}/.build/compile_commands.json"
+		}
+	],
+	"version": 4
+}
