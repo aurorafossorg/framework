@@ -30,44 +30,54 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-d_core_inc = include_directories('source')
+d_graphics_inc = include_directories('source')
 
-d_core_src = [
-	'source/aurorafw/core/package.d',
-	'source/aurorafw/core/appcontext.d',
-	'source/aurorafw/core/application.d',
-	'source/aurorafw/core/debugmanager.d',
-	'source/aurorafw/core/inputlistener.d',
-	'source/aurorafw/core/logger.d',
-	'source/aurorafw/core/opt.d'
+d_graphics_src = [
+	'source/aurorafw/graphics/package.d',
+	'source/aurorafw/graphics/root.d',
+	'source/aurorafw/graphics/api/context.d',
+	'source/aurorafw/graphics/api/renderer.d',
+	'source/aurorafw/graphics/api/opengl/context.d'
 ]
 
 install_subdir('source/aurorafw/', install_dir: 'include/d/aurorafw/')
 
-d_core_lib = library('aurorafw-core',
-	d_core_src,
-	include_directories: [d_core_inc],
+d_graphics_lib = library('aurorafw-graphics',
+	d_graphics_src,
+	include_directories: [d_graphics_inc],
 	install: true,
-	version: project_version
+	version: project_version,
+	dependencies: [
+		d_image_dep,
+		d_gui_dep
+	]
 )
 
-pkgc.generate(name: 'aurorafw-core',
-	libraries: [d_core_lib],
+pkgc.generate(name: 'aurorafw-graphics',
+	libraries: [d_graphics_lib],
 	subdirs: 'd/aurorafw',
 	version: project_version,
 	description: ''
 )
 
-d_core_dep = declare_dependency(
-	link_with: [d_core_lib],
-	include_directories: [d_core_inc]
+d_graphics_dep = declare_dependency(
+	link_with: [d_graphics_lib],
+	include_directories: [d_graphics_inc],
+	dependencies: [
+		d_image_dep,
+		d_gui_dep
+	]
 )
 
-#d_core_exe = executable('aurorafw-core-test',
-#	[d_core_src],
-#	include_directories: [d_core_inc],
+#d_graphics_exe = executable('aurorafw-graphics-test',
+#	[d_graphics_src],
+#	include_directories: [d_graphics_inc],
 #	d_unittest: true,
-#	link_args: '-main'
+#	link_args: '-main',
+#	dependencies: [
+#		d_image_dep,
+#		d_gui_dep
+#	]
 #)
 
-#test('aurorafw-core-test', d_core_exe)
+#test('aurorafw-graphics-test', d_graphics_exe)

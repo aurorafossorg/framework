@@ -30,44 +30,58 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-d_core_inc = include_directories('source')
+d_gui_inc = include_directories('source')
 
-d_core_src = [
-	'source/aurorafw/core/package.d',
-	'source/aurorafw/core/appcontext.d',
-	'source/aurorafw/core/application.d',
-	'source/aurorafw/core/debugmanager.d',
-	'source/aurorafw/core/inputlistener.d',
-	'source/aurorafw/core/logger.d',
-	'source/aurorafw/core/opt.d'
+d_gui_src = [
+	'source/aurorafw/gui/package.d',
+	'source/aurorafw/gui/window.d',
+	'source/aurorafw/gui/api/x11/package.d',
+	'source/aurorafw/gui/api/x11/x.d',
+	'source/aurorafw/gui/api/x11/xlib.d',
+	'source/aurorafw/gui/api/x11/xresource.d',
+	'source/aurorafw/gui/api/x11/extensions/xf86vmode.d',
+	'source/aurorafw/gui/platform/x11/backend.d',
+	'source/aurorafw/gui/platform/x11/window.d'
 ]
 
 install_subdir('source/aurorafw/', install_dir: 'include/d/aurorafw/')
 
-d_core_lib = library('aurorafw-core',
-	d_core_src,
-	include_directories: [d_core_inc],
+x11_dep = dependency('x11', required : true)
+
+d_gui_lib = library('aurorafw-gui',
+	d_gui_src,
+	include_directories: [d_gui_inc],
 	install: true,
-	version: project_version
+	version: project_version,
+	dependencies: [
+		d_math_dep,
+		d_core_dep,
+		x11_dep
+	]
 )
 
-pkgc.generate(name: 'aurorafw-core',
-	libraries: [d_core_lib],
+pkgc.generate(name: 'aurorafw-gui',
+	libraries: [d_gui_lib],
 	subdirs: 'd/aurorafw',
 	version: project_version,
 	description: ''
 )
 
-d_core_dep = declare_dependency(
-	link_with: [d_core_lib],
-	include_directories: [d_core_inc]
+d_gui_dep = declare_dependency(
+	link_with: [d_gui_lib],
+	include_directories: [d_gui_inc]
 )
 
-#d_core_exe = executable('aurorafw-core-test',
-#	[d_core_src],
-#	include_directories: [d_core_inc],
+#d_gui_exe = executable('aurorafw-gui-test',
+#	[d_gui_src],
+#	include_directories: [d_gui_inc],
 #	d_unittest: true,
-#	link_args: '-main'
+#	link_args: '-main',
+#	dependencies: [
+#		d_math_dep,
+#		d_core_dep,
+#		x11_dep
+#	]
 #)
 
-#test('aurorafw-core-test', d_core_exe)
+#test('aurorafw-gui-test', d_gui_exe)

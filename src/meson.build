@@ -34,7 +34,11 @@ subdir('legacy')
 
 subdir('core')
 subdir('math')
-#subdir('audio')
+subdir('audio')
+subdir('image')
+subdir('gui')
+subdir('graphics')
+
 
 d_inc = include_directories('source')
 
@@ -48,7 +52,14 @@ d_lib = library('aurorafw',
 	[d_src],
 	include_directories: [d_inc],
 	install: true,
-	dependencies: [d_core_dep, d_math_dep],
+	dependencies: [
+		d_core_dep,
+		d_math_dep,
+		d_audio_dep,
+		d_graphics_dep,
+		d_image_dep,
+		d_gui_dep
+	],
 	version: meson.project_version()
 )
 
@@ -63,13 +74,22 @@ pkgc.generate(name: 'aurorafw',
 d_dep = declare_dependency(
 	link_with: [d_lib],
 	include_directories: [d_inc],
-	dependencies: [d_core_dep, d_math_dep]
+	dependencies: [
+		d_core_dep,
+		d_math_dep,
+		d_audio_dep,
+		d_graphics_dep,
+		d_image_dep,
+		d_gui_dep
+	]
 )
 
-d_exe = executable('aurorafw-test',
-	[d_src],
-	include_directories: [d_inc],
-	dependencies: [d_core_dep, d_math_dep],
-	d_args: meson.get_compiler('d').unittest_args(),
-	link_args: '-main'
-)
+#d_exe = executable('aurorafw-test',
+#	[d_src],
+#	include_directories: [d_inc],
+#	dependencies: [d_core_dep, d_math_dep],
+#	d_unittest: true,
+#	link_args: '-main'
+#)
+
+#test('aurorafw-test', d_exe)

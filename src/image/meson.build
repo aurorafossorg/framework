@@ -30,44 +30,39 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-d_core_inc = include_directories('source')
+d_image_inc = include_directories('source')
 
-d_core_src = [
-	'source/aurorafw/core/package.d',
-	'source/aurorafw/core/appcontext.d',
-	'source/aurorafw/core/application.d',
-	'source/aurorafw/core/debugmanager.d',
-	'source/aurorafw/core/inputlistener.d',
-	'source/aurorafw/core/logger.d',
-	'source/aurorafw/core/opt.d'
+d_image_src = [
+	'source/aurorafw/image/package.d',
+	'source/aurorafw/image/color.d'
 ]
 
 install_subdir('source/aurorafw/', install_dir: 'include/d/aurorafw/')
 
-d_core_lib = library('aurorafw-core',
-	d_core_src,
-	include_directories: [d_core_inc],
+d_image_lib = library('aurorafw-image',
+	d_image_src,
+	include_directories: [d_image_inc],
 	install: true,
 	version: project_version
 )
 
-pkgc.generate(name: 'aurorafw-core',
-	libraries: [d_core_lib],
+pkgc.generate(name: 'aurorafw-image',
+	libraries: [d_image_lib],
 	subdirs: 'd/aurorafw',
 	version: project_version,
 	description: ''
 )
 
-d_core_dep = declare_dependency(
-	link_with: [d_core_lib],
-	include_directories: [d_core_inc]
+d_image_dep = declare_dependency(
+	link_with: [d_image_lib],
+	include_directories: [d_image_inc]
 )
 
-#d_core_exe = executable('aurorafw-core-test',
-#	[d_core_src],
-#	include_directories: [d_core_inc],
+#d_image_exe = executable('aurorafw-image-test',
+#	[d_image_src],
+#	include_directories: [d_image_inc],
 #	d_unittest: true,
 #	link_args: '-main'
 #)
 
-#test('aurorafw-core-test', d_core_exe)
+#test('aurorafw-image-test', d_image_exe)
