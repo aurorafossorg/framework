@@ -1,5 +1,5 @@
 {
-	"name": "gui-simple_nativewindow",
+	"name": "gui-simple_window",
 	"targetType": "executable",
 	"targetPath": ".out/bin",
 	"sourcePaths": [ "source" ],

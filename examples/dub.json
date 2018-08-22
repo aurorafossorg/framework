@@ -7,9 +7,9 @@
 	],
 	"targetType": "none",
 	"dependencies": {
-		":gui-simple_nativewindow": "*"
+		":gui-simple_window": "*"
 	},
 	"subPackages": [
-		"gui-simple_nativewindow"
+		"gui-simple_window"
 	]
 }
