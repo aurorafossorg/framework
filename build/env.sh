@@ -33,4 +33,5 @@
 function p() { c; meson . .build }
 function r() { c; meson --buildtype=release . .build; b }
 function b() { cd .build; ninja; cd .. }
+function i() { cd .build; ninja install; cd .. }
 function c() { rm -rf .build; }
