@@ -3,5 +3,9 @@
 	"targetType": "library",
 	"targetPath": ".out/bin",
 	"sourcePaths": [ "source" ],
-	"importPaths": [ "source" ]
+	"importPaths": [ "source" ],
+	"dependencies": {
+		"aurorafw:core": "*",
+		"aurorafw:math": "*"
+	}
 }

@@ -32,11 +32,40 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.audio;
+module aurorafw.audio.audioeffect;
 
-public:
-	import aurorafw.audio.audiooutput;
-	import aurorafw.audio.audioinput;
-	import aurorafw.audio.audiobackend;
-	import aurorafw.audio.audioeffect;
-	import aurorafw.audio.audioutils;
+import aurorafw.core.debugmanager;
+
+interface AudioEffect {
+	void process(ref float[] , ref size_t );
+}
+
+class Basic3DEffect : AudioEffect {
+	void process(ref float[] buffer, ref size_t numFrames) {
+		pragma(msg, "TODO: Implement basic 3D effect");
+	}
+};
+
+class Advanced3DEffect : AudioEffect {
+	void process(ref float[] buffer, ref size_t numFrames) {
+		pragma(msg, "TODO: Implement advanced (HRTF) 3D effect");
+	}
+}
+
+class ReverbEffect : AudioEffect {
+	void process(ref float[] buffer, ref size_t numFrames) {
+		pragma(msg, "TODO: Implement reverb effect");
+	}
+}
+
+class LowPassEffect : AudioEffect {
+	void process(ref float[] buffer, ref size_t numFrames) {
+		pragma(msg, "TODO: Implement low pass filter effect");
+	}
+}
+
+class HighPassEffect : AudioEffect {
+	void process(ref float[] buffer, ref size_t numFrames) {
+		pragma(msg, "TODO: Implement high pass filter effect");
+	}
+}
