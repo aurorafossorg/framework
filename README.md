@@ -1,3 +1,6 @@
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/cf1fc3e064e644dbb862c95f6afaf3ad)](https://app.codacy.com/app/aurorafossorg/framework?utm_source=github.com&utm_medium=referral&utm_content=aurorafossorg/framework&utm_campaign=Badge_Grade_Settings)
+
 <p align="center"><img src="https://avatars1.githubusercontent.com/u/39140288?s=250&v=4"></p>
 
 <p align="center">A Powerful General Purpose Framework</p>
