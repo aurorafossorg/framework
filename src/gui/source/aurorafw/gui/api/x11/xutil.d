@@ -1,5 +1,5 @@
 /*
-                                   / _|
+								   / _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
@@ -36,11 +36,8 @@ module aurorafw.gui.api.x11.xutil;
 
 import aurorafw.gui.api.x11.xresource;
 
-alias int XContext;
+alias XContext = int;
+extern (C) extern XrmQuark XrmUniqueQuark();
 
-alias XUniqueContext = () => cast(XContext)XrmUniqueQuark();
-
-extern (C)
-{
-	XrmQuark XrmUniqueQuark();
-}
+//alias XUniqueContext = () => cast(XContext)XrmUniqueQuark();
+pragma(inline, true) XContext XUniqueContext() { return cast(XContext)XrmUniqueQuark(); }

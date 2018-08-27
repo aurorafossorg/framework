@@ -37,7 +37,8 @@ d_graphics_src = [
 	'source/aurorafw/graphics/root.d',
 	'source/aurorafw/graphics/api/context.d',
 	'source/aurorafw/graphics/api/renderer.d',
-	'source/aurorafw/graphics/api/opengl/context.d'
+	'source/aurorafw/graphics/api/opengl/context.d',
+	'source/aurorafw/graphics/api/vulkan/context.d'
 ]
 
 install_subdir('source/aurorafw/', install_dir: 'include/d/aurorafw/')
@@ -69,15 +70,15 @@ d_graphics_dep = declare_dependency(
 	]
 )
 
-#d_graphics_exe = executable('aurorafw-graphics-test',
-#	[d_graphics_src],
-#	include_directories: [d_graphics_inc],
-#	d_unittest: true,
-#	link_args: '-main',
-#	dependencies: [
-#		d_image_dep,
-#		d_gui_dep
-#	]
-#)
+d_graphics_exe = executable('aurorafw-graphics-test',
+	[d_graphics_src],
+	include_directories: [d_graphics_inc],
+	d_unittest: true,
+	link_args: '-main',
+	dependencies: [
+		d_image_dep,
+		d_gui_dep
+	]
+)
 
-#test('aurorafw-graphics-test', d_graphics_exe)
+test('aurorafw-graphics-test', d_graphics_exe)

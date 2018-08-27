@@ -63,11 +63,11 @@ d_core_dep = declare_dependency(
 	include_directories: [d_core_inc]
 )
 
-#d_core_exe = executable('aurorafw-core-test',
-#	[d_core_src],
-#	include_directories: [d_core_inc],
-#	d_unittest: true,
-#	link_args: '-main'
-#)
+d_core_exe = executable('aurorafw-core-test',
+	[d_core_src],
+	include_directories: [d_core_inc],
+	d_unittest: true,
+	link_args: '-main'
+)
 
-#test('aurorafw-core-test', d_core_exe)
+test('aurorafw-core-test', d_core_exe)

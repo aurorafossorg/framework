@@ -39,9 +39,11 @@ d_gui_src = [
 	'source/aurorafw/gui/api/x11/x.d',
 	'source/aurorafw/gui/api/x11/xlib.d',
 	'source/aurorafw/gui/api/x11/xresource.d',
+	'source/aurorafw/gui/api/x11/xutil.d',
 	'source/aurorafw/gui/api/x11/extensions/xf86vmode.d',
 	'source/aurorafw/gui/platform/x11/backend.d',
-	'source/aurorafw/gui/platform/x11/window.d'
+	'source/aurorafw/gui/platform/x11/window.d',
+	'source/aurorafw/gui/platform/wayland/window.d'
 ]
 
 install_subdir('source/aurorafw/', install_dir: 'include/d/aurorafw/')
@@ -69,19 +71,24 @@ pkgc.generate(name: 'aurorafw-gui',
 
 d_gui_dep = declare_dependency(
 	link_with: [d_gui_lib],
-	include_directories: [d_gui_inc]
+	include_directories: [d_gui_inc],
+	dependencies: [
+		d_math_dep,
+		d_core_dep,
+		x11_dep
+	]
 )
 
-#d_gui_exe = executable('aurorafw-gui-test',
-#	[d_gui_src],
-#	include_directories: [d_gui_inc],
-#	d_unittest: true,
-#	link_args: '-main',
-#	dependencies: [
-#		d_math_dep,
-#		d_core_dep,
-#		x11_dep
-#	]
-#)
+d_gui_exe = executable('aurorafw-gui-test',
+	[d_gui_src],
+	d_unittest: true,
+	link_args: '-main',
+	include_directories: [d_gui_inc],
+	dependencies: [
+		d_math_dep,
+		d_core_dep,
+		x11_dep
+	]
+)
 
-#test('aurorafw-gui-test', d_gui_exe)
+test('aurorafw-gui-test', d_gui_exe)

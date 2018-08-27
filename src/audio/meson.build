@@ -57,11 +57,11 @@ d_audio_dep = declare_dependency(
 	include_directories: [d_audio_inc]
 )
 
-#d_audio_exe = executable('aurorafw-audio-test',
-#	[d_audio_src],
-#	include_directories: [d_audio_inc],
-#	d_unittest: true,
-#	link_args: '-main'
-#)
+d_audio_exe = executable('aurorafw-audio-test',
+	[d_audio_src],
+	include_directories: [d_audio_inc],
+	d_unittest: true,
+	link_args: '-main'
+)
 
-#test('aurorafw-audio-test', d_audio_exe)
+test('aurorafw-audio-test', d_audio_exe)
