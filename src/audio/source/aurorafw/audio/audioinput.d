@@ -34,15 +34,17 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.audio.audioinput;
 
+import aurorafw.audio.audioutils : AudioInfo;
+
 protected int audioInputCallback() {
 	pragma(msg, "TODO: Implement audioInputCallback()");
 	return 0;
 }
 
 class AudioIStream {
-	this(const string path, /*AudioInfo audioInfo,*/ int bufferSize) {
+	this(const string path, AudioInfo audioInfo, int bufferSize) {
 		this.path = path;
-		//this.audioInfo = audioInfo;
+		this.audioInfo = audioInfo;
 		this.bufferSize = bufferSize;
 
 		buffer = new float[bufferSize /** info.channels*/];
@@ -112,7 +114,7 @@ class AudioIStream {
 
 
 	immutable string path;
-	//AudioInfo info;
+	AudioInfo audioInfo;
 	pragma(msg, "TODO: Define wether the buffer should be public or private");
 	float[] buffer;
 	immutable uint bufferSize;

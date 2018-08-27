@@ -34,8 +34,6 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.audio.audioeffect;
 
-import aurorafw.core.debugmanager;
-
 interface AudioEffect {
 	void process(ref float[] , ref size_t );
 }

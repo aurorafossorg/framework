@@ -33,7 +33,12 @@
 d_audio_inc = include_directories('source')
 
 d_audio_src = [
-	'source/aurorafw/audio/package.d'
+	'source/aurorafw/audio/package.d',
+	'source/aurorafw/audio/audioeffect.d',
+	'source/aurorafw/audio/audiooutput.d',
+	'source/aurorafw/audio/audioutils.d',
+	'source/aurorafw/audio/audioinput.d',
+	'source/aurorafw/audio/audiobackend.d'
 ]
 
 install_subdir('source/aurorafw/', install_dir: 'include/d/aurorafw/')
@@ -41,8 +46,11 @@ install_subdir('source/aurorafw/', install_dir: 'include/d/aurorafw/')
 d_audio_lib = library('aurorafw-audio',
 	d_audio_src,
 	include_directories: [d_audio_inc],
+	dependencies: [
+		d_core_dep
+	],
 	install: true,
-	version: project_version
+	version: project_version,
 )
 
 pkgc.generate(name: 'aurorafw-audio',
@@ -54,12 +62,18 @@ pkgc.generate(name: 'aurorafw-audio',
 
 d_audio_dep = declare_dependency(
 	link_with: [d_audio_lib],
-	include_directories: [d_audio_inc]
+	include_directories: [d_audio_inc],
+	dependencies: [
+		d_core_dep
+	]
 )
 
 d_audio_exe = executable('aurorafw-audio-test',
 	[d_audio_src],
 	include_directories: [d_audio_inc],
+	dependencies: [
+		d_core_dep
+	],
 	d_unittest: true,
 	link_args: '-main'
 )
