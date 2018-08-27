@@ -59,11 +59,11 @@ d_math_dep = declare_dependency(
 	include_directories: [d_math_inc]
 )
 
-#d_math_exe = executable('aurorafw-math-test',
-#	[d_math_src],
-#	include_directories: [d_math_inc],
-#	d_unittest: true,
-#	link_args: '-main'
-#)
+d_math_exe = executable('aurorafw-math-test',
+	[d_math_src],
+	include_directories: [d_math_inc],
+	d_unittest: true,
+	link_args: '-main'
+)
 
-#test('aurorafw-math-test', d_math_exe)
+test('aurorafw-math-test', d_math_exe)
