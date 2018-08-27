@@ -34,11 +34,11 @@ d_audio_inc = include_directories('source')
 
 d_audio_src = [
 	'source/aurorafw/audio/package.d',
-	'source/aurorafw/audio/audioeffect.d',
-	'source/aurorafw/audio/audiooutput.d',
-	'source/aurorafw/audio/audioutils.d',
-	'source/aurorafw/audio/audioinput.d',
-	'source/aurorafw/audio/audiobackend.d'
+	'source/aurorafw/audio/effect.d',
+	'source/aurorafw/audio/output.d',
+	'source/aurorafw/audio/utils.d',
+	'source/aurorafw/audio/input.d',
+	'source/aurorafw/audio/backend.d'
 ]
 
 install_subdir('source/aurorafw/', install_dir: 'include/d/aurorafw/')

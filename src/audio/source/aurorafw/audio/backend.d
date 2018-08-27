@@ -32,7 +32,7 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.audio.audiobackend;
+module aurorafw.audio.backend;
 
 class AudioDevice {
 	this() {

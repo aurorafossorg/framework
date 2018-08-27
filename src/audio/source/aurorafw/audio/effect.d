@@ -32,7 +32,7 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.audio.audioeffect;
+module aurorafw.audio.effect;
 
 interface AudioEffect {
 	void process(ref float[] , ref size_t );

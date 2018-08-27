@@ -35,8 +35,8 @@ directly send an email to: contact (at) aurorafoss.org .
 module aurorafw.audio;
 
 public:
-	import aurorafw.audio.audiooutput;
-	import aurorafw.audio.audioinput;
-	import aurorafw.audio.audiobackend;
-	import aurorafw.audio.audioeffect;
-	import aurorafw.audio.audioutils;
+	import aurorafw.audio.output;
+	import aurorafw.audio.input;
+	import aurorafw.audio.backend;
+	import aurorafw.audio.effect;
+	import aurorafw.audio.utils;

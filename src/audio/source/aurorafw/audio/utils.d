@@ -32,7 +32,7 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.audio.audioutils;
+module aurorafw.audio.utils;
 
 class AudioInfo {
 	this(/*SF_INFO* sndInfo = new SF_INFO, SNDFILE* sndFile = null*/) {

@@ -32,11 +32,11 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.audio.audiooutput;
+module aurorafw.audio.output;
 
 import aurorafw.core.debugmanager;
-import aurorafw.audio.audiobackend : AudioDevice;
-import aurorafw.audio.audioutils : AudioInfo;
+import aurorafw.audio.backend : AudioDevice;
+import aurorafw.audio.utils : AudioInfo;
 import std.conv : text;
 
 enum AudioPlayMode : byte {

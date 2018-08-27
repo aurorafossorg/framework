@@ -32,9 +32,9 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.audio.audioinput;
+module aurorafw.audio.input;
 
-import aurorafw.audio.audioutils : AudioInfo;
+import aurorafw.audio.utils : AudioInfo;
 
 protected int audioInputCallback() {
 	pragma(msg, "TODO: Implement audioInputCallback()");
