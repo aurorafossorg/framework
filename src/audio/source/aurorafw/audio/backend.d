@@ -34,67 +34,94 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.audio.backend;
 
+import aurorafw.core.debugmanager;
+import aurorafw.core.logger;
+import aurorafw.audio.soundio : SoundIoError, SoundIoDevice, soundio_strerror;
+
+import std.string;
+import std.stdio;
+
+import std.conv : to;
+
+class SoundioException : Throwable {
+	this(SoundIoError error) {
+		super("SoundIo error: " ~ to!string(soundio_strerror(error)));
+	}
+}
+
+class SNDFileException : Throwable {
+	this() {super("SndFileError");}
+	/*this() {
+		super("SNDFile error: " ~ to!string(sndfileerror(...))):
+	}*/
+}
+
 class AudioDevice {
 	this() {
 
 	}
 
-	/*this(const SoundioDevice device) {
+	this(const SoundIoDevice device) {
 
-	}*/
+	}
 
-	immutable string getName() {
-		pragma(msg, "TODO: Implement getName()");
+	@property const string name() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement name's getter");
 		return null;
 	}
 
-	immutable int getMaxInputExceptions() {
-		pragma(msg, "TODO: Implement getMaxInputExceptions()");
+	@property const int maxInputChannels() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement maxInputChannels's getter");
 		return 0;
 	}
 
-	immutable int getMaxOutputExceptions() {
-		pragma(msg, "TODO: Implement getMaxOutputExceptions()");
+	@property const int maxOutputChannels() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement maxOutputChannels's getter");
 		return 0;
 	}
 
-	immutable int getOutputLowLatencyExceptions() {
-		pragma(msg, "TODO: Implement getOutputLowLatencyExceptions()");
+	@property const int outputLowLatency() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement outputLowLatency's getter");
 		return 0;
 	}
 
-	immutable int getOutputHighLatencyExceptions() {
-		pragma(msg, "TODO: Implement getOutputHighLatencyExceptions()");
+	@property const int outputHighLatency() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement outputHighLatency's getter");
 		return 0;
 	}
 
-	immutable int getInputLowLatencyExceptions() {
-		pragma(msg, "TODO: Implement getInputLowLatencyExceptions()");
+	@property const int inputLowLatency() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement inputLowLatency's getter");
 		return 0;
 	}
 
-	immutable int getInputHighLatencyExceptions() {
-		pragma(msg, "TODO: Implement getInputHighLatencyExceptions()");
+	@property const int inputHighLatency() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement inputHighLatency's getter");
 		return 0;
 	}
 
-	immutable bool isInputDevice() {
-		pragma(msg, "TODO: Implement isInputDevice()");
+	@property const int sampleRate() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement sampleRate's getter");
 		return 0;
 	}
 
-	immutable bool isOutputDevice() {
-		pragma(msg, "TODO: Implement isOutputDevice()");
+	@property const bool isInputDevice() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement isInputDevice's getter");
 		return 0;
 	}
 
-	immutable bool isDefaultInputDevice() {
-		pragma(msg, "TODO: Implement isDefaultInputDevice()");
+	@property const bool isOutputDevice() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement isOutputDevice's getter");
 		return 0;
 	}
 
-	immutable bool isDefaultOutputDevice() {
-		pragma(msg, "TODO: Implement isDefaultOutputDevice()");
+	@property const bool isDefaultInputDevice() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement isDefaultInputDevice's getter");
+		return 0;
+	}
+
+	@property const bool isDefaultOutputDevice() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement isDefaultOutputDevice's getter");
 		return 0;
 	}
 }
@@ -126,27 +153,27 @@ public:
 		return _instance;
 	}
 
-	immutable AudioDevice[] getDevices() {
-		pragma(msg, "TODO: Implement getDevices()");
+	immutable (AudioDevice)[] getDevices() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement getDevices()");
 		return null;
 	}
 
-	immutable AudioDevice[] getOutputDevices() {
-		pragma(msg, "TODO: Implement getOutputDevices()");
+	immutable (AudioDevice)[] getOutputDevices() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement getOutputDevices()");
 		return null;
 	}
 
-	immutable AudioDevice[] getInputDevices() {
-		pragma(msg, "TODO: Implement getInputDevices()");
+	immutable (AudioDevice)[] getInputDevices() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement getInputDevices()");
 		return null;
 	}
 
 	void setInputDevice(AudioDevice inputDevice) {
-		pragma(msg, "TODO: Implement setInputDevice()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement setInputDevice()");
 	}
 
 	void setOutputDevice(AudioDevice outputDevice) {
-		pragma(msg, "TODO: Implement setOutputDevice()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement setOutputDevice()");
 	}
 private:
 	static AudioBackend _instance;
@@ -157,6 +184,9 @@ private:
 			* 2º - Get the number of devices available through soundio_input/output_device_count()
 			* 3º - Log the connected backend and num of devices
 			*/
-		pragma(msg, "TODO: Implement AudioBackend ctor()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement AudioBackend ctor()");
+
+		import aurorafw.audio.soundio : soundio_version_string;
+		log("SoundIo version: ", soundio_version_string.fromStringz);
 	}
 }

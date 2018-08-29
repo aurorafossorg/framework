@@ -34,36 +34,38 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.audio.effect;
 
+import aurorafw.core.debugmanager;
+
 interface AudioEffect {
 	void process(ref float[] , ref size_t );
 }
 
 class Basic3DEffect : AudioEffect {
 	void process(ref float[] buffer, ref size_t numFrames) {
-		pragma(msg, "TODO: Implement basic 3D effect");
+		pragma(msg, debugMsgPrefix, "TODO: Implement basic 3D effect");
 	}
 };
 
 class Advanced3DEffect : AudioEffect {
 	void process(ref float[] buffer, ref size_t numFrames) {
-		pragma(msg, "TODO: Implement advanced (HRTF) 3D effect");
+		pragma(msg, debugMsgPrefix, "TODO: Implement advanced (HRTF) 3D effect");
 	}
 }
 
 class ReverbEffect : AudioEffect {
 	void process(ref float[] buffer, ref size_t numFrames) {
-		pragma(msg, "TODO: Implement reverb effect");
+		pragma(msg, debugMsgPrefix, "TODO: Implement reverb effect");
 	}
 }
 
 class LowPassEffect : AudioEffect {
 	void process(ref float[] buffer, ref size_t numFrames) {
-		pragma(msg, "TODO: Implement low pass filter effect");
+		pragma(msg, debugMsgPrefix, "TODO: Implement low pass filter effect");
 	}
 }
 
 class HighPassEffect : AudioEffect {
 	void process(ref float[] buffer, ref size_t numFrames) {
-		pragma(msg, "TODO: Implement high pass filter effect");
+		pragma(msg, debugMsgPrefix, "TODO: Implement high pass filter effect");
 	}
 }

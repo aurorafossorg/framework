@@ -51,12 +51,12 @@ class AudioFileNotFoundException : Throwable {
 }
 
 int audioOutputCallback() {
-	pragma(msg, "TODO: Implement audioOutputCallback()");
+	pragma(msg, debugMsgPrefix, "TODO: Implement audioOutputCallback()");
 	return 0;
 }
 
 int debugCallback() {
-	pragma(msg, "TODO: Implement debugCallback()");
+	pragma(msg, debugMsgPrefix, "TODO: Implement debugCallback()");
 	return 0;
 }
 
@@ -89,61 +89,61 @@ class AudioOStream {
 
 		// soundio_create_stream(...);
 
-		pragma(msg, "TODO: Implement AudioOStream ctor()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement AudioOStream ctor()");
 	}
 
 	void play() {
-		pragma(msg, "TODO: Implement play()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement play()");
 		// sf_seek(audioInfo._sndFile, _streamPosFrame, SF_SEEK_SET);
 		// soundio_start_stream(...);
 	}
 
 	void pause() {
-		pragma(msg, "TODO: Implement pause()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement pause()");
 		// soundio_stop_stream(...);
 	}
 
 	void stop() {
-		pragma(msg, "TODO: Implement stop()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement stop()");
 		_streamPosFrame = 0;
 
 		// soundio_stop_stream(...);
 	}
 
 	bool isPlaying() {
-		pragma(msg, "TODO: Implement isPlaying()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement isPlaying()");
 		// return soundio_is_stream_active(...);
 		return 0;
 	}
 
 	bool isPaused() {
-		pragma(msg, "TODO: Implement isPaused()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement isPaused()");
 		// return !soundio_is_stream_active(...) && _streamPosFrame != 0;
 		return 0;
 	}
 
 	bool isStopped() {
-		pragma(msg, "TODO: Implement isStopped()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement isStopped()");
 		// return !soundio_is_stream_active(...);
 		return 0;
 	}
 
 	void setStreamPos(uint pos) {
-		pragma(msg,"TODO: Implement setStreamPos(uint pos)");
+		pragma(msg, debugMsgPrefix,"TODO: Implement setStreamPos(uint pos)");
 	}
 
 	void setStreamPosFrame(uint pos) {
-		pragma(msg, "TODO: Implement setStreamPosFrame()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement setStreamPosFrame()");
 		_streamPosFrame = pos;
 	}
 
 	float getNumLoops() {
-		pragma(msg, "TODO: Implement getNumLoops()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement getNumLoops()");
 		return _loops;
 	}
 
 	float getCpuLoad() {
-		pragma(msg, "TODO: Implement getCpuLoad()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement getCpuLoad()");
 		// return soundio_get_cpu_load(...);
 		return 0;
 	}
@@ -151,7 +151,7 @@ class AudioOStream {
 	AudioPlayMode audioPlayMode;
 	AudioInfo audioInfo;
 	float volume = 1;
-	pragma(msg, "TODO: Implement pitch");
+	pragma(msg, debugMsgPrefix, "TODO: Implement pitch");
 	float pitch = 1;
 
 private:

@@ -35,9 +35,10 @@ directly send an email to: contact (at) aurorafoss.org .
 module aurorafw.audio.input;
 
 import aurorafw.audio.utils : AudioInfo;
+import aurorafw.core.debugmanager;
 
 protected int audioInputCallback() {
-	pragma(msg, "TODO: Implement audioInputCallback()");
+	pragma(msg, debugMsgPrefix, "TODO: Implement audioInputCallback()");
 	return 0;
 }
 
@@ -52,58 +53,58 @@ class AudioIStream {
 		//info._sndFile = sf_open(path, SFM_WRITE, info._sndInfo);
 
 		// soundio_write_stream(...);
-		pragma(msg, "TODO: Implement AudioIStream ctor()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement AudioIStream ctor()");
 	}
 
 	void record() {
-		pragma(msg, "TODO: Implement record()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement record()");
 		//soundio_start_stream(...);
 	}
 
 	void pause() {
-		pragma(msg, "TODO: Implement pause()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement pause()");
 		//soundio_stop_stream(...);
 	}
 
 	void stop() {
-		pragma(msg, "TODO: Implement stop()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement stop()");
 		_streamPosFrame = 0;
 
 		//soundio_stop_stream(...);
 	}
 
 	bool isRecording() {
-		pragma(msg, "TODO: Implement isRecording()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement isRecording()");
 		//return soundio_is_stream_active(...);
 		return 0;
 	}
 
 	bool isPaused() {
-		pragma(msg, "TODO: Implement isPaused()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement isPaused()");
 		//return !soundio_is_stream_active(...) && _streamPosFrame != 0;
 		return 0;
 	}
 
 	bool isStopped() {
-		pragma(msg, "TODO: Implement isStopped()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement isStopped()");
 		//return !soundio_is_stream_active(...)
 		return 0;
 	}
 
 	bool isBufferFull() {
-		pragma(msg, "TODO: Implement isBufferFull()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement isBufferFull()");
 		return 0;
 	}
 	void clearBuffer() {
-		pragma(msg, "TODO: Implement clearBuffer()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement clearBuffer()");
 	}
 
 	void clearBuffer(uint start, uint finish) {
-		pragma(msg, "TODO: Implement clearBuffer(uint start, uint finish)");
+		pragma(msg, debugMsgPrefix, "TODO: Implement clearBuffer(uint start, uint finish)");
 	}
 
 	bool save() {
-		pragma(msg, "TODO: Implement save()");
+		pragma(msg, debugMsgPrefix, "TODO: Implement save()");
 		/*
 		if(sf_write_float(info._sndFile, buffer, bufferSize) == -1)
 			return false;
@@ -115,7 +116,7 @@ class AudioIStream {
 
 	immutable string path;
 	AudioInfo audioInfo;
-	pragma(msg, "TODO: Define wether the buffer should be public or private");
+	pragma(msg, debugMsgPrefix, "TODO: Define wether the buffer should be public or private");
 	float[] buffer;
 	immutable uint bufferSize;
 

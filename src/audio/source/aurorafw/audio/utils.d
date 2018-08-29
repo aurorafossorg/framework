@@ -34,6 +34,8 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.audio.utils;
 
+import aurorafw.core.debugmanager;
+
 class AudioInfo {
 	this(/*SF_INFO* sndInfo = new SF_INFO, SNDFILE* sndFile = null*/) {
 		/*
@@ -50,39 +52,47 @@ class AudioInfo {
 	}
 
 	@property int sampleRate() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement sampleRate getter");
 		// return _sndInfo.samplerate;
 		return 0;
 	}
 
-	@property /*sf_count_t*/ frames() {
+	@property /*sf_count_t*/int frames() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement frames getter");
 		// return _sndInfo.frames;
 		return 0;
 	}
 
 	@property int channels() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement channels getter");
 		// return _sndInfo.channels;
 		return 0;
 	}
 
 	@property int format() {
+		pragma(msg, debugMsgPrefix, "TODO: Implement format getter");
 		// return _sndInfo.format;
 		return 0;
 	}
 
 	@property void sampleRate(immutable int sampleRate) {
 		// _sndInfo.samplerate = sampleRate;
+		pragma(msg, debugMsgPrefix, "TODO: Implement sampleRate setter");
 	}
 
 	@property void frames(immutable /*sf_count_t*/ int frames) {
 		// _sndInfo.frames = frames;
+		pragma(msg, debugMsgPrefix, "TODO: Implement frames setter");
 	}
 
 	@property void channels(immutable int channels) {
 		// _sndInfo.channels = channels;
+		pragma(msg, debugMsgPrefix, "TODO: Implement channels setter");
 	}
 
 	@property void format(immutable int format) {
 		// _sndInfo.format = format;
+		pragma(msg, debugMsgPrefix, "TODO: Implement format setter");
 	}
 
 	@property string title() {
@@ -91,7 +101,7 @@ class AudioInfo {
 		return str ? str : "";
 		*/
 		return "null";
-		pragma(msg, "TODO: Implement title getter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement title getter");
 	}
 
 	@property string copyright() {
@@ -100,7 +110,7 @@ class AudioInfo {
 		return str ? str : "";
 		*/
 		return "null";
-		pragma(msg, "TODO: Implement copyright getter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement copyright getter");
 	}
 
 	@property string software() {
@@ -109,7 +119,7 @@ class AudioInfo {
 		return str ? str : "";
 		*/
 		return "null";
-		pragma(msg, "TODO: Implement software getter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement software getter");
 	}
 
 	@property string artist() {
@@ -118,7 +128,7 @@ class AudioInfo {
 		return str ? str : "";
 		*/
 		return "null";
-		pragma(msg, "TODO: Implement artist getter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement artist getter");
 	}
 
 	@property string comment() {
@@ -127,7 +137,7 @@ class AudioInfo {
 		return str ? str : "";
 		*/
 		return "null";
-		pragma(msg, "TODO: Implement comment getter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement comment getter");
 	}
 
 	@property string date() {
@@ -136,7 +146,7 @@ class AudioInfo {
 		return str ? str : "";
 		*/
 		return "null";
-		pragma(msg, "TODO: Implement date getter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement date getter");
 	}
 
 	@property string album() {
@@ -145,7 +155,7 @@ class AudioInfo {
 		return str ? str : "";
 		*/
 		return "null";
-		pragma(msg, "TODO: Implement album getter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement album getter");
 	}
 
 	@property string license() {
@@ -154,7 +164,7 @@ class AudioInfo {
 		return str ? str : "";
 		*/
 		return "null";
-		pragma(msg, "TODO: Implement license getter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement license getter");
 	}
 
 	@property string trackNumber() {
@@ -163,7 +173,7 @@ class AudioInfo {
 		return str ? str : "";
 		*/
 		return "null";
-		pragma(msg, "TODO: Implement trackNumber getter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement trackNumber getter");
 	}
 
 	@property string genre() {
@@ -172,56 +182,56 @@ class AudioInfo {
 		return str ? str : "";
 		*/
 		return "null";
-		pragma(msg, "TODO: Implement genre getter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement genre getter");
 	}
 
 	@property void title(string title) {
 		// sf_set_string(_sndFile, SF_STR_TITLE, title);
-		pragma(msg, "TODO: Implement title setter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement title setter");
 	}
 
 	@property void copyright(string copyright) {
 		// sf_set_string(_sndFile, SF_STR_COPYRIGHT, copyright);
-		pragma(msg, "TODO: Implement copyright setter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement copyright setter");
 	}
 
 	@property void software(string software) {
 		// sf_set_string(_sndFile, SF_STR_SOFTWARE, software);
-		pragma(msg, "TODO: Implement software setter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement software setter");
 	}
 
 	@property void artist(string artist) {
 		// sf_set_string(_sndFile, SF_STR_ARTIST, artist);
-		pragma(msg, "TODO: Implement artist setter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement artist setter");
 	}
 
 	@property void comment(string comment) {
 		// sf_set_string(_sndFile, SF_STR_COMMENT, comment);
-		pragma(msg, "TODO: Implement comment setter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement comment setter");
 	}
 
 	@property void date(string date) {
 		// sf_set_string(_sndFile, SdateF;_STR_DATE, )
-		pragma(msg, "TODO: Implement date setter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement date setter");
 	}
 
 	@property void album(string album) {
 		// sf_set_string(_sndFile, SF_STR_ALBUM, album);
-		pragma(msg, "TODO: Implement album setter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement album setter");
 	}
 
 	@property void license(string license) {
 		// sf_set_string(_sndFile, SF_STR_LICENSE, license);
-		pragma(msg, "TODO: Implement license setter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement license setter");
 	}
 
 	@property void tracknumber(string trackNumber) {
 		// sf_set_string(_sndFile, SF_STR_TRACKNUMBER, trackNumber);
-		pragma(msg, "TODO: Implement trackNumber setter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement trackNumber setter");
 	}
 
 	@property void genre(string genre) {
 		// sf_set_string(_sndFile, SF_STR_GENRE, genre);
-		pragma(msg, "TODO: Implement genre setter");
+		pragma(msg, debugMsgPrefix, "TODO: Implement genre setter");
 	}
 }
