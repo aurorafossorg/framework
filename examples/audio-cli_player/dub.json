@@ -1,0 +1,10 @@
+{
+	"name": "audio-cli_player",
+	"targetType": "executable",
+	"targetPath": ".out/bin",
+	"sourcePaths": [ "source" ],
+	"importPaths": [ "source" ],
+	"dependencies": {
+		"aurorafw:audio": {"path": "../../"}
+	}
+}

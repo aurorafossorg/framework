@@ -30,7 +30,16 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-subdir('legacy')
+example_audio_src = [
+	'source/app.d'
+]
 
-subdir('gui-simple_window')
-subdir('audio-cli_player')
+example_audio_exe = executable('aurorafw-audio-example',
+	example_audio_src,
+	dependencies: [
+		d_audio_dep,
+		d_core_dep,
+		d_math_dep
+	],
+	install: true
+)
