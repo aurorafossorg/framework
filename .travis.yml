@@ -11,13 +11,13 @@ addons:
     - cmake
 
 before_script:
-  - mkdir -p .tmp && cd .tmp
-  - git clone https://github.com/andrewrk/libsoundio
-  - mkdir -p build cd build
+  - mkdir -p .tmp && pushd .tmp
+  - git clone https://github.com/andrewrk/libsoundio && pushd libsoundio
+  - mkdir -p build pushd build
   - cmake ..
   - make
   - sudo make install
-  - cd .. && cd ..
+  - popd; popd; popd;
 
 d:
   - dmd
