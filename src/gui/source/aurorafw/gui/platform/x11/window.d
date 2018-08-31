@@ -47,7 +47,7 @@ class X11Window : Window {
 	import aurorafw.gui.platform.x11.backend : X11Backend;
 	this(VisualPreferences vpref = VisualPreferences())
 	{
-		X11Backend.init();
+		X11Backend.get();
 
 		if(vpref.visual is null)
 			vpref.visual = X.XDefaultVisual(X11Backend.display, X11Backend.screen);
