@@ -47,4 +47,5 @@ before_script:
   - make
   - sudo make install
   - popd; popd; popd;
+  - sudo ldconfig
 
