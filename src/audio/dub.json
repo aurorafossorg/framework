@@ -9,6 +9,6 @@
 		"aurorafw:math": "*"
 	},
 	"libs": [
-		"libsoundio"
+		"soundio"
 	]
 }
