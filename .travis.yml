@@ -13,7 +13,7 @@ addons:
 before_script:
   - mkdir -p .tmp && pushd .tmp
   - git clone https://github.com/andrewrk/libsoundio && pushd libsoundio
-  - mkdir -p build pushd build
+  - mkdir -p build && pushd build
   - cmake ..
   - make
   - sudo make install
