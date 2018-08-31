@@ -40,7 +40,7 @@ addons:
 env: CC=gcc-7 CXX=g++-7
 
 before_script:
-  - brew install gcc@7
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then; brew install gcc@7; fi;
   - mkdir -p .tmp && pushd .tmp
   - git clone https://github.com/andrewrk/libsoundio && pushd libsoundio
   - mkdir -p build && pushd build
