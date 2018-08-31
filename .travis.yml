@@ -1,9 +1,33 @@
 language: d
 
+sudo: required
+
+addons:
+  apt:
+    update: true
+    packages:
+    - libx11-dev
+    - git
+    - cmake
+
+before_script:
+  - mkdir -p .tmp && cd .tmp
+  - git clone https://github.com/andrewrk/libsoundio
+  - mkdir -p build cd build
+  - cmake ..
+  - make
+  - sudo make install
+  - cd .. && cd ..
+
 d:
   - dmd
   - ldc
+  - gdc
+  - dmd-nightly
+  - dmd-beta
+  - ldc-beta
 
 os:
   - linux
   - osx
+
