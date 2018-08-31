@@ -44,8 +44,8 @@ import core.stdc.stdlib : exit;
 import core.stdc.stdlib : atof;
 import core.stdc.string : strcmp;
 
-pure @nogc class X11Backend {
-	this()
+pure class X11Backend {
+	private this()
 	{
 		X.XInitThreads();
 		X.XrmInitialize();
@@ -103,17 +103,11 @@ pure @nogc class X11Backend {
 		}
 	}
 
-	static void init()
+	static X11Backend get()
 	{
-		if(_instance is null)
-		{
-			_instance = emplace!X11Backend(cast(X11Backend)malloc(__traits(classInstanceSize, X11Backend)));
-		}
-	}
-
-	static void terminate()
-	{
-		if(_instance) free(cast(void*)_instance);
+		if(!_instance)
+			_instance = new X11Backend();
+		return _instance;
 	}
 
 	static X.Display* display() @property { return _instance._display; }
@@ -121,7 +115,7 @@ pure @nogc class X11Backend {
 	static X.Window root() @property { return _instance._root; }
 
 private:
-	static X11Backend _instance;
+	private static X11Backend _instance;
 	X.Display* _display;
 	X.Window _root;
 	int _screen;
