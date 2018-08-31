@@ -40,7 +40,7 @@ addons:
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CC=gcc-7; export CXX=g++-7; fi;
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew unlink gcc; brew install gcc; brew upgrade cmake; fi;
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew upgrade cmake; fi;
   - mkdir -p .tmp && pushd .tmp
   - git clone https://github.com/andrewrk/libsoundio && pushd libsoundio
   - mkdir -p build && pushd build
@@ -48,7 +48,7 @@ before_script:
   - make
   - sudo make install
   - popd; popd; popd;
-  - sudo ldconfig
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo ldconfig; fi;
 
 after_success:
   - wget https://raw.githubusercontent.com/k3rn31p4nic/travis-ci-discord-webhook/master/send.sh
