@@ -2,23 +2,6 @@ language: d
 
 sudo: required
 
-addons:
-  apt:
-    update: true
-    packages:
-    - libx11-dev
-    - git
-    - cmake
-
-before_script:
-  - mkdir -p .tmp && pushd .tmp
-  - git clone https://github.com/andrewrk/libsoundio && pushd libsoundio
-  - mkdir -p build && pushd build
-  - cmake ..
-  - make
-  - sudo make install
-  - popd; popd; popd;
-
 d:
   - dmd
   - ldc
@@ -30,4 +13,40 @@ d:
 os:
   - linux
   - osx
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    d:
+      - gdc
+      - dmd-nightly
+      - dmd-beta
+      - ldc-beta
+    os:
+      - osx
+
+addons:
+  apt:
+    update: true
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+    - libx11-dev
+    - git
+    - cmake
+    - gcc-7
+    - g++-7
+
+env:
+  - CC=gcc-7
+  - CXX=g++-7
+
+before_script:
+  - mkdir -p .tmp && pushd .tmp
+  - git clone https://github.com/andrewrk/libsoundio && pushd libsoundio
+  - mkdir -p build && pushd build
+  - cmake ..
+  - make
+  - sudo make install
+  - popd; popd; popd;
 
