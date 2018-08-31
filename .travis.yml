@@ -5,10 +5,10 @@ sudo: required
 d:
   - dmd
   - ldc
-  - gdc
-  - dmd-nightly
-  - dmd-beta
-  - ldc-beta
+#  - gdc
+#  - dmd-nightly
+#  - dmd-beta
+#  - ldc-beta
 
 os:
   - linux
@@ -17,11 +17,11 @@ os:
 matrix:
   fast_finish: true
   allow_failures:
-    d:
-      - gdc
-      - dmd-nightly
-      - dmd-beta
-      - ldc-beta
+#    d:
+#      - gdc
+#      - dmd-nightly
+#      - dmd-beta
+#      - ldc-beta
     os:
       - osx
 
