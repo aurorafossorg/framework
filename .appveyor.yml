@@ -51,7 +51,7 @@ install:
           popd;
           popd;
         }
-  - ps: ResolveSoundioDependency
+#  - ps: ResolveSoundioDependency
   - ps: function ResolveLatestDMD
         {
             $version = $env:DVersion;
