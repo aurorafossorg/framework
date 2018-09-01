@@ -34,204 +34,146 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.audio.utils;
 
+import std.string : toStringz;
+import std.conv : to;
+
 import aurorafw.core.debugmanager;
+import aurorafw.audio.sndfile;
+import aurorafw.audio.backend : catchSNDFILEProblem;
 
 class AudioInfo {
-	this(/*SF_INFO* sndInfo = new SF_INFO, SNDFILE* sndFile = null*/) {
-		/*
-		_sndInfo = sndinfo;
+	this(SF_INFO* sndInfo = new SF_INFO, SNDFILE* sndFile = null) {
+		_sndInfo = sndInfo;
 		_sndFile = sndFile;
-		*/
 	}
 
 	~this() {
-		/*
 		if(_sndFile)
 			catchSNDFILEProblem(sf_close(_sndFile));
-		*/
 	}
 
 	@property int sampleRate() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement sampleRate getter");
-		// return _sndInfo.samplerate;
-		return 0;
+		return _sndInfo.samplerate;
 	}
 
-	@property /*sf_count_t*/int frames() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement frames getter");
-		// return _sndInfo.frames;
-		return 0;
+	@property sf_count_t frames() {
+		return _sndInfo.frames;
 	}
 
 	@property int channels() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement channels getter");
-		// return _sndInfo.channels;
-		return 0;
+		return _sndInfo.channels;
 	}
 
 	@property int format() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement format getter");
-		// return _sndInfo.format;
-		return 0;
+		return _sndInfo.format;
 	}
 
 	@property void sampleRate(immutable int sampleRate) {
-		// _sndInfo.samplerate = sampleRate;
-		pragma(msg, debugMsgPrefix, "TODO: Implement sampleRate setter");
+		_sndInfo.samplerate = sampleRate;
 	}
 
-	@property void frames(immutable /*sf_count_t*/ int frames) {
-		// _sndInfo.frames = frames;
-		pragma(msg, debugMsgPrefix, "TODO: Implement frames setter");
+	@property void frames(immutable sf_count_t frames) {
+		_sndInfo.frames = frames;
 	}
 
 	@property void channels(immutable int channels) {
-		// _sndInfo.channels = channels;
-		pragma(msg, debugMsgPrefix, "TODO: Implement channels setter");
+		_sndInfo.channels = channels;
 	}
 
 	@property void format(immutable int format) {
-		// _sndInfo.format = format;
-		pragma(msg, debugMsgPrefix, "TODO: Implement format setter");
+		_sndInfo.format = format;
 	}
 
 	@property string title() {
-		/*
-		string str = sf_get_string(_sndFile, SF_STR_TITLE);
+		string str = to!string(sf_get_string(_sndFile, SF_STR_TITLE));
 		return str ? str : "";
-		*/
-		return "null";
-		pragma(msg, debugMsgPrefix, "TODO: Implement title getter");
 	}
 
 	@property string copyright() {
-		/*
-		string str = sf_get_string(_sndFile, SF_STR_COPYRIGHT);
+		string str = to!string(sf_get_string(_sndFile, SF_STR_COPYRIGHT));
 		return str ? str : "";
-		*/
-		return "null";
-		pragma(msg, debugMsgPrefix, "TODO: Implement copyright getter");
 	}
 
 	@property string software() {
-		/*
-		string str = sf_get_string(_sndFile, SF_STR_SOFTWARE);
+		string str = to!string(sf_get_string(_sndFile, SF_STR_SOFTWARE));
 		return str ? str : "";
-		*/
-		return "null";
-		pragma(msg, debugMsgPrefix, "TODO: Implement software getter");
 	}
 
 	@property string artist() {
-		/*
-		string str = sf_get_string(_sndFile, SF_STR_ARTIST);
+		string str = to!string(sf_get_string(_sndFile, SF_STR_ARTIST));
 		return str ? str : "";
-		*/
-		return "null";
-		pragma(msg, debugMsgPrefix, "TODO: Implement artist getter");
 	}
 
 	@property string comment() {
-		/*
-		string str = sf_get_string(_sndFile, SF_STR_COMMENT);
+		string str = to!string(sf_get_string(_sndFile, SF_STR_COMMENT));
 		return str ? str : "";
-		*/
-		return "null";
-		pragma(msg, debugMsgPrefix, "TODO: Implement comment getter");
 	}
 
 	@property string date() {
-		/*
-		string str = sf_get_string(_sndFile, SF_STR_DATE);
+		string str = to!string(sf_get_string(_sndFile, SF_STR_DATE));
 		return str ? str : "";
-		*/
-		return "null";
-		pragma(msg, debugMsgPrefix, "TODO: Implement date getter");
 	}
 
 	@property string album() {
-		/*
-		string str = sf_get_string(_sndFile, SF_STR_ALBUM);
+		string str = to!string(sf_get_string(_sndFile, SF_STR_ALBUM));
 		return str ? str : "";
-		*/
-		return "null";
-		pragma(msg, debugMsgPrefix, "TODO: Implement album getter");
 	}
 
 	@property string license() {
-		/*
-		string str = sf_get_string(_sndFile, SF_STR_LICENSE);
+		string str = to!string(sf_get_string(_sndFile, SF_STR_LICENSE));
 		return str ? str : "";
-		*/
-		return "null";
-		pragma(msg, debugMsgPrefix, "TODO: Implement license getter");
 	}
 
 	@property string trackNumber() {
-		/*
-		string str = sf_get_string(_sndFile, SF_STR_TRACKNUMBER);
+		string str = to!string(sf_get_string(_sndFile, SF_STR_TRACKNUMBER));
 		return str ? str : "";
-		*/
-		return "null";
-		pragma(msg, debugMsgPrefix, "TODO: Implement trackNumber getter");
 	}
 
 	@property string genre() {
-		/*
-		string str = sf_get_string(_sndFile, SF_STR_GENRE);
+		string str = to!string(sf_get_string(_sndFile, SF_STR_GENRE));
 		return str ? str : "";
-		*/
-		return "null";
-		pragma(msg, debugMsgPrefix, "TODO: Implement genre getter");
 	}
 
 	@property void title(string title) {
-		// sf_set_string(_sndFile, SF_STR_TITLE, title);
-		pragma(msg, debugMsgPrefix, "TODO: Implement title setter");
+		sf_set_string(_sndFile, SF_STR_TITLE, title.toStringz);
 	}
 
 	@property void copyright(string copyright) {
-		// sf_set_string(_sndFile, SF_STR_COPYRIGHT, copyright);
-		pragma(msg, debugMsgPrefix, "TODO: Implement copyright setter");
+		sf_set_string(_sndFile, SF_STR_COPYRIGHT, copyright.toStringz);
 	}
 
 	@property void software(string software) {
-		// sf_set_string(_sndFile, SF_STR_SOFTWARE, software);
-		pragma(msg, debugMsgPrefix, "TODO: Implement software setter");
+		sf_set_string(_sndFile, SF_STR_SOFTWARE, software.toStringz);
 	}
 
 	@property void artist(string artist) {
-		// sf_set_string(_sndFile, SF_STR_ARTIST, artist);
-		pragma(msg, debugMsgPrefix, "TODO: Implement artist setter");
+		sf_set_string(_sndFile, SF_STR_ARTIST, artist.toStringz);
 	}
 
 	@property void comment(string comment) {
-		// sf_set_string(_sndFile, SF_STR_COMMENT, comment);
-		pragma(msg, debugMsgPrefix, "TODO: Implement comment setter");
+		sf_set_string(_sndFile, SF_STR_COMMENT, comment.toStringz);
 	}
 
 	@property void date(string date) {
-		// sf_set_string(_sndFile, SdateF;_STR_DATE, )
-		pragma(msg, debugMsgPrefix, "TODO: Implement date setter");
+		sf_set_string(_sndFile, SF_STR_DATE, date.toStringz);
 	}
 
 	@property void album(string album) {
-		// sf_set_string(_sndFile, SF_STR_ALBUM, album);
-		pragma(msg, debugMsgPrefix, "TODO: Implement album setter");
+		sf_set_string(_sndFile, SF_STR_ALBUM, album.toStringz);
 	}
 
 	@property void license(string license) {
-		// sf_set_string(_sndFile, SF_STR_LICENSE, license);
-		pragma(msg, debugMsgPrefix, "TODO: Implement license setter");
+		sf_set_string(_sndFile, SF_STR_LICENSE, license.toStringz);
 	}
 
 	@property void tracknumber(string trackNumber) {
-		// sf_set_string(_sndFile, SF_STR_TRACKNUMBER, trackNumber);
-		pragma(msg, debugMsgPrefix, "TODO: Implement trackNumber setter");
+		sf_set_string(_sndFile, SF_STR_TRACKNUMBER, trackNumber.toStringz);
 	}
 
 	@property void genre(string genre) {
-		// sf_set_string(_sndFile, SF_STR_GENRE, genre);
-		pragma(msg, debugMsgPrefix, "TODO: Implement genre setter");
+		sf_set_string(_sndFile, SF_STR_GENRE, genre.toStringz);
 	}
+
+	package SF_INFO* _sndInfo;
+	package SNDFILE* _sndFile;
 }

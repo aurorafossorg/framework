@@ -9,6 +9,7 @@
 		"aurorafw:math": "*"
 	},
 	"libs": [
-		"libsoundio"
+		"libsoundio",
+		"libsndfile"
 	]
 }

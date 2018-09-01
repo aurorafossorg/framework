@@ -37,6 +37,7 @@ module aurorafw.audio.backend;
 import aurorafw.core.debugmanager;
 import aurorafw.core.logger;
 import aurorafw.audio.soundio : SoundIoError, SoundIoDevice, soundio_strerror;
+import aurorafw.audio.sndfile : SF_ERR_NO_ERROR, sf_error_number;
 
 import std.string;
 import std.stdio;
@@ -50,10 +51,9 @@ class SoundioException : Throwable {
 }
 
 class SNDFileException : Throwable {
-	this() {super("SndFileError");}
-	/*this() {
-		super("SNDFile error: " ~ to!string(sndfileerror(...))):
-	}*/
+	this(int error) {
+		super("SNDFile error: " ~ to!string(sf_error_number(error)));
+	}
 }
 
 class AudioDevice {
@@ -189,4 +189,14 @@ private:
 		import aurorafw.audio.soundio : soundio_version_string;
 		log("SoundIo version: ", soundio_version_string.fromStringz);
 	}
+}
+
+void catchSOUNDIOProblem(const SoundIoError error) {
+	if(error != SoundIoError.SoundIoErrorNone)
+		throw new SoundioException(error);
+}
+
+void catchSNDFILEProblem(const int error) {
+	if(error != SF_ERR_NO_ERROR)
+		throw new SNDFileException(error);
 }
