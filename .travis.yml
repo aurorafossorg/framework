@@ -19,6 +19,9 @@ matrix:
   allow_failures:
     - os: osx
     - d: gdc
+    - d: dmd-nightly
+    - d: dmd-beta
+    - d: ldc-beta
 
 addons:
   apt:
