@@ -95,7 +95,7 @@ void appMainFunction(Application app) {
 			AudioDevice defaultDevice;
 
 			// Prints all available devices
-			immutable AudioDevice[] audioDevices = audioBackend.getDevices();
+			immutable (AudioDevice[]) audioDevices = audioBackend.getDevices();
 			writeln("Printing all available audio devices...");
 			for(byte i = 0; i < audioDevices.length; i++) {
 				writeln(text(i + 1), " - ", audioDevices[i].name,
@@ -119,16 +119,15 @@ void appMainFunction(Application app) {
 				audioInputDevices[i].isDefaultInputDevice ? " [Default Input Device]" : "");
 			}
 
-			// Prints information about the default input/output device
+			// Prints information about the default output device
 			defaultDevice = new AudioDevice();
 			writeln("Printing info for default output device. [", defaultDevice.name, "]");
 			writeln("Name: ", defaultDevice.name);
 			writeln("Maximum input channels: ", defaultDevice.maxInputChannels);
 			writeln("Maximum output channels: ", defaultDevice.maxOutputChannels);
-			writeln("Default low input latency: ", defaultDevice.inputLowLatency);
-			writeln("Default low output latency: ", defaultDevice.outputLowLatency);
-			writeln("Default high input latency: ", defaultDevice.inputHighLatency);
-			writeln("Default high input latency: ", defaultDevice.outputHighLatency);
+			writeln("Current latency: ", defaultDevice.currentLatency);
+			writeln("Minimum latency: ", defaultDevice.minLatency);
+			writeln("Maximum latency: ", defaultDevice.maxLatency);
 			writeln("Default sample rate: ", defaultDevice.sampleRate);
 
 		}
@@ -139,7 +138,7 @@ void appMainFunction(Application app) {
 			inputInfo.sampleRate = 44100;
 			inputInfo.channels = 2;
 
-			// inputInfo.format = (SF_FORMAT_OGG | SF_FORMAT_VORBIS);
+			inputInfo.format = (SF_FORMAT_OGG | SF_FORMAT_VORBIS);
 			AudioIStream inputStream = new AudioIStream(inputFileName, inputInfo, 44100 * inputTime);
 			writeln("The stream was now created. Audio will be recorded for ", inputTime, 
 					" seconds and be save to \"", inputFileName, "\"");
@@ -171,11 +170,11 @@ void appMainFunction(Application app) {
 		if(fileName == "") {
 			AudioOStream debugStream = new AudioOStream();
 			writeln("Created debug sound. This will make a loud noise, turn down your volume!");
-			Thread.sleep(dur!("seconds")(3));
+			//Thread.sleep(dur!("seconds")(3));
 
 			for(int i = 5; i > 0; i--) {
 				writeln(i);
-				Thread.sleep(dur!("seconds")(1));
+				//Thread.sleep(dur!("seconds")(1));
 			}
 
 			debugStream.play();

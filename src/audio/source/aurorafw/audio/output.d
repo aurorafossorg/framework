@@ -38,9 +38,11 @@ import std.conv : text;
 import std.string : toStringz;
 
 import aurorafw.core.debugmanager;
-import aurorafw.audio.backend : AudioDevice;
+import aurorafw.core.logger;
+import aurorafw.audio.backend : AudioDevice, catchSOUNDIOProblem, catchSNDFILEProblem;
 import aurorafw.audio.utils : AudioInfo;
 import aurorafw.audio.sndfile;
+import aurorafw.audio.soundio;
 
 enum AudioPlayMode : byte {
 	Once,
@@ -53,23 +55,66 @@ class AudioFileNotFoundException : Throwable {
 	}
 }
 
-int audioOutputCallback() {
+extern(C) void audioOutputCallback(SoundIoOutStream* stream, int minFrames, int maxFrames) {
 	pragma(msg, debugMsgPrefix, "TODO: Implement audioOutputCallback()");
-	return 0;
 }
 
-int debugCallback() {
-	pragma(msg, debugMsgPrefix, "TODO: Implement debugCallback()");
-	return 0;
+extern(C) void debugCallback(SoundIoOutStream* stream, int minFrames, int maxFrames) {
+	ubyte left_ear = 0;
+	ubyte right_ear = 0;
+
+	SoundIoChannelArea* area;
+
+	int desiredFrames = maxFrames;
+
+	while(desiredFrames > 0) {
+		int frames = 256;
+		catchSOUNDIOProblem(cast(SoundIoError)soundio_outstream_begin_write(stream, &area, &frames));
+
+		for(int i = 0; i < frames; i++) {
+			*(area[0].ptr) = left_ear;
+			area[0].ptr += area[0].step;
+			*(area[1].ptr) = right_ear;
+			area[1].ptr += area[1].step;
+
+			left_ear += 1;
+			if(left_ear >= 255)
+				left_ear -= 255;
+
+			right_ear += 3;
+			if(right_ear >= 255)
+				right_ear -= 255;
+		}
+
+		catchSOUNDIOProblem(cast(SoundIoError)soundio_outstream_end_write(stream));
+
+		desiredFrames -= frames;
+	}
+}
+
+extern(C) void underFlowCallback(SoundIoOutStream* stream) {
+	trace("Underflow ocurred!");
 }
 
 class AudioOStream {
 	this() {
 		audioInfo = new AudioInfo();
-		debug trace("Debug mode activated for AudioStream instance");
+		trace("Debug mode activated for AudioStream instance");
 
-		AudioDevice device;
-		// soundio_create_stream(...);
+		AudioDevice device = new AudioDevice();
+		stream = soundio_outstream_create(device.device);
+		trace("Output stream created.");
+
+		stream.write_callback = &debugCallback;
+		stream.underflow_callback = &underFlowCallback;
+		stream.sample_rate = device.sampleRate;
+		if(soundio_device_supports_format(device.device, SoundIoFormat.SoundIoFormatU8))
+			stream.format = SoundIoFormat.SoundIoFormatU8;
+		stream.name = "AuroraFW Application".toStringz;
+		trace("Output stream configurated.");
+
+		catchSOUNDIOProblem(cast(SoundIoError)soundio_outstream_open(stream));
+		trace("Output stream started.");
 	}
 
 	this(immutable string path, immutable bool buffered) {
@@ -97,9 +142,8 @@ class AudioOStream {
 	}
 
 	void play() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement play()");
 		sf_seek(audioInfo._sndFile, _streamPosFrame, SF_SEEK_SET);
-		// soundio_start_stream(...);
+		catchSOUNDIOProblem(cast(SoundIoError)soundio_outstream_start(stream));
 	}
 
 	void pause() {
@@ -154,6 +198,8 @@ class AudioOStream {
 
 	AudioPlayMode audioPlayMode;
 	AudioInfo audioInfo;
+	SoundIoOutStream* stream;
+
 	float volume = 1;
 	pragma(msg, debugMsgPrefix, "TODO: Implement pitch");
 	float pitch = 1;

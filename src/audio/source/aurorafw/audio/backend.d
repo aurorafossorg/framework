@@ -36,13 +36,13 @@ module aurorafw.audio.backend;
 
 import aurorafw.core.debugmanager;
 import aurorafw.core.logger;
-import aurorafw.audio.soundio : SoundIoError, SoundIoDevice, soundio_strerror;
-import aurorafw.audio.sndfile : SF_ERR_NO_ERROR, sf_error_number;
+import aurorafw.audio.soundio;
+import aurorafw.audio.sndfile;
 
 import std.string;
 import std.stdio;
 
-import std.conv : to;
+import std.conv : to, text;
 
 class SoundioException : Throwable {
 	this(SoundIoError error) {
@@ -58,72 +58,75 @@ class SNDFileException : Throwable {
 
 class AudioDevice {
 	this() {
-
+		SoundIo* soundio = AudioBackend.getInstance().soundio;
+		this(soundio_get_output_device(soundio, soundio_default_output_device_index(soundio)));
 	}
 
-	this(const SoundIoDevice device) {
+	this(SoundIoDevice* device) {
+		catchSOUNDIOProblem(cast(SoundIoError)device.probe_error);
 
+		this.device = device;
+	}
+
+	~this() {
+		soundio_device_unref(device);
 	}
 
 	@property const string name() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement name's getter");
-		return null;
+		return to!string(device.name.fromStringz);
 	}
 
 	@property const int maxInputChannels() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement maxInputChannels's getter");
-		return 0;
+		return isInputDevice() ? device.current_layout.channel_count : 0;
 	}
 
 	@property const int maxOutputChannels() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement maxOutputChannels's getter");
-		return 0;
+		return isOutputDevice() ? device.current_layout.channel_count : 0;
 	}
 
-	@property const int outputLowLatency() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement outputLowLatency's getter");
-		return 0;
+	@property const double currentLatency() {
+		return device.software_latency_current;
 	}
 
-	@property const int outputHighLatency() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement outputHighLatency's getter");
-		return 0;
+	@property const double minLatency() {
+		return device.software_latency_min;
 	}
 
-	@property const int inputLowLatency() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement inputLowLatency's getter");
-		return 0;
-	}
-
-	@property const int inputHighLatency() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement inputHighLatency's getter");
-		return 0;
+	@property const double maxLatency() {
+		return device.software_latency_max;
 	}
 
 	@property const int sampleRate() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement sampleRate's getter");
-		return 0;
+		return device.sample_rate_current;
 	}
 
 	@property const bool isInputDevice() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement isInputDevice's getter");
-		return 0;
+		return device.aim == SoundIoDeviceAim.SoundIoDeviceAimInput;
 	}
 
 	@property const bool isOutputDevice() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement isOutputDevice's getter");
-		return 0;
+		return device.aim == SoundIoDeviceAim.SoundIoDeviceAimOutput;
 	}
 
 	@property const bool isDefaultInputDevice() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement isDefaultInputDevice's getter");
-		return 0;
+		SoundIo* soundio = cast(SoundIo*)device.soundio;
+		SoundIoDevice* defaultDevice = soundio_get_input_device(soundio, soundio_default_input_device_index(soundio));
+		char* id = defaultDevice.id;
+		soundio_device_unref(defaultDevice);
+
+		return id == device.id && isInputDevice();
 	}
 
 	@property const bool isDefaultOutputDevice() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement isDefaultOutputDevice's getter");
-		return 0;
+		SoundIo* soundio = cast(SoundIo*)device.soundio;
+		SoundIoDevice* defaultDevice = soundio_get_output_device(soundio, soundio_default_output_device_index(soundio));
+		char* id = defaultDevice.id;
+		soundio_device_unref(defaultDevice);
+
+		return id == device.id && isOutputDevice();
 	}
+
+	package SoundIoDevice* device;
 }
 
 class AudioListener {
@@ -153,19 +156,31 @@ public:
 		return _instance;
 	}
 
-	immutable (AudioDevice)[] getDevices() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement getDevices()");
-		return null;
+	immutable (AudioDevice[]) getDevices() {
+		immutable (AudioDevice[]) devices = getOutputDevices ~ getInputDevices;
+		return devices;
 	}
 
-	immutable (AudioDevice)[] getOutputDevices() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement getOutputDevices()");
-		return null;
+	immutable (AudioDevice[]) getOutputDevices() {
+		immutable int count = soundio_output_device_count(soundio);
+		AudioDevice[] devices;
+
+		for(int i = 0; i < count; i++) {
+			devices ~= new AudioDevice(soundio_get_output_device(soundio, i));
+		}
+
+		return cast(immutable)devices;
 	}
 
-	immutable (AudioDevice)[] getInputDevices() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement getInputDevices()");
-		return null;
+	immutable (AudioDevice[]) getInputDevices() {
+		immutable int count = soundio_input_device_count(soundio);
+		AudioDevice[] devices;
+
+		for(int i = 0; i < count; i++) {
+			devices ~= new AudioDevice(soundio_get_input_device(soundio, i));
+		}
+
+		return cast(immutable)devices;
 	}
 
 	void setInputDevice(AudioDevice inputDevice) {
@@ -175,20 +190,47 @@ public:
 	void setOutputDevice(AudioDevice outputDevice) {
 		pragma(msg, debugMsgPrefix, "TODO: Implement setOutputDevice()");
 	}
-private:
-	static AudioBackend _instance;
-	this() {
-		/**
-			* Pseudocode:
-			* 1º - Call soundio_create() and create a Soundio context
-			* 2º - Get the number of devices available through soundio_input/output_device_count()
-			* 3º - Log the connected backend and num of devices
-			*/
-		pragma(msg, debugMsgPrefix, "TODO: Implement AudioBackend ctor()");
 
-		import aurorafw.audio.soundio : soundio_version_string;
-		log("SoundIo version: ", soundio_version_string.fromStringz);
+	void flushEvents() {
+		soundio_flush_events(soundio);
 	}
+private:
+	this() {
+		log("Initializing AudioBackend...");
+
+		// Get versions from SoundIo and SNDFile
+		log("SoundIo version: ", soundio_version_string.fromStringz);
+
+		char[128] sndfileVersion;
+		sf_command(null, SFC_GET_LIB_VERSION, sndfileVersion.ptr, sndfileVersion.sizeof);
+		log("SNDFile version: ", sndfileVersion.ptr.fromStringz);
+
+		// Initializes SoundIo
+		soundio = soundio_create();
+		if(!soundio)
+			throw new SNDFileException(SoundIoError.SoundIoErrorNoMem);
+		
+		// Connects to a backend
+		catchSOUNDIOProblem(cast(SoundIoError)soundio_connect(soundio));
+
+		log("Connection to backend successfull. Current backend: ", soundio_backend_name(soundio.current_backend).fromStringz);
+
+		// Gets the number of available devices
+		flushEvents();
+		immutable int outputNum = soundio_output_device_count(soundio), inputNum = soundio_input_device_count(soundio);
+		log("AudioBackend initialized. Num. of ",
+			"available audio devices: ", text(outputNum + inputNum), " (",
+			outputNum, " output devices, ",
+			inputNum, " input devices.)");
+	}
+
+	~this() {
+		// Terminates SoundIo
+		soundio_destroy(soundio);
+	}
+
+	static AudioBackend _instance;
+	package SoundIo* soundio;
 }
 
 void catchSOUNDIOProblem(const SoundIoError error) {
