@@ -26,6 +26,32 @@ environment:
 skip_tags: false
 
 install:
+  - ps: function ResolveSoundioDependency
+        {
+          pushd c:\\;
+          git clone "https://gitlab.com/aurorafossorg/m/3rd-party/mxe.git";
+          pushd mxe;
+          make MXE_TARGETS='x86_64-w64-mingw32.static i686-w64-mingw32.static' gcc;
+          popd;
+          git clone "https://gitlab.com/aurorafossorg/m/3rd-party/libsoundio.git";
+          pushd libsoundio;
+          if($env:arch -eq "x86"){
+            mkdir build-win32;
+            pushd build-win32;
+            cmake .. -DCMAKE_TOOLCHAIN_FILE=c:\mxe\usr\i686-w64-mingw32.static\share\cmake\mxe-conf.cmake;
+            make;
+            popd;
+          }elseif($env:arch -eq "x64"){
+            mkdir build-win64;
+            pushd build-win64;
+            cmake .. -DCMAKE_TOOLCHAIN_FILE=c:\mxe\usr\x86_64-w64-mingw32.static\share\cmake\mxe-conf.cmake;
+            make;
+            popd;
+          }
+          popd;
+          popd;
+        }
+  - ps: ResolveSoundioDependency
   - ps: function ResolveLatestDMD
         {
             $version = $env:DVersion;
