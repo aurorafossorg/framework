@@ -22,6 +22,10 @@ matrix:
     - d: dmd-nightly
     - d: dmd-beta
     - d: ldc-beta
+  include:
+    - d: dmd
+      env: [COVERAGE=true]
+      script: dub test -b unittest-cov --compiler=${DC}
 
 addons:
   apt:
@@ -52,6 +56,8 @@ after_success:
   - wget https://raw.githubusercontent.com/k3rn31p4nic/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
   - ./send.sh success $WEBHOOK_URL
+  - if [[ "$COVERAGE" == true ]]; then bash <(curl -s https://codecov.io/bash); fi;
+
 after_failure:
   - wget https://raw.githubusercontent.com/k3rn31p4nic/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
