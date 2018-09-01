@@ -420,7 +420,7 @@ struct SF_LOOP_INFO
 							/* -> bpms are always the amount of _quarter notes_ per minute */
 
 	int	root_key ;			/* MIDI note, or -1 for None */
-	int future [6] ;
+	int [6] future ;
 } ;
 
 
@@ -428,18 +428,18 @@ struct SF_LOOP_INFO
 **	Strongly (!) based on EBU "bext" chunk format used in Broadcast WAVE.
 */
 struct SF_BROADCAST_INFO_VAR(size_t coding_hist_size)
-{	char		description [256] ;
-	char		originator [32] ;
-	char		originator_reference [32] ;
-	char		origination_date [10] ;
-	char		origination_time [8] ;
+{	char [256]	description ;
+	char [32]	originator ;
+	char [32]	originator_reference ;
+	char [10]	origination_date ;
+	char [8]	origination_time ;
 	uint			time_reference_low ;
 	uint			time_reference_high ;
 	short		version_ ;
-	char		umid [64] ;
-	char		reserved [190] ;
-	uint			coding_history_size;
-	char		coding_history [coding_hist_size] ;
+	char [64]	umid ;
+	char [190]	reserved ;
+	uint					coding_history_size;
+	char [coding_hist_size]	coding_history ;
 }
 
 /* SF_BROADCAST_INFO is the above struct with coding_history field of 256 bytes. */
