@@ -5,8 +5,6 @@ codecov:
     wait_for_ci: false
   allow_coverage_offsets: true
 
-  bot: aurorafoss
-
 coverage:
   precision: 3
   round: down

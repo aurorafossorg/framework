@@ -8,3 +8,5 @@
 	<a href="https://www.gnu.org/licenses/lgpl-3.0.html"><img src="https://img.shields.io/badge/license-LGPLv3-lightgrey.svg" alt="License"></a>
 	<a href="https://discord.gg/4YuxJj"><img src="https://discordapp.com/api/guilds/350229534832066572/embed.png" alt="Discord Server"></a>
 </p>
+
+[![codecov](https://codecov.io/gh/aurorafossorg/framework/branch/master/graph/badge.svg)](https://codecov.io/gh/aurorafossorg/framework)

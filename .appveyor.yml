@@ -1,0 +1,29 @@
+version: 1.0.{build}
+
+branches:
+  only:
+    - master
+    - dev
+
+image: Visual Studio 2015
+
+clone_folder: C:\AuroraFW-build\
+
+install:
+  - md C:\AuroraFW-build\bin
+  - curl https://raw.githubusercontent.com/esrlabs/git-repo/stable/repo > C:\AuroraFW-build\bin\repo
+  - curl https://raw.githubusercontent.com/esrlabs/git-repo/stable/repo.cmd > C:\AuroraFW-build\bin\repo.cmd
+  - set PATH=%PATH%;C:\AuroraFW-build\bin
+  - repo init -u https://github.com/aurora-fw/manifest.git
+  - repo sync
+  - set PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%
+  - pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-pkg-config mingw-w64-x86_64-gtk3 mingw-w64-x86_64-portaudio mingw-w64-x86_64-libsndfile  mingw-w64-x86_64-freeimage mingw-w64-x86_64-glew mingw-w64-x86_64-glfw --noconfirm
+
+before_build:
+  - cmake -DCMAKE_C_COMPILER="gcc.exe" -DCMAKE_CXX_COMPILER="g++.exe" -G"Unix Makefiles" .
+
+build_script:
+  - make
+
+after_build:
+- make install
