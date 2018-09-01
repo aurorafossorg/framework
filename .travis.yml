@@ -17,13 +17,12 @@ os:
 matrix:
   fast_finish: true
   allow_failures:
+    os: osx
 #    d:
 #      - gdc
 #      - dmd-nightly
 #      - dmd-beta
 #      - ldc-beta
-    os:
-      - osx
 
 addons:
   apt:
