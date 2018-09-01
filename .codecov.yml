@@ -11,21 +11,9 @@ coverage:
   precision: 3
   round: down
   range: "80...100"
-  status:
-    project:
-      default:
-        # basic
-        target: auto
-        threshold: null
-        base: auto 
-        # advanced
-        branches: null
-        if_no_uploads: error
-        if_not_found: success
-        if_ci_failed: error
-        only_pulls: false
-        flags: null
-        paths: null
+    status:
+    project: off
+    changes: off
     patch:
       default:
         informational: true
@@ -33,7 +21,4 @@ coverage:
 comment:
   layout: "reach, diff, flags, files"
   behavior: default
-  require_changes: true  # if true: only post the comment if coverage changes
-  require_base: no
-  require_head: yes
-  branches: null
+  require_changes: true
