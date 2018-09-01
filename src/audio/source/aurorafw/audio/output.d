@@ -34,10 +34,13 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.audio.output;
 
+import std.conv : text;
+import std.string : toStringz;
+
 import aurorafw.core.debugmanager;
 import aurorafw.audio.backend : AudioDevice;
 import aurorafw.audio.utils : AudioInfo;
-import std.conv : text;
+import aurorafw.audio.sndfile;
 
 enum AudioPlayMode : byte {
 	Once,
@@ -62,6 +65,7 @@ int debugCallback() {
 
 class AudioOStream {
 	this() {
+		audioInfo = new AudioInfo();
 		debug trace("Debug mode activated for AudioStream instance");
 
 		AudioDevice device;
@@ -71,19 +75,19 @@ class AudioOStream {
 	this(immutable string path, immutable bool buffered) {
 		audioInfo = new AudioInfo();
 
-		//audioInfo._sndFile = sf_open(path, SFM_READ, audioInfo._sndInfo);
+		audioInfo._sndFile = sf_open(path.toStringz, SFM_READ, audioInfo._sndInfo);
 
 		// If the audio should be buffered, do so
 		if(buffered) {
 			debug trace("Buffering the audio... (Total frames: " ~ text(audioInfo.frames * audioInfo.channels) ~ ")");
 			_buffer = new float[audioInfo.frames * audioInfo.channels];
-			//sf_readf_float(audioInfo._sndFile, _buffer, audioInfo.frames);
+			sf_readf_float(audioInfo._sndFile, _buffer.ptr, audioInfo.frames);
 			debug trace("Buffering complete.");
 		}
 
 		// If the soundFile is null, it means there was no audio file
-		//if(!audioInfo._sndFile)
-		//	throw new AudioFileNotFoundException(path);
+		if(!audioInfo._sndFile)
+			throw new AudioFileNotFoundException(path);
 
 		AudioDevice device;
 
@@ -94,7 +98,7 @@ class AudioOStream {
 
 	void play() {
 		pragma(msg, debugMsgPrefix, "TODO: Implement play()");
-		// sf_seek(audioInfo._sndFile, _streamPosFrame, SF_SEEK_SET);
+		sf_seek(audioInfo._sndFile, _streamPosFrame, SF_SEEK_SET);
 		// soundio_start_stream(...);
 	}
 

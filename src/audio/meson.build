@@ -39,19 +39,22 @@ d_audio_src = [
 	'source/aurorafw/audio/utils.d',
 	'source/aurorafw/audio/input.d',
 	'source/aurorafw/audio/backend.d',
-	'source/aurorafw/audio/soundio/package.d'
+	'source/aurorafw/audio/soundio/package.d',
+	'source/aurorafw/audio/sndfile/package.d'
 ]
 
 install_subdir('source/aurorafw/', install_dir: 'include/d/aurorafw/')
 
 soundio_dep = c.find_library('soundio')
+sndfile_dep = c.find_library('sndfile')
 
 d_audio_lib = library('aurorafw-audio',
 	d_audio_src,
 	include_directories: [d_audio_inc],
 	dependencies: [
 		d_core_dep,
-		soundio_dep
+		soundio_dep,
+		sndfile_dep
 	],
 	install: true,
 	version: project_version,
@@ -69,7 +72,8 @@ d_audio_dep = declare_dependency(
 	include_directories: [d_audio_inc],
 	dependencies: [
 		d_core_dep,
-		soundio_dep
+		soundio_dep,
+		sndfile_dep
 	]
 )
 
@@ -78,7 +82,8 @@ d_audio_exe = executable('aurorafw-audio-test',
 	include_directories: [d_audio_inc],
 	dependencies: [
 		d_core_dep,
-		soundio_dep
+		soundio_dep,
+		sndfile_dep
 	],
 	d_unittest: true,
 	link_args: '-main'

@@ -36,6 +36,9 @@ module aurorafw.audio.input;
 
 import aurorafw.audio.utils : AudioInfo;
 import aurorafw.core.debugmanager;
+import aurorafw.audio.sndfile;
+
+import std.string : toStringz;
 
 protected int audioInputCallback() {
 	pragma(msg, debugMsgPrefix, "TODO: Implement audioInputCallback()");
@@ -48,9 +51,9 @@ class AudioIStream {
 		this.audioInfo = audioInfo;
 		this.bufferSize = bufferSize;
 
-		buffer = new float[bufferSize /** info.channels*/];
+		buffer = new float[bufferSize * audioInfo.channels];
 
-		//info._sndFile = sf_open(path, SFM_WRITE, info._sndInfo);
+		audioInfo._sndFile = sf_open(path.toStringz, SFM_WRITE, audioInfo._sndInfo);
 
 		// soundio_write_stream(...);
 		pragma(msg, debugMsgPrefix, "TODO: Implement AudioIStream ctor()");
@@ -104,15 +107,10 @@ class AudioIStream {
 	}
 
 	bool save() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement save()");
-		/*
-		if(sf_write_float(info._sndFile, buffer, bufferSize) == -1)
+		if(sf_write_float(audioInfo._sndFile, buffer.ptr, bufferSize) == -1)
 			return false;
 		return true;
-		*/
-		return 0;
 	}
-
 
 	immutable string path;
 	AudioInfo audioInfo;

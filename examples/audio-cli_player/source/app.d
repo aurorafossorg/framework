@@ -36,6 +36,7 @@ import aurorafw.core.logger;
 import aurorafw.core.debugmanager;
 import aurorafw.audio;
 import aurorafw.audio.soundio;
+import aurorafw.audio.sndfile;
 
 string fileName, inputFileName;
 float volume = 1;
