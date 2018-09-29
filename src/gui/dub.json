@@ -2,13 +2,24 @@
 	"name": "gui",
 	"targetType": "library",
 	"targetPath": ".out/bin",
-	"sourcePaths": [ "source" ],
+	"sourceFiles": [
+		"source/aurorafw/gui/package.d",
+		"source/aurorafw/gui/window.d"
+	],
+	"sourceFiles-posix": [
+		"source/aurorafw/gui/platform/x11/x.d",
+		"source/aurorafw/gui/platform/x11/xlib.d",
+		"source/aurorafw/gui/platform/x11/xresource.d",
+		"source/aurorafw/gui/platform/x11/xutil.d",
+		"source/aurorafw/gui/platform/x11/package.d",
+		"source/aurorafw/gui/platform/x11/extensions/xf86vmode.d",
+		"source/aurorafw/gui/api/x11/window.d",
+		"source/aurorafw/gui/api/x11/backend.d",
+		"source/aurorafw/gui/api/wayland/window.d"
+	],
 	"importPaths": [ "source" ],
 	"dependencies": {
 		"aurorafw:core": "*",
 		"aurorafw:math": "*"
-	},
-	"libs": [
-		"X11"
-	]
+	}
 }

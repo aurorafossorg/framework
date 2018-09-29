@@ -35,15 +35,15 @@ d_gui_inc = include_directories('source')
 d_gui_src = [
 	'source/aurorafw/gui/package.d',
 	'source/aurorafw/gui/window.d',
-	'source/aurorafw/gui/api/x11/package.d',
-	'source/aurorafw/gui/api/x11/x.d',
-	'source/aurorafw/gui/api/x11/xlib.d',
-	'source/aurorafw/gui/api/x11/xresource.d',
-	'source/aurorafw/gui/api/x11/xutil.d',
-	'source/aurorafw/gui/api/x11/extensions/xf86vmode.d',
-	'source/aurorafw/gui/platform/x11/backend.d',
-	'source/aurorafw/gui/platform/x11/window.d',
-	'source/aurorafw/gui/platform/wayland/window.d'
+	'source/aurorafw/gui/platform/x11/package.d',
+	'source/aurorafw/gui/platform/x11/x.d',
+	'source/aurorafw/gui/platform/x11/xlib.d',
+	'source/aurorafw/gui/platform/x11/xresource.d',
+	'source/aurorafw/gui/platform/x11/xutil.d',
+	'source/aurorafw/gui/platform/x11/extensions/xf86vmode.d',
+	'source/aurorafw/gui/api/x11/backend.d',
+	'source/aurorafw/gui/api/x11/window.d',
+	'source/aurorafw/gui/api/wayland/window.d'
 ]
 
 install_subdir('source/aurorafw/', install_dir: 'include/d/aurorafw/')
