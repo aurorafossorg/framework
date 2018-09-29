@@ -23,6 +23,7 @@ dub.selections.json
 
 .out/
 .build/
+.meson/
 
 #Documentation
 .doxygen_warn.log
