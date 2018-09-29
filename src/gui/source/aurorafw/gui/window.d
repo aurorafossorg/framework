@@ -43,11 +43,11 @@ struct WindowProperties {
 abstract class Window {
 	static final Window create(string name, WindowProperties wp)
 	{
-		version(Posix)
+		version(linux)
 		{
 			import std.process : environment;
-			import aurorafw.gui.platform.x11.window : X11Window;
-			import aurorafw.gui.platform.wayland.window : WLWindow;
+			import aurorafw.gui.api.x11.window : X11Window;
+			import aurorafw.gui.api.wayland.window : WLWindow;
 			immutable auto xdg_session_type = environment.get("XDG_SESSION_TYPE");
 			if(xdg_session_type == "x11")
 				_instance = new X11Window();

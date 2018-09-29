@@ -32,9 +32,9 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.gui.platform.x11.backend;
+module aurorafw.gui.api.x11.backend;
 
-import X = aurorafw.gui.api.x11;
+import X = aurorafw.gui.platform.x11;
 import std.conv : emplace;
 import core.stdc.stdlib : malloc, free;
 import aurorafw.math.vector : Vector2f;

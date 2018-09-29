@@ -32,10 +32,10 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.gui.platform.x11.window;
+module aurorafw.gui.api.x11.window;
 
 import aurorafw.gui.window : Window;
-import X = aurorafw.gui.api.x11;
+import X = aurorafw.gui.platform.x11;
 
 class X11Window : Window {
 	struct VisualPreferences
@@ -44,7 +44,7 @@ class X11Window : Window {
 		uint depth;
 	}
 
-	import aurorafw.gui.platform.x11.backend : X11Backend;
+	import aurorafw.gui.api.x11.backend : X11Backend;
 	this(VisualPreferences vpref = VisualPreferences())
 	{
 		X11Backend.get();

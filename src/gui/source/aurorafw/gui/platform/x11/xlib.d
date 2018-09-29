@@ -32,8 +32,8 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.gui.api.x11.xlib;
-public import aurorafw.gui.api.x11.x;
+module aurorafw.gui.platform.x11.xlib;
+public import aurorafw.gui.platform.x11.x;
 
 import core.stdc.config;
 import core.stdc.stddef;

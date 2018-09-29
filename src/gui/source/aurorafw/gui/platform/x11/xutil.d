@@ -32,9 +32,9 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.gui.api.x11.xutil;
+module aurorafw.gui.platform.x11.xutil;
 
-import aurorafw.gui.api.x11.xresource;
+import aurorafw.gui.platform.x11.xresource;
 
 alias XContext = int;
 extern (C) extern XrmQuark XrmUniqueQuark();
