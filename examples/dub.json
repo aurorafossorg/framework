@@ -7,9 +7,11 @@
 	],
 	"targetType": "none",
 	"dependencies": {
-		":gui-simple_window": "*"
+		":gui-simple_window": "*",
+		":audio-cli_player": "*"
 	},
 	"subPackages": [
-		"gui-simple_window"
+		"gui-simple_window",
+		"audio-cli_player"
 	]
 }
