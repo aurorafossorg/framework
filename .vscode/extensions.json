@@ -1,0 +1,11 @@
+{
+	"recommendations": [
+		"asabil.meson",
+		"aurorafoss.vscode-bettercoder",
+		"webfreak.code-d",
+		"dlang-vscode.dlang",
+		"eamodio.gitlens",
+		"ms-vscode.cpptools",
+		"webfreak.debug"
+	]
+}
