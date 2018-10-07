@@ -29,3 +29,15 @@
 #
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
+
+example_gui_simple_window_src = [
+	'source/app.d'
+]
+
+example_audio_exe = executable('aurorafw-gui-simple_window-example',
+	example_gui_simple_window_src,
+	dependencies: [
+		d_gui_dep
+	],
+	install: true
+)

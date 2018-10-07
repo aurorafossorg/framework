@@ -35,6 +35,7 @@ d_gui_inc = include_directories('source')
 d_gui_src = [
 	'source/aurorafw/gui/package.d',
 	'source/aurorafw/gui/window.d',
+	'source/aurorafw/gui/api/backend.d',
 	'source/aurorafw/gui/platform/x11/package.d',
 	'source/aurorafw/gui/platform/x11/x.d',
 	'source/aurorafw/gui/platform/x11/xlib.d',

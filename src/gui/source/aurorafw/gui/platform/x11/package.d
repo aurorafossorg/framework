@@ -39,3 +39,4 @@ public:
 	import aurorafw.gui.platform.x11.xutil;
 	import aurorafw.gui.platform.x11.x;
 	import aurorafw.gui.platform.x11.xresource;
+	import aurorafw.gui.platform.x11.xcursor.xcursor;

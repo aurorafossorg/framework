@@ -4,7 +4,8 @@
 	"targetPath": ".out/bin",
 	"sourceFiles": [
 		"source/aurorafw/gui/package.d",
-		"source/aurorafw/gui/window.d"
+		"source/aurorafw/gui/window.d",
+		"source/aurorafw/gui/api/backend.d"
 	],
 	"sourceFiles-linux": [
 		"source/aurorafw/gui/platform/x11/x.d",

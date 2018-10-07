@@ -44,9 +44,13 @@ import core.stdc.stdlib : exit;
 import core.stdc.stdlib : atof;
 import core.stdc.string : strcmp;
 
-pure class X11Backend {
-	private this()
+import aurorafw.gui.api.backend;
+
+pure class X11Backend : Backend {
+	this()
 	{
+		super._type = BackendType.X11;
+
 		X.XInitThreads();
 		X.XrmInitialize();
 		_display = X.XOpenDisplay(null);
@@ -66,31 +70,77 @@ pure class X11Backend {
 		_root = X.XRootWindow(_display, _screen);
 		_context = X.XUniqueContext();
 
+		// get system content scale
+		float xdpi = X.XDisplayWidth(_display, _screen) * 25.4f / X.XDisplayWidthMM(_display, _screen);
+		float ydpi = X.XDisplayHeight(_display, _screen) * 25.4f / X.XDisplayHeightMM(_display, _screen);
+		
+		char* rms = X.XResourceManagerString(_display);
+		if (rms)
 		{
-			float xdpi = X.XDisplayWidth(_display, _screen) * 25.4f / X.XDisplayWidthMM(_display, _screen);
-			float ydpi = X.XDisplayHeight(_display, _screen) * 25.4f / X.XDisplayHeightMM(_display, _screen);
-			
-			char* rms = X.XResourceManagerString(_display);
-			if (rms)
+			X.XrmDatabase db = X.XrmGetStringDatabase(rms);
+			if (db)
 			{
-				X.XrmDatabase db = X.XrmGetStringDatabase(rms);
-				if (db)
-				{
-					X.XrmValue value;
-					char* type = null;
+				X.XrmValue value;
+				char* type = null;
 
-					if (X.XrmGetResource(db, "Xft.dpi", "Xft.Dpi", &type, &value))
+				if (X.XrmGetResource(db, "Xft.dpi", "Xft.Dpi", &type, &value))
+				{
+					if (type && strcmp(type, "String") == 0)
+						xdpi = ydpi = atof(cast(char*)value.addr);
+				}
+
+				X.XrmDestroyDatabase(db);
+			}
+		}
+
+		_contentScale.x = xdpi / 96.0f;
+		_contentScale.y = ydpi / 96.0f;
+
+		//init x11 extensions
+		// TODO
+
+		X.XSetWindowAttributes wa;
+		wa.event_mask = X.PropertyChangeMask;
+
+		_helperWindowHandle = X.XCreateWindow(_display, _root,
+			0, 0, 1, 1, 0, 0,
+			X.InputOnly,
+			X.XDefaultVisual(_display, _screen),
+			X.CWEventMask, &wa);
+		
+		immutable byte[16 * 16 * 4] pixels;
+		_hiddenCursorHandle = createXCursor(16, 16, pixels, 0, 0);
+
+		if (X.XSupportsLocale())
+		{
+			X.XSetLocaleModifiers("");
+
+			this._im = X.XOpenIM(_display, null, null, null);
+			if (this._im)
+			{
+				bool found = false;
+				X.XIMStyles* styles = null;
+
+				if(X.XGetIMValues(_im, X.XNQueryInputStyle, &styles, null) == null)
+				{
+					for (uint i = 0; i < styles.count_styles; i++)
 					{
-						if (type && strcmp(type, "String") == 0)
-							xdpi = ydpi = atof(cast(char*)value.addr);
+						if (styles.supported_styles[i] == (X.XIMPreeditNothing | X.XIMStatusNothing))
+						{
+							found = true;
+							break;
+						}
 					}
 
-					X.XrmDestroyDatabase(db);
+					X.XFree(styles);
+				}
+
+				if (!found)
+				{
+					X.XCloseIM(_im);
+					this._im = null;
 				}
 			}
-
-			_contentScale.x = xdpi / 96.0f;
-			_contentScale.y = ydpi / 96.0f;
 		}
 	}
 
@@ -103,22 +153,50 @@ pure class X11Backend {
 		}
 	}
 
-	static X11Backend get()
+	X.Cursor createXCursor(immutable uint width, immutable uint height, immutable byte[] pixels, int xhot, int yhot)
 	{
-		if(!_instance)
-			_instance = new X11Backend();
-		return _instance;
+		X.Cursor cursor;
+
+		if (!_xcursor_handle)
+			return X.None;
+
+		X.XcursorImage* native = X.XcursorImageCreate(width, height);
+		if (native == null)
+			return X.None;
+
+		native.xhot = xhot;
+		native.yhot = yhot;
+
+		byte* source = cast(byte*) pixels;
+		X.XcursorPixel* target = native.pixels;
+
+		for (int i = 0; i < width * height; i++, target++, source += 4)
+		{
+			uint alpha = source[3];
+
+			*target = (alpha << 24) |
+					(cast(byte) ((source[0] * alpha) / 255) << 16) |
+					(cast(byte) ((source[1] * alpha) / 255) <<  8) |
+					(cast(byte) ((source[2] * alpha) / 255) <<  0);
+		}
+
+		cursor = X.XcursorImageLoadCursor(_display, native);
+		X.XcursorImageDestroy(native);
+
+		return cursor;
 	}
 
-	static X.Display* display() @property { return _instance._display; }
-	static int screen() @property { return _instance._screen; }
-	static X.Window root() @property { return _instance._root; }
+	X.Display* display() @property { return _display; }
+	int screen() @property { return _screen; }
+	X.Window root() @property { return _root; }
 
 private:
-	private static X11Backend _instance;
 	X.Display* _display;
 	X.Window _root;
 	int _screen;
 	Vector2f _contentScale;
 	X.XContext _context;
+	X.XIM _im;
+	X.Window _helperWindowHandle;
+	X.Cursor _hiddenCursorHandle;
 }

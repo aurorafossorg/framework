@@ -32,60 +32,44 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.gui.api.x11.window;
+module aurorafw.gui.api.backend;
 
-import aurorafw.gui.window : Window;
-import X = aurorafw.gui.platform.x11;
+version(linux)
+{
+	import aurorafw.gui.api.x11.backend;
+	import aurorafw.gui.api.wayland.backend;
 
-class X11Window : Window {
-	struct VisualPreferences
-	{
-		X.Visual* visual = null;
-		uint depth;
+	enum BackendType {
+		X11,
+		Wayland
 	}
+}
 
-	import aurorafw.gui.api.backend : Backend;
-	import aurorafw.gui.api.x11.backend : X11Backend;
-	this(VisualPreferences vpref = VisualPreferences())
+pure class Backend {
+	static Backend get()
 	{
-		X11Backend _backend = cast(X11Backend)Backend.get();
-
-		if(vpref.visual is null)
-			vpref.visual = X.XDefaultVisual(_backend.display, _backend.screen);
-
+		if(!_instance)
 		{
-			X.XSetWindowAttributes _watt;
-			_watt.border_pixel = 0;
-			_watt.event_mask = X.StructureNotifyMask | X.KeyPressMask | X.KeyReleaseMask |
-				X.PointerMotionMask | X.ButtonPressMask | X.ButtonReleaseMask |
-				X.ExposureMask | X.FocusChangeMask | X.VisibilityChangeMask |
-				X.EnterWindowMask | X.LeaveWindowMask | X.PropertyChangeMask;
-
-			_handle = X.XCreateWindow(
-					_backend.display,
-					_backend.root,
-					0,
-					0,
-					_wp.width,
-					_wp.height,
-					0,
-					_wp.depth,
-					X.InputOutput,
-					vpref.visual,
-					(X.CWBorderPixel | X.CWColormap | X.CWEventMask),
-					&_watt);
+			version(linux)
+			import std.process : environment;
+			import aurorafw.gui.api.x11.backend : X11Backend;
+			import aurorafw.gui.api.wayland.backend : WLBackend;
+			immutable auto xdg_session_type = environment.get("XDG_SESSION_TYPE");
+			if(xdg_session_type == "x11")
+				_instance = new X11Backend();
+			else if(xdg_session_type == "wayland")
+				_instance = new WLBackend();
 		}
-		X.XSelectInput(_backend.display, _handle, X.ExposureMask | X.KeyPressMask);
-		X.XMapWindow(_backend.display, _handle);
-		X.XEvent _event;
+		return _instance;
 	}
 
-	~this()
+	@property BackendType type()
 	{
-
+		return _type;
 	}
+
+	protected BackendType _type;
 
 private:
-	X.Window _handle;
-	X.Colormap _colormap;
+	static Backend _instance;
 }
