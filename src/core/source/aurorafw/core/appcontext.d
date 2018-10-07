@@ -46,7 +46,7 @@ public:
 		_opts.add("afw-debug", "Enable the aurora built-in debug logger");
 		if(_opts.option("afw-debug").active)
 		{
-			afwDebugFlag = true;
+			debug afwDebugFlag = true;
 			debug trace(afwDebugFlag, "Debug is now enabled");
 		}
 

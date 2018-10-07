@@ -41,4 +41,4 @@ enum string debugMsgPrefix(string f = __FILE__, size_t l = __LINE__) {
 	return f ~ ":" ~ l.to!string ~ ": ";
 }
 
-__gshared bool afwDebugFlag;
+debug __gshared bool afwDebugFlag;

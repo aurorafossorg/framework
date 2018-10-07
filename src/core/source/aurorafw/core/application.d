@@ -45,7 +45,7 @@ public:
 		foreach(string str; this.args)
 			if(str == "--afw-debug")
 			{
-				afwDebugFlag = true;
+				debug afwDebugFlag = true;
 				debug trace(afwDebugFlag, "Debug is now enabled");
 			}
 
