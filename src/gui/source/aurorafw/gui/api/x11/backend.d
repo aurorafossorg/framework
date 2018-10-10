@@ -45,6 +45,7 @@ import core.stdc.stdlib : atof;
 import core.stdc.string : strcmp;
 
 import aurorafw.gui.api.backend;
+import aurorafw.gui.platform.x11.xcursor;
 
 pure class X11Backend : Backend {
 	this()
@@ -199,4 +200,5 @@ private:
 	X.XIM _im;
 	X.Window _helperWindowHandle;
 	X.Cursor _hiddenCursorHandle;
+	X11XCursorDylibLoader _xcursor_handle;
 }
