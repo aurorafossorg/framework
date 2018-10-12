@@ -109,6 +109,9 @@ extern(System) {
 struct __cl_event; alias _cl_event = __cl_event*;
 }
 
+import aurorafw.graphics.platform.khr.khrplatform;
+alias EGLnsecsANDROID = khronos_stime_nanoseconds_t;
+
 //enums
 enum int EGL_DONT_CARE = -1;
 enum int EGL_UNKNOWN = -1;
@@ -293,8 +296,8 @@ enum uint EGL_NATIVE_BUFFER_USAGE_RENDERBUFFER_BIT_ANDROID = 0x00000002;
 enum uint EGL_NATIVE_BUFFER_USAGE_TEXTURE_BIT_ANDROID = 0x00000004;
 enum uint EGL_FRAMEBUFFER_TARGET_ANDROID = 0x3147;
 enum uint EGL_FRONT_BUFFER_AUTO_REFRESH_ANDROID = 0x314C;
-enum uint EGL_TIMESTAMP_PENDING_ANDROID = EGL_CAST(EGLnsecsANDROID,-2);
-enum uint EGL_TIMESTAMP_INVALID_ANDROID = EGL_CAST(EGLnsecsANDROID,-1);
+enum uint EGL_TIMESTAMP_PENDING_ANDROID = cast(EGLnsecsANDROID)-2;
+enum uint EGL_TIMESTAMP_INVALID_ANDROID = cast(EGLnsecsANDROID)-1;
 enum uint EGL_TIMESTAMPS_ANDROID = 0x3430;
 enum uint EGL_COMPOSITE_DEADLINE_ANDROID = 0x3431;
 enum uint EGL_COMPOSITE_INTERVAL_ANDROID = 0x3432;
