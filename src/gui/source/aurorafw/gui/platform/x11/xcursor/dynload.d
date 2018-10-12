@@ -13,6 +13,7 @@ extern(C) @nogc nothrow {
 	alias da_XcursorImageDestroy = void function(XcursorImage* image);
 	alias da_XcursorImagesCreate = XcursorImages* function(int size);
 	alias da_XcursorImagesDestroy = void function(XcursorImages* images);
+	alias da_XcursorImageLoadCursor = Cursor function(Display* dpy, const XcursorImage* image);
 }
 
 __gshared {
@@ -20,6 +21,7 @@ __gshared {
 	da_XcursorImageDestroy XcursorImageDestroy;
 	da_XcursorImagesCreate XcursorImagesCreate;
 	da_XcursorImagesDestroy XcursorImagesDestroy;
+	da_XcursorImageLoadCursor XcursorImageLoadCursor;
 }
 class XCursorDylibLoader : DylibLoader {
 	this()
@@ -33,5 +35,6 @@ class XCursorDylibLoader : DylibLoader {
 		bindFunc(cast(void**)&XcursorImageDestroy,"XcursorImageDestroy");
 		bindFunc(cast(void**)&XcursorImagesCreate,"XcursorImagesCreate");
 		bindFunc(cast(void**)&XcursorImagesDestroy,"XcursorImagesDestroy");
+		bindFunc(cast(void**)&XcursorImageLoadCursor,"XcursorImageLoadCursor");
 	}
 }
