@@ -59,22 +59,19 @@ class AudioFileNotFoundException : Throwable {
 	}
 }
 
-static int times;
-
 extern(C) void audioOutputCallback(SoundIoOutStream* stream, int minFrames, int maxFrames) {
 	pragma(msg, "TODO: Cleanup this method as much as possible");
 	// Gets the output buffer (it's of type float32NE), and
 	// the audioStream and audioInfo
 	// DEBUG
 
-	AudioOStream audioStream = cast(AudioOStream)stream.userdata;
+	AudioOStream audioStream = cast(AudioOStream)(stream.userdata);
 	AudioInfo audioInfo = audioStream.audioInfo;
-	trace(1);
 
 	int framesLeft = maxFrames;
 
 	// If the stream is stopped, exit the callback
-	if(audioStream.isStopped) {
+	if(audioStream.isStopped()) {
 		trace("Callback stopped at beginning...");
 		return;
 	}
@@ -82,10 +79,10 @@ extern(C) void audioOutputCallback(SoundIoOutStream* stream, int minFrames, int 
 	// Fills the buffer to it's fullest
 	while(framesLeft > 0) {
 		// Gets the number of frames it needs to read
-		int framesToRead = max(max(44100 / 60, minFrames), framesLeft);
+		//int framesToRead = framesLeft;
+		int framesToRead = 256;
 		SoundIoChannelArea* area;
 		catchSOUNDIOProblem(cast(SoundIoError)soundio_outstream_begin_write(stream, &area, &framesToRead));
-		trace(2);
 
 		// Reads the frames
 		int framesRead;
@@ -104,22 +101,9 @@ extern(C) void audioOutputCallback(SoundIoOutStream* stream, int minFrames, int 
 						+ c)];
 					}
 				}
-				trace(3);
 			} else {	// Streaming
-			trace(4);
 				float* output = cast(float*)(area.ptr);
 				framesRead = cast(int)sf_readf_float(audioInfo._sndFile, output, framesToRead);
-				trace(41, "\t", framesToRead, "\t", ++times, "\t", audioInfo.channels);
-				//float[] buffer = new float[framesToRead * audioInfo.channels];
-				trace(42);
-				//framesRead = cast(int)sf_readf_float(audioInfo._sndFile, buffer.ptr, framesToRead);
-				trace(43);
-				/*for(int f = 0; f < framesRead; f++) {
-					for(ubyte c = 0; c < audioInfo.channels; c++) {
-						float* output = cast(float*)(area[c].ptr + area[c].step * f);
-						*output = buffer[f * audioInfo.channels + c];
-					}
-				}*/
 			}
 
 			// Updates the value of frames read
@@ -131,111 +115,30 @@ extern(C) void audioOutputCallback(SoundIoOutStream* stream, int minFrames, int 
 			if(framesToRead > 0 && audioStream.audioPlayMode == AudioPlayMode.Loop) {
 				audioStream._streamPosFrame = 0;
 				audioStream._loops++;
-				trace(5.5f);
 				// If streaming reset the seek pointer to start of file
 				if(audioStream._buffer.length == 0)
 					sf_seek(audioInfo._sndFile, 0, SF_SEEK_SET);
 			}
 		} while(framesToRead > 0 && audioStream.audioPlayMode == AudioPlayMode.Loop);
-		trace(7);
 
-		trace("Frames to read: ", framesToRead, "\tFrames read: ", framesRead, "\tFrames left: ", framesLeft);
-		catchSOUNDIOProblem(cast(SoundIoError)soundio_outstream_end_write(stream));
+		debug trace("Frames to read: ", framesToRead, "\tFrames read: ", framesRead, "\tFrames left: ", framesLeft);
+		
 		// If the read frames didn't fill the buffer to read, it reached EOF
 		if(framesToRead > 0 && audioStream.audioPlayMode
 			== AudioPlayMode.Once) {
-			trace("No more frames to read, filling the rest with zero...");
+			debug trace("No more frames to read, filling the rest with zero...");
 			for(int f = 0; f < framesLeft; f++) {
 					for(ubyte c = 0; c < audioInfo.channels; c++) {
 						float* output = cast(float*)(area[c].ptr + area[c].step * (f + framesRead));
 						*output = 0;
 					}
 				}
-			audioStream.stop;
+			//audioStream.stop();
 			framesLeft = 0;
 			break;
 		}
-		/*trace(9);
-		trace("Called ", ++times, " times!");
-		/*debug log("About to read ", framesToRead, " frames. Max frames ", maxFrames);
-		int readFramesNow;
-		if(audioStream._buffer.length != 0) {	// Buffered
-			readFramesNow = (framesToRead + audioStream._streamPosFrame)
-			> audioInfo.frames
-			? audioInfo.frames - audioStream._streamPosFrame
-			: framesToRead;
-
-			for(int f = 0; f < readFramesNow; f++) {
-				for(ubyte c = 0; c < audioInfo.channels; c++) {
-					float* output = cast(float*)(area[c].ptr + area[c].step * f);
-					*output = audioStream._buffer[audioStream._streamPosFrame
-					* audioInfo.channels + (f * audioInfo.channels
-					+ c)];
-					/*output[(offset * audioInfo.channels)
-					+ f * audioInfo.channels + c]
-					= audioStream._buffer[audioStream._streamPosFrame
-					* audioInfo.channels + (f * audioInfo.channels
-					+ c)];
-				}
-			}
-			trace(3);
-		} else {	// Streaming
-			float* output = cast(float*)(area.ptr);
-			readFramesNow = cast(int)sf_readf_float(audioInfo._sndFile, output, framesToRead);
-			trace(4);
-		}
-
-		audioStream._streamPosFrame += readFramesNow;
-		framesToRead -= readFramesNow;
-		trace(5);
-
-		if(framesToRead > 0 && audioStream.audioPlayMode
-			== AudioPlayMode.Loop) {
-			audioStream._streamPosFrame = 0;
-			audioStream._loops++;
-			trace(5.5f);
-			if(audioStream._buffer.length != 0)	// Streaming
-				sf_seek(audioInfo._sndFile, 0, SF_SEEK_SET);
-		}
-		trace(6);
-
-		// Adjusts the volume of each frame
-		/*for(int i = 0; i < readFrames; i++) {
-			// Applies the volume to all channels the sound might have
-			for(ubyte c = 0; c < audioInfo.channels;
-				c++) {
-				float* output = cast(float*)(area[c].ptr + area[c].step * i);
-				float frame = *output;
-
-				// In case there's 3D audio, calculates 3D audio
-				/*if(audioStream._audioSource != nullptr) {
-					AudioSource* source = audioStream._audioSource;
-					const float panning = source.getPanning();
-					if(channels == 0)
-						frame *= (-0.5f * panning + 0.5f);
-					else if(channels == 1)
-						frame *= (0.5f * panning + 0.5f);
-				}
-
-				frame *= audioStream.volume
-				* AudioBackend.getInstance().globalVolume;
-
-				*output = frame;
-				trace(7);
-			}
-		}
 
 		catchSOUNDIOProblem(cast(SoundIoError)soundio_outstream_end_write(stream));
-		trace(8);
-
-		// If the read frames didn't fill the buffer to read, it reached EOF
-		if(readFramesNow < framesToRead && audioStream.audioPlayMode
-			== AudioPlayMode.Once)
-			audioStream.pause();
-
-		framesLeft -= readFramesNow;
-		trace(9);
-		trace("Called ", ++times, " times!");*/
 	}
 	trace("Exited while loop!");
 }
@@ -299,6 +202,10 @@ class AudioOStream {
 
 		audioInfo._sndFile = sf_open(path.toStringz, SFM_READ, audioInfo._sndInfo);
 
+		// If the soundFile is null, it means there was no audio file
+		if(!audioInfo._sndFile)
+			throw new AudioFileNotFoundException(path);
+
 		// If the audio should be buffered, do so
 		if(buffered) {
 			trace("Buffering the audio... (Total frames: " ~ text(audioInfo.frames * audioInfo.channels) ~ ")");
@@ -307,17 +214,14 @@ class AudioOStream {
 			trace("Buffering complete.");
 		}
 
-		// If the soundFile is null, it means there was no audio file
-		if(!audioInfo._sndFile)
-			throw new AudioFileNotFoundException(path);
-
 		AudioDevice device = new AudioDevice();
 		_stream = soundio_outstream_create(device.device);
 
 		_stream.write_callback = &audioOutputCallback;
 		_stream.sample_rate = device.sampleRate;
-		_stream.software_latency = 1/60;
 		_stream.name = "AuroraFW Application".toStringz;
+		if(soundio_device_supports_format(device.device, SoundIoFormat.SoundIoFormatU32LE))
+			_stream.format = SoundIoFormat.SoundIoFormatU32LE;
 		_stream.userdata = cast(void*)this;
 
 		catchSOUNDIOProblem(cast(SoundIoError)soundio_outstream_open(_stream));
@@ -329,7 +233,7 @@ class AudioOStream {
 
 	void play() {
 		playing = true;
-		sf_seek(audioInfo._sndFile, _streamPosFrame, SF_SEEK_SET);
+		//sf_seek(audioInfo._sndFile, _streamPosFrame, SF_SEEK_SET);
 		catchSOUNDIOProblem(cast(SoundIoError)soundio_outstream_start(_stream));
 	}
 

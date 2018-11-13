@@ -179,7 +179,7 @@ void appMainFunction(Application app) {
 
 			debugStream.play();
 			writeln("Playing debug sound for 5 seconds.");
-			Thread.sleep(dur!("seconds")(65));
+			Thread.sleep(dur!("seconds")(5));
 			debugStream.stop();
 			writeln("Closed stream.");
 
@@ -231,6 +231,7 @@ void appMainFunction(Application app) {
 			}
 
 			if(loop && outputStream.getNumLoops() > numLoops - 1)
+				writeln("called");
 				outputStream.stop();
 		}
 		writeln("Sound is over, attempting to stop it...");
