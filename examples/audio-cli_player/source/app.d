@@ -170,11 +170,11 @@ void appMainFunction(Application app) {
 		if(fileName == "") {
 			AudioOStream debugStream = new AudioOStream();
 			writeln("Created debug sound. This will make a loud noise, turn down your volume!");
-			//Thread.sleep(dur!("seconds")(3));
+			Thread.sleep(dur!("seconds")(3));
 
 			for(int i = 5; i > 0; i--) {
 				writeln(i);
-				//Thread.sleep(dur!("seconds")(1));
+				Thread.sleep(dur!("seconds")(1));
 			}
 
 			debugStream.play();
@@ -219,6 +219,7 @@ void appMainFunction(Application app) {
 		double totalCpuValues = 0;
 		while(outputStream.isPlaying())
 		{
+			//audioBackend.flushEvents();
 			// If 3D audio was enabled, makes the sound "spin" around the center
 			/*audioSource.setPosition(Math::Vector3D(Math::cos(Math::toRadians(angle)), 0, -Math::sin(Math::toRadians(angle))));
 			angle++;
@@ -230,10 +231,11 @@ void appMainFunction(Application app) {
 			}
 
 			if(loop && outputStream.getNumLoops() > numLoops - 1)
+				writeln("called");
 				outputStream.stop();
 		}
-
 		writeln("Sound is over, attempting to stop it...");
+		//outputStream.stop();
 		writeln("Stopped stream.");
 
 		if(getCpuLoad) {

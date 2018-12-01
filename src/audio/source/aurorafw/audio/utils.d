@@ -56,8 +56,8 @@ class AudioInfo {
 		return _sndInfo.samplerate;
 	}
 
-	@property sf_count_t frames() {
-		return _sndInfo.frames;
+	@property int frames() {
+		return cast(int)_sndInfo.frames;
 	}
 
 	@property int channels() {
@@ -72,8 +72,8 @@ class AudioInfo {
 		_sndInfo.samplerate = sampleRate;
 	}
 
-	@property void frames(immutable sf_count_t frames) {
-		_sndInfo.frames = frames;
+	@property void frames(immutable int frames) {
+		_sndInfo.frames = cast(sf_count_t)frames;
 	}
 
 	@property void channels(immutable int channels) {
