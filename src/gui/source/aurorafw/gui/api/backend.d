@@ -36,8 +36,8 @@ module aurorafw.gui.api.backend;
 
 version(linux)
 {
-	import aurorafw.gui.api.x11.backend;
 	import aurorafw.gui.api.wayland.backend;
+	import aurorafw.gui.api.x11.backend;
 
 	enum BackendType {
 		X11,
