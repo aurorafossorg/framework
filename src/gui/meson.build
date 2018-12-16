@@ -42,9 +42,14 @@ d_gui_src = [
 	'source/aurorafw/gui/platform/x11/xresource.d',
 	'source/aurorafw/gui/platform/x11/xutil.d',
 	'source/aurorafw/gui/platform/x11/extensions/xf86vmode.d',
+	'source/aurorafw/gui/platform/x11/xcursor/dynload.d',
+	'source/aurorafw/gui/platform/x11/xcursor/package.d',
+	'source/aurorafw/gui/platform/x11/xcursor/types.d',
+	'source/aurorafw/gui/platform/x11/xcursor/xcursor.d',
 	'source/aurorafw/gui/api/x11/backend.d',
 	'source/aurorafw/gui/api/x11/window.d',
-	'source/aurorafw/gui/api/wayland/window.d'
+	'source/aurorafw/gui/api/wayland/window.d',
+	'source/aurorafw/gui/api/wayland/backend.d'
 ]
 
 install_subdir('source/aurorafw/', install_dir: 'include/d/aurorafw/')

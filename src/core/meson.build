@@ -37,6 +37,7 @@ d_core_src = [
 	'source/aurorafw/core/appcontext.d',
 	'source/aurorafw/core/application.d',
 	'source/aurorafw/core/debugmanager.d',
+	'source/aurorafw/core/dylib.d',
 	'source/aurorafw/core/inputlistener.d',
 	'source/aurorafw/core/logger.d',
 	'source/aurorafw/core/opt.d'

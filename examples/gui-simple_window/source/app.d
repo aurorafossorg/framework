@@ -31,5 +31,5 @@ import aurorafw.gui.window;
 void main()
 {
 	WindowProperties wp;
-	Window win = Window.create("Hello", wp);
+	Window.create("Hello", wp);
 }

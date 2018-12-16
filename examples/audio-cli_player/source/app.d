@@ -140,7 +140,7 @@ void appMainFunction(Application app) {
 
 			inputInfo.format = (SF_FORMAT_OGG | SF_FORMAT_VORBIS);
 			AudioIStream inputStream = new AudioIStream(inputFileName, inputInfo, 44100 * inputTime);
-			writeln("The stream was now created. Audio will be recorded for ", inputTime, 
+			writeln("The stream was now created. Audio will be recorded for ", inputTime,
 					" seconds and be save to \"", inputFileName, "\"");
 
 			Thread.sleep(dur!("seconds")(3));
@@ -170,11 +170,11 @@ void appMainFunction(Application app) {
 		if(fileName == "") {
 			AudioOStream debugStream = new AudioOStream();
 			writeln("Created debug sound. This will make a loud noise, turn down your volume!");
-			//Thread.sleep(dur!("seconds")(3));
+			Thread.sleep(dur!("seconds")(3));
 
 			for(int i = 5; i > 0; i--) {
 				writeln(i);
-				//Thread.sleep(dur!("seconds")(1));
+				Thread.sleep(dur!("seconds")(1));
 			}
 
 			debugStream.play();
@@ -190,21 +190,21 @@ void appMainFunction(Application app) {
 
 		if(printAudioInfo) {
 			writeln("Printing now audio info...");
-			writeln("Title       : ", outputStream.audioInfo.title);
-			writeln("Copyright   : ", outputStream.audioInfo.copyright);
-			writeln("Software    : ", outputStream.audioInfo.software);
-			writeln("Artist      : ", outputStream.audioInfo.artist);
-			writeln("Comment     : ", outputStream.audioInfo.comment);
-			writeln("Date        : ", outputStream.audioInfo.date);
-			writeln("Album       : ", outputStream.audioInfo.album);
-			writeln("License     : ", outputStream.audioInfo.license);
-			writeln("Track Nº    : ", outputStream.audioInfo.trackNumber);
-			writeln("Genre       : ", outputStream.audioInfo.genre);
+			writeln("Title\t: ", outputStream.audioInfo.title);
+			writeln("Copyright\t: ", outputStream.audioInfo.copyright);
+			writeln("Software\t: ", outputStream.audioInfo.software);
+			writeln("Artist\t: ", outputStream.audioInfo.artist);
+			writeln("Comment\t: ", outputStream.audioInfo.comment);
+			writeln("Date\t: ", outputStream.audioInfo.date);
+			writeln("Album\t: ", outputStream.audioInfo.album);
+			writeln("License\t: ", outputStream.audioInfo.license);
+			writeln("Track Nº\t: ", outputStream.audioInfo.trackNumber);
+			writeln("Genre\t: ", outputStream.audioInfo.genre);
 			writeln("-----------------------------------");
-			writeln("Sample rate : ", outputStream.audioInfo.sampleRate);
-			writeln("Frames      : ", outputStream.audioInfo.frames);
-			writeln("Channels    : ", outputStream.audioInfo.channels);
-			writeln("Format      : ", outputStream.audioInfo.format);
+			writeln("Sample rate\t: ", outputStream.audioInfo.sampleRate);
+			writeln("Frames\t: ", outputStream.audioInfo.frames);
+			writeln("Channels\t: ", outputStream.audioInfo.channels);
+			writeln("Format\t: ", outputStream.audioInfo.format);
 		}
 
 		writeln("Playing now the \"", fileName, "\" file until the end... (Volume: ", volume, ")");
@@ -219,6 +219,7 @@ void appMainFunction(Application app) {
 		double totalCpuValues = 0;
 		while(outputStream.isPlaying())
 		{
+			//audioBackend.flushEvents();
 			// If 3D audio was enabled, makes the sound "spin" around the center
 			/*audioSource.setPosition(Math::Vector3D(Math::cos(Math::toRadians(angle)), 0, -Math::sin(Math::toRadians(angle))));
 			angle++;
@@ -232,8 +233,8 @@ void appMainFunction(Application app) {
 			if(loop && outputStream.getNumLoops() > numLoops - 1)
 				outputStream.stop();
 		}
-
 		writeln("Sound is over, attempting to stop it...");
+		//outputStream.stop();
 		writeln("Stopped stream.");
 
 		if(getCpuLoad) {

@@ -21,7 +21,30 @@
 		"source/aurorafw/gui/platform/x11/extensions/xf86vmode.d",
 		"source/aurorafw/gui/api/x11/window.d",
 		"source/aurorafw/gui/api/x11/backend.d",
-		"source/aurorafw/gui/api/wayland/window.d"
+		"source/aurorafw/gui/api/wayland/window.d",
+		"source/aurorafw/gui/api/wayland/backend.d"
+	],
+	"configurations": [
+		{
+			"name": "aurorafw-gui-xcursor-dynamic",
+			"platforms": ["linux"],
+			"excludedSourceFiles": [
+				"source/aurorafw/gui/platform/x11/xcursor/statfun.d"
+			]
+		},
+		{
+			"name": "aurorafw-gui-xcursor-static",
+			"platforms": ["linux"],
+			"excludedSourceFiles": [
+				"source/aurorafw/gui/platform/x11/xcursor/dynload.d"
+			],
+			"versions": [
+				"AuroraFW_Static_X11_XCursor"
+			],
+			"libs-linux": [
+				"xcursor"
+			]
+		}
 	],
 	"importPaths": [ "source" ],
 	"dependencies": {
