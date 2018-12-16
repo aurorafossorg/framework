@@ -47,8 +47,8 @@ d_math_lib = library('aurorafw-math',
 	version: project_version
 )
 
-pkgc.generate(name: 'aurorafw-math',
-	libraries: [d_math_lib],
+pkgc.generate(d_math_lib,
+	name: 'aurorafw-math',
 	subdirs: 'd/aurorafw',
 	version: project_version,
 	description: ''

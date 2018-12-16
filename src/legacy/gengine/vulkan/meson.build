@@ -58,8 +58,8 @@ legacy_gengine_vulkan_lib = static_library('aurorafw-gengine-vulkan-legacy',
 	install: true
 )
 
-pkgc.generate(name: 'aurorafw-gengine-vulkan-legacy',
-	libraries: [legacy_gengine_vulkan_lib],
+pkgc.generate(legacy_gengine_vulkan_lib,
+	name: 'aurorafw-gengine-vulkan-legacy',
 	subdirs: 'AuroraFW',
 	version: project_version,
 	description: ''

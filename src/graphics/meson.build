@@ -54,8 +54,8 @@ d_graphics_lib = library('aurorafw-graphics',
 	]
 )
 
-pkgc.generate(name: 'aurorafw-graphics',
-	libraries: [d_graphics_lib],
+pkgc.generate(d_graphics_lib,
+	name: 'aurorafw-graphics',
 	subdirs: 'd/aurorafw',
 	version: project_version,
 	description: ''

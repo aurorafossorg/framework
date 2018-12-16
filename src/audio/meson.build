@@ -60,8 +60,8 @@ d_audio_lib = library('aurorafw-audio',
 	version: project_version,
 )
 
-pkgc.generate(name: 'aurorafw-audio',
-	libraries: [d_audio_lib],
+pkgc.generate(d_audio_lib,
+	name: 'aurorafw-audio',
 	subdirs: 'd/aurorafw',
 	version: project_version,
 	description: ''

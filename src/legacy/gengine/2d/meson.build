@@ -56,8 +56,8 @@ legacy_gengine_2d_lib = static_library('aurorafw-gengine-2d-legacy',
 	install: true
 )
 
-pkgc.generate(name: 'aurorafw-gengine-2d-legacy',
-	libraries: [legacy_gengine_2d_lib],
+pkgc.generate(legacy_gengine_2d_lib,
+	name: 'aurorafw-gengine-2d-legacy',
 	subdirs: 'AuroraFW',
 	version: project_version,
 	description: ''

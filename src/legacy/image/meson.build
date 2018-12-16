@@ -59,8 +59,8 @@ legacy_image_lib = library('aurorafw-image-legacy',
 	version: project_version
 )
 
-pkgc.generate(name: 'aurorafw-image-legacy',
-	libraries: [legacy_image_lib],
+pkgc.generate(legacy_image_lib,
+	name: 'aurorafw-image-legacy',
 	subdirs: 'AuroraFW',
 	version: project_version,
 	description: ''

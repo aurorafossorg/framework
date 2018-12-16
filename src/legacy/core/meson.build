@@ -54,8 +54,8 @@ legacy_core_lib = library('aurorafw-core-legacy',
 	version: project_version
 )
 
-pkgc.generate(name: 'aurorafw-core-legacy',
-	libraries: [legacy_core_lib],
+pkgc.generate(legacy_core_lib,
+	name: 'aurorafw-core-legacy',
 	subdirs: 'AuroraFW',
 	version: project_version,
 	description: ''

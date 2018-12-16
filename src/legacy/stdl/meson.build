@@ -43,8 +43,8 @@ legacy_stdl_lib = library('aurorafw-stdl-legacy',
 	version: project_version
 )
 
-pkgc.generate(name: 'aurorafw-stdl-legacy',
-	libraries: [legacy_stdl_lib],
+pkgc.generate(legacy_stdl_lib,
+	name: 'aurorafw-stdl-legacy',
 	subdirs: 'AuroraFW',
 	version: project_version,
 	description: ''

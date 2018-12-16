@@ -66,8 +66,8 @@ legacy_gengine_opengl_lib = static_library('aurorafw-gengine-opengl-legacy',
 	install: true
 )
 
-pkgc.generate(name: 'aurorafw-gengine-opengl-legacy',
-	libraries: [legacy_gengine_opengl_lib],
+pkgc.generate(legacy_gengine_opengl_lib,
+	name: 'aurorafw-gengine-opengl-legacy',
 	subdirs: 'AuroraFW',
 	version: project_version,
 	description: ''
