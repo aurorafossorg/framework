@@ -19,7 +19,8 @@
 		":audio": "*",
 		":graphics": "*",
 		":image": "*",
-		":gui": "*"
+		":gui": "*",
+		":net": "*"
 	},
 	"subPackages": [
 		"src/core",
@@ -27,6 +28,7 @@
 		"src/audio",
 		"src/image",
 		"src/graphics",
-		"src/gui"
+		"src/gui",
+		"src/net"
 	]
 }
