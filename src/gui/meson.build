@@ -68,8 +68,8 @@ d_gui_lib = library('aurorafw-gui',
 	]
 )
 
-pkgc.generate(name: 'aurorafw-gui',
-	libraries: [d_gui_lib],
+pkgc.generate(d_gui_lib,
+	name: 'aurorafw-gui',
 	subdirs: 'd/aurorafw',
 	version: project_version,
 	description: ''

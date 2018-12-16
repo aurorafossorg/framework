@@ -46,8 +46,8 @@ d_image_lib = library('aurorafw-image',
 	version: project_version
 )
 
-pkgc.generate(name: 'aurorafw-image',
-	libraries: [d_image_lib],
+pkgc.generate(d_image_lib,
+	name: 'aurorafw-image',
 	subdirs: 'd/aurorafw',
 	version: project_version,
 	description: ''

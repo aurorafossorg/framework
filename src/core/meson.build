@@ -52,8 +52,8 @@ d_core_lib = library('aurorafw-core',
 	version: project_version
 )
 
-pkgc.generate(name: 'aurorafw-core',
-	libraries: [d_core_lib],
+pkgc.generate(d_core_lib,
+	name: 'aurorafw-core',
 	subdirs: 'd/aurorafw',
 	version: project_version,
 	description: ''

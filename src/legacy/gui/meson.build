@@ -63,8 +63,8 @@ legacy_gui_lib = library('aurorafw-gui-legacy',
 	version: project_version
 )
 
-pkgc.generate(name: 'aurorafw-gui-legacy',
-	libraries: [legacy_gui_lib],
+pkgc.generate(legacy_gui_lib,
+	name: 'aurorafw-gui-legacy',
 	subdirs: 'AuroraFW',
 	version: project_version,
 	description: ''

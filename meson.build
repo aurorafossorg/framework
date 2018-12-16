@@ -31,7 +31,7 @@
 # directly send an email to: contact (at) aurorafoss.org .
 
 project('aurorafw', 'd', 'c', 'cpp',
-	meson_version: '>=0.40',
+	meson_version: '>=0.49.0',
 	subproject_dir: 'lib/subprojects',
 	version: '0.0.1',
 	license: 'LGPL-3.0')

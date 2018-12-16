@@ -45,8 +45,8 @@ legacy_cli_lib = library('aurorafw-cli-legacy',
 	version: project_version
 )
 
-pkgc.generate(name: 'aurorafw-cli-legacy',
-	libraries: [legacy_cli_lib],
+pkgc.generate(legacy_cli_lib,
+	name: 'aurorafw-cli-legacy',
 	subdirs: 'AuroraFW',
 	version: project_version,
 	description: ''
