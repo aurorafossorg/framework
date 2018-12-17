@@ -37,7 +37,7 @@ example_legacy_audio_src = [
 example_legacy_audio_exe = executable('aurorafw-audio-legacy-example',
 	example_legacy_audio_src,
 	dependencies: [
-		aurorafw_legacy_dep,
+		legacy_audio_dep,
 	],
 	install: true
 )

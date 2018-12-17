@@ -16,7 +16,14 @@
 ** met: https://www.gnu.org/licenses/gpl-3.0.html.
 ****************************************************************************/
 
-#include <AuroraFW/Aurora.h>
+#include <AuroraFW/Core/Application.h>
+#include <AuroraFW/Core/DebugManager.h>
+#include <AuroraFW/Audio/AudioBackend.h>
+#include <AuroraFW/Audio/AudioUtils.h>
+#include <AuroraFW/Audio/AudioOutput.h>
+#include <AuroraFW/Audio/AudioInput.h>
+#include <AuroraFW/CLI/Input.h>
+#include <AuroraFW/Math/Utils.h>
 
 #include <string>
 #include <iostream>
