@@ -1,0 +1,10 @@
+{
+	"name": "metadata-detect_files",
+	"targetType": "executable",
+	"targetPath": ".out/bin",
+	"sourcePaths": [ "source" ],
+	"importPaths": [ "source" ],
+	"dependencies": {
+		"aurorafw:metadata": {"path": "../../"}
+	}
+}

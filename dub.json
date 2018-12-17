@@ -20,7 +20,8 @@
 		":graphics": "*",
 		":image": "*",
 		":gui": "*",
-		":net": "*"
+		":net": "*",
+		":metadata": "*"
 	},
 	"subPackages": [
 		"src/core",
@@ -29,6 +30,7 @@
 		"src/image",
 		"src/graphics",
 		"src/gui",
-		"src/net"
+		"src/net",
+		"src/metadata"
 	]
 }

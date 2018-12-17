@@ -17,6 +17,14 @@
 			"request": "launch",
 			"target": "./.build/examples/legacy/gengine/aurorafw-gengine-legacy-example",
 			"cwd": "${workspaceRoot}"
+		},
+		{
+			"name": "examples_metadata-detect_files",
+			"type": "gdb",
+			"request": "launch",
+			"target": "./examples/metadata-detect_files/.out/bin/aurorafw-examples_metadata-detect_files",
+			"arguments": "~/JPEG_example_JPG_RIP_100.jpg",
+			"cwd": "${workspaceRoot}"
 		}
 	]
 }
