@@ -7,12 +7,8 @@ import std.algorithm.comparison;
 
 enum FileSignature {
 	PDF,
-	PDF_1_6,
-	PDF_1_7,
 	JPEG,
 	JPG=JPEG,
-	JPEG_CANON_EOS,
-	JPEG_SAMSUNG_D500,
 	PNG,
 	IMG,
 	ISO,
@@ -22,11 +18,9 @@ enum FileSignature {
 }
 FileSignature detectFileSignature(File file)
 {
-	char[] buf = file.rawRead(new char[8]);
+	char[8] buf = file.rawRead(new char[8]);
 	if(buf[0..3] == cast(char[])[0xFF, 0xD8, 0xFF])
-		if(buf[3] == 0xE2) return FileSignature.JPEG_CANON_EOS;
-		else if(buf[3] == 0xE3) return FileSignature.JPEG_SAMSUNG_D500;
-		else return FileSignature.JPEG;
+		return FileSignature.JPEG;
 	else if(buf[0..4] == cast(char[])[0x25, 0x50, 0x44, 0x46])
 		return FileSignature.PDF;
 	else if(buf[0..5] == cast(char[])[0x43, 0x44, 0x30, 0x30, 0x31])
@@ -42,12 +36,8 @@ FileSignature detectFileSignature(File file)
 	switch(val)
 	{
 		case FileSignature.PDF: return "Portable Document Format";
-		case FileSignature.PDF_1_6: return "PDF-1.6";
-		case FileSignature.PDF_1_7: return "PDF-1.7";
 		case FileSignature.ISO: return "ISO-9660 CD Disc Image";
 		case FileSignature.JPEG: return "Joint Photographic Experts Group";
-		case FileSignature.JPEG_CANON_EOS: return "CANON EOS JPEG Format";
-		case FileSignature.JPEG_SAMSUNG_D500: return "Samsung D500 JPEG Format";
 		case FileSignature.PNG: return "Portable Network Graphics";
 		default: return to!string(val);
 	}
