@@ -4,13 +4,12 @@
 
 A Powerful General Purpose Framework
 
-
 Aurora is a Software Framework for General Purpose developed by Luís Ferreira that runs in all platforms, like Windows NT and \*NIX Environments such as Linux and Apple Systems. It includes libraries to make code easier to use.
 
 ### Contributors
- - Luís "ljmf00" Ferreira (Project Founder)
- - Ricardo "Ev1lbl0w" Subtil
- - Filipe "FFY00" Laíns
+- Luís "ljmf00" Ferreira (Project Founder)
+- Ricardo "Ev1lbl0w" Subtil
+- Filipe "FFY00" Laíns
 
 Want to contribute? Great! Make a pull request on my github repository.
 
@@ -21,7 +20,6 @@ Want to contribute? Great! Make a pull request on my github repository.
 
 GNU Lesser General Public License (Version 3, 29 June 2007)
 
-
 [![OSI](https://opensource.org/files/osi_logo_100X133_90ppi_0.png "Open Source Initiative")](https://opensource.org/) [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Open-source-hardware-logo.svg/512px-Open-source-hardware-logo.svg.png" alt="Open Source Hardware Association" width="120">](http://www.oshwa.org/ "Open Source Hardware Association")
 
 More details coming soon. **It's freedom, it's [opensource](https://opensource.org/)!**
@@ -29,6 +27,5 @@ This document was written with [GitHub Flavored Markdown](https://guides.github.
 
 ---
 Made with ❤ by a bunch of geeks
-
 
 [![License](https://img.shields.io/badge/license-LGPLv3-lightgrey.svg)](https://www.gnu.org/licenses/lgpl-3.0.html) [![Discord Server](https://discordapp.com/api/guilds/350229534832066572/embed.png)](https://discord.gg/4YuxJj)
