@@ -35,7 +35,7 @@ directly send an email to: contact (at) aurorafoss.org .
 This file is part of Android Open Source Project implementation.
 */
 
-module android.asset_manager;
+module aurorafw.android.platform.asset_manager;
 
 import core.sys.posix.sys.types;
 
