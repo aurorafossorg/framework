@@ -7,6 +7,7 @@
 
 Copyright (C) 1996 Netscape Communications Corporation.
 Copyright (C) 1996, 2013, Oracle and/or its affiliates.
+Copyright (C) 2006 The Android Open Source Project.
 Copyright (C) 2018 Aurora Free Open Source Software.
 
 This file is part of the Aurora Free Open Source Software. This
@@ -40,9 +41,6 @@ module aurorafw.jni.platform.jni;
 
 import core.stdc.stdarg;
 
-/* contains the alias for jbyte, jint and jlong */
-import aurorafw.jni.platform.jni_md;
-
 extern (C):
 @system:
 nothrow:
@@ -51,6 +49,10 @@ nothrow:
 /*
  * JNI Types
  */
+
+alias int jint;
+alias byte jbyte;
+alias long jlong;
 
 alias ubyte jboolean;
 alias ushort jchar;
@@ -1782,14 +1784,23 @@ struct JavaVM_
 	}
 }
 
-jint JNI_GetDefaultJavaVMInitArgs(void* args);
-jint JNI_CreateJavaVM(JavaVM** pvm, void** penv, void* args);
-jint JNI_GetCreatedJavaVMs(JavaVM**, jsize, jsize*);
+/* In practice, these are not exported by the NDK so don't declare them */
+//jint JNI_GetDefaultJavaVMInitArgs(void* args);
+//jint JNI_CreateJavaVM(JavaVM** pvm, void** penv, void* args);
+//jint JNI_GetCreatedJavaVMs(JavaVM**, jsize, jsize*);
 
 /* Defined by native libraries. */
+
+/*
+ * Prototypes for functions exported by loadable shared libs. These are
+ * called by JNI, not provided by JNI.
+ */
 jint JNI_OnLoad(JavaVM* vm, void* reserved);
 void JNI_OnUnload(JavaVM* vm, void* reserved);
 
+/*
+ * Manifest constants.
+ */
 enum JNI_VERSION_1_1 = 0x00010001;
 enum JNI_VERSION_1_2 = 0x00010002;
 enum JNI_VERSION_1_4 = 0x00010004;
