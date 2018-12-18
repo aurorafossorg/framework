@@ -39,7 +39,6 @@ This file is part of Netscape's Java Runtime Interface implementation.
 module aurorafw.jni.platform.jni;
 
 import core.stdc.stdarg;
-import core.vararg;
 
 /* contains the alias for jbyte, jint and jlong */
 import aurorafw.jni.platform.jni_md;
