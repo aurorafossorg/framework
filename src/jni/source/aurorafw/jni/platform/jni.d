@@ -147,8 +147,8 @@ enum JNI_EINVAL = -6; /* invalid arguments */
 /*
  * used in ReleaseScalarArrayElements
  */
-enum JNI_COMMIT = 1;
-enum JNI_ABORT = 2;
+enum JNI_COMMIT = 1; /* copy content, do not free buffer */
+enum JNI_ABORT = 2; /* free buffer w/o copying back */
 
 /*
  * used in RegisterNatives to describe native method name, signature,
