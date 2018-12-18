@@ -18,6 +18,7 @@ enum PDFVersion : Version {
 
 Version getPDFVersion(File file)
 {
+	//TODO: Do a better implementation to detect pdf version
 	char[4] buf = file.rawRead(new char[8])[4..8];
 	if(buf == cast(char[])"-1.0") return PDFVersion.PDF_1_0;
 	else if(buf == cast(char[])"-1.1") return PDFVersion.PDF_1_1;
