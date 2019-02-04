@@ -42,9 +42,9 @@ public:
 	final this(string name = "AuroraFW Application", string[] args = null)
 	{
 		_name = name;
-		_opts = OptionHandler(args);
-		_opts.add("afw-debug", "Enable the aurora built-in debug logger");
-		if(_opts.option("afw-debug").active)
+		//_opts = OptionHandler(args);
+		//_opts.add("afw-debug", "Enable the aurora built-in debug logger");
+		//if(_opts.option("afw-debug").active)
 		{
 			debug afwDebugFlag = true;
 			debug trace(afwDebugFlag, "Debug is now enabled");

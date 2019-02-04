@@ -6,10 +6,9 @@
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
-
-Copyright (C) 2013-2016 Mike Parker.
-Copyright (C) 2016 渡世白玉.
-Copyright (C) 2018-2019 Aurora Free Open Source Software.
+Copyright © 2013-2016, Mike Parker.
+Copyright © 2016, 渡世白玉.
+Copyright © 2018-2019, Aurora Free Open Source Software.
 
 This file is part of the Aurora Free Open Source Software. This
 organization promote free and open source software that you can
@@ -25,7 +24,7 @@ Alternatively, this file may be used under the terms of the GNU General
 Public License version 3 or later as published by the Free Software
 Foundation. Please review the following information to ensure the GNU
 General Public License requirements will be met:
-http://www.gnu.org/licenses/gpl-3.0.html.
+https://www.gnu.org/licenses/gpl-3.0.html.
 
 NOTE: All products, services or anything associated to trademarks and
 service marks used or referenced on this file are the property of their
@@ -37,6 +36,9 @@ directly send an email to: contact (at) aurorafoss.org .
 
 This file is an improvement of an existing code, part of DerelictUtil
 from DerelictOrg. Check it out at derelictorg.github.io .
+
+This file is an improvement of an existing code, developed by 渡世白玉
+and available on github at https://github.com/huntlabs/DerelictUtil .
 */
 
 module aurorafw.core.dylib;
