@@ -22,7 +22,8 @@
 		":gui": "*",
 		":net": "*",
 		":metadata": "*",
-		":jni": "*"
+		":jni": "*",
+		":stdx": "*"
 	},
 	"subPackages": [
 		"src/core",
@@ -33,6 +34,7 @@
 		"src/gui",
 		"src/net",
 		"src/metadata",
-		"src/jni"
+		"src/jni",
+		"src/stdx"
 	]
 }
