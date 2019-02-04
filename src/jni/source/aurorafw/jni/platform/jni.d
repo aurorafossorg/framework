@@ -1,4 +1,5 @@
 /*
+                                    __
                                    / _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
@@ -24,7 +25,7 @@ Alternatively, this file may be used under the terms of the GNU General
 Public License version 3 or later as published by the Free Software
 Foundation. Please review the following information to ensure the GNU
 General Public License requirements will be met:
-http://www.gnu.org/licenses/gpl-3.0.html.
+https://www.gnu.org/licenses/gpl-3.0.html.
 
 NOTE: All products, services or anything associated to trademarks and
 service marks used or referenced on this file are the property of their
@@ -34,7 +35,12 @@ may be claimed as the property of others.
 For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 
-This file is part of Netscape's Java Runtime Interface implementation.
+This file has bindings for an existing code, part of Netscape's Java Runtime
+Interface implementation, Java Native Interface implementation, from Oracle
+Corporation and/or The Android Open Source Project implementation.
+
+More information about The Android Open Source Project at
+android.googlesource.com .
 */
 
 module aurorafw.jni.platform.jni;
