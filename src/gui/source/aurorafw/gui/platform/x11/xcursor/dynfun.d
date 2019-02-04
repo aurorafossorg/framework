@@ -32,6 +32,14 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.gui.platform.x11.xcursor;
+module aurorafw.gui.platform.x11.xcursor.dynfun;
 
-public import aurorafw.gui.platform.x11.xcursor.xcursor;
+import aurorafw.gui.platform.x11.xcursor.types;
+
+__gshared {
+	da_XcursorImageCreate XcursorImageCreate;
+	da_XcursorImageDestroy XcursorImageDestroy;
+	da_XcursorImagesCreate XcursorImagesCreate;
+	da_XcursorImagesDestroy XcursorImagesDestroy;
+	da_XcursorImageLoadCursor XcursorImageLoadCursor;
+}
