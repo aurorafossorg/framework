@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2011Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2011 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -110,7 +110,7 @@ enum
 	SF_FORMAT_SUBMASK		= 0x0000FFFF,
 	SF_FORMAT_TYPEMASK		= 0x0FFF0000,
 	SF_FORMAT_ENDMASK		= 0x30000000
-} ;
+}
 
 /*
 ** The following are the valid command numbers for the sf_command()
@@ -199,7 +199,7 @@ enum
 	*/
 	SFC_SET_ADD_DITHER_ON_WRITE		= 0x1070,
 	SFC_SET_ADD_DITHER_ON_READ		= 0x1071
-} ;
+}
 
 
 /*
@@ -219,7 +219,7 @@ enum
 	SF_STR_LICENSE					= 0x08,
 	SF_STR_TRACKNUMBER				= 0x09,
 	SF_STR_GENRE					= 0x10
-} ;
+}
 
 /*
 ** Use the following as the start and end index when doing metadata
@@ -241,7 +241,7 @@ enum
 
 	SF_AMBISONIC_NONE		= 0x40,
 	SF_AMBISONIC_B_FORMAT	= 0x41
-} ;
+}
 
 /* Public error values. These are guaranteed to remain unchanged for the duration
 ** of the library major version number.
@@ -255,7 +255,7 @@ enum
 	SF_ERR_SYSTEM				= 2,
 	SF_ERR_MALFORMED_FILE		= 3,
 	SF_ERR_UNSUPPORTED_ENCODING	= 4
-} ;
+}
 
 
 /* Channel map values (used with SFC_SET/GET_CHANNEL_MAP).
@@ -292,7 +292,7 @@ enum
 	SF_CHANNEL_MAP_AMBISONIC_B_Z,
 
 	SF_CHANNEL_MAP_MAX
-} ;
+}
 
 
 /* A SNDFILE* pointer can be passed around much like stdio.h's FILE* pointer. */
@@ -322,7 +322,7 @@ struct SF_INFO
 	int			format ;
 	int			sections ;
 	int			seekable ;
-} ;
+}
 
 
 /* The SF_FORMAT_INFO struct is used to retrieve information about the sound
@@ -340,7 +340,7 @@ struct SF_FORMAT_INFO
 {	int			format ;
 	const char	*name ;
 	const char	*extension ;
-} ;
+}
 
 /*
 ** Enums and typedefs for adding dither on read and write.
@@ -355,13 +355,13 @@ enum
 	SFD_NO_DITHER		= 500,
 	SFD_WHITE			= 501,
 	SFD_TRIANGULAR_PDF	= 502
-} ;
+}
 
 struct SF_DITHER_INFO
 {	int			type ;
 	double		level ;
 	const char	*name ;
-} ;
+}
 
 /* Struct used to retrieve information about a file embedded within a
 ** larger file. See SFC_GET_EMBED_FILE_INFO.
@@ -370,7 +370,7 @@ struct SF_DITHER_INFO
 struct SF_EMBED_FILE_INFO
 {	sf_count_t	offset ;
 	sf_count_t	length ;
-} ;
+}
 
 /*
 **	Structs used to retrieve music sample information from a file.
@@ -384,7 +384,7 @@ enum
 	SF_LOOP_FORWARD,
 	SF_LOOP_BACKWARD,
 	SF_LOOP_ALTERNATING
-} ;
+}
 
 struct SF_INSTRUMENT
 {	int gain ;
@@ -398,11 +398,9 @@ struct SF_INSTRUMENT
 		uint start ;
 		uint end ;
 		uint count ;
-	} ; /* make variable in a sensible way */
+	} /* make variable in a sensible way */
 	loop_[16] loops;
-} ;
-
-
+}
 
 /* Struct used to retrieve loop information from a file.*/
 struct SF_LOOP_INFO
@@ -421,8 +419,7 @@ struct SF_LOOP_INFO
 
 	int	root_key ;			/* MIDI note, or -1 for None */
 	int [6] future ;
-} ;
-
+}
 
 /*	Struct used to retrieve broadcast (EBU) information from a file.
 **	Strongly (!) based on EBU "bext" chunk format used in Broadcast WAVE.
@@ -459,7 +456,7 @@ struct SF_VIRTUAL_IO
 	sf_vio_read			read ;
 	sf_vio_write		write ;
 	sf_vio_tell			tell ;
-} ;
+}
 
 
 /* Open the specified file for read, write or both. On error, this will
@@ -545,7 +542,7 @@ enum
 {	SF_SEEK_SET = SEEK_SET,
 	SF_SEEK_CUR = SEEK_CUR,
 	SF_SEEK_END = SEEK_END
-} ;
+}
 
 sf_count_t	sf_seek 		(SNDFILE *sndfile, sf_count_t frames, int whence) ;
 

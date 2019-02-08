@@ -1,11 +1,12 @@
 /*
+                                    __
                                    / _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
-Copyright (C) 2018 Aurora Free Open Source Software.
+Copyright (C) 2018-2019 Aurora Free Open Source Software.
 
 This file is part of the Aurora Free Open Source Software. This
 organization promote free and open source software that you can
@@ -44,7 +45,7 @@ class Basic3DEffect : AudioEffect {
 	void process(ref float[] buffer, ref size_t numFrames) {
 		pragma(msg, debugMsgPrefix, "TODO: Implement basic 3D effect");
 	}
-};
+}
 
 class Advanced3DEffect : AudioEffect {
 	void process(ref float[] buffer, ref size_t numFrames) {

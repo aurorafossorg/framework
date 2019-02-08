@@ -1,11 +1,12 @@
 /*
+                                    __
                                    / _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
-Copyright (C) 2018 Aurora Free Open Source Software.
+Copyright (C) 2018-2019 Aurora Free Open Source Software.
 
 This file is part of the Aurora Free Open Source Software. This
 organization promote free and open source software that you can
@@ -34,15 +35,15 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.audio.backend;
 
+import aurorafw.audio.sndfile;
+import aurorafw.audio.soundio;
 import aurorafw.core.debugmanager;
 import aurorafw.core.logger;
-import aurorafw.audio.soundio;
-import aurorafw.audio.sndfile;
 
-import std.string;
+import std.conv : text, to;
+
 import std.stdio;
-
-import std.conv : to, text;
+import std.string;
 
 class SoundioException : Throwable {
 	this(SoundIoError error) {
@@ -142,7 +143,7 @@ public:
 	//Vector3d position = new Vector3d, direction = new Vector3d(0, 0, -1);
 private:
 	__gshared AudioListener _instance;
-	this() {};
+	this() {}
 }
 
 class AudioBackend {

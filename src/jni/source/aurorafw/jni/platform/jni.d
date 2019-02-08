@@ -9,7 +9,7 @@
 Copyright (C) 1996 Netscape Communications Corporation.
 Copyright (C) 1996, 2013, Oracle and/or its affiliates.
 Copyright (C) 2006 The Android Open Source Project.
-Copyright (C) 2018 Aurora Free Open Source Software.
+Copyright (C) 2018-2019 Aurora Free Open Source Software.
 
 This file is part of the Aurora Free Open Source Software. This
 organization promote free and open source software that you can
