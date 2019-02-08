@@ -32,6 +32,6 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.gui.platform.x11.xcursor;
+module aurorafw.stdx.concurrency;
 
-public import aurorafw.gui.platform.x11.xcursor.xcursor;
+public import std.concurrency;

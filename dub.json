@@ -23,7 +23,8 @@
 		":net": "*",
 		":metadata": "*",
 		":jni": "*",
-		":android":"*"
+		":android":"*",
+		":stdx": "*"
 	},
 	"subPackages": [
 		"src/core",
@@ -35,6 +36,7 @@
 		"src/net",
 		"src/metadata",
 		"src/jni",
-		"src/android"
+		"src/android",
+		"src/stdx"
 	]
 }

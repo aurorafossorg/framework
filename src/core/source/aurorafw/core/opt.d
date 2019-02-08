@@ -1,4 +1,5 @@
 /*
+                                    __
                                    / _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
@@ -21,7 +22,7 @@ Alternatively, this file may be used under the terms of the GNU General
 Public License version 3 or later as published by the Free Software
 Foundation. Please review the following information to ensure the GNU
 General Public License requirements will be met:
-http://www.gnu.org/licenses/gpl-3.0.html.
+https://www.gnu.org/licenses/gpl-3.0.html.
 
 NOTE: All products, services or anything associated to trademarks and
 service marks used or referenced on this file are the property of their
@@ -34,33 +35,30 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.core.opt;
 
-import aurorafw.core.debugmanager : debugMsgPrefix;
-import std.algorithm.searching : find;
-import std.range.primitives : empty;
+public import aurorafw.stdx.getopt : defaultRuntimeArgs;
 
-@safe pure struct OptionHandler {
-	struct Element {
-		string opt;
-		string desc;
-	}
+class OptionHandlerException : Exception
+{
+	import std.exception;
+	mixin basicExceptionCtors;
+}
 
-	struct SplitedElement {
-		bool active;
-		size_t count;
+static assert(is(typeof(new OptionHandlerException("message"))));
+static assert(is(typeof(new OptionHandlerException("message", Exception.init))));
 
-	private:
-		string optLong;
-		string optShort;
-		string desc;
+struct OptionElement {
+	string[] opts;
+	string help;
+	bool val;
+}
 
-		ptrdiff_t valpos;
-	}
+enum OptionType {
+	Posix,
+	Windows,
+	None
+}
 
-	enum OptionType {
-		Posix,
-		Windows,
-		None
-	}
+@safe pure @nogc struct OptionHandler {
 
 	this(string[] args, OptionType type = __currentType)
 	{
@@ -68,114 +66,36 @@ import std.range.primitives : empty;
 		_type = type;
 	}
 
-	void add(Element opte)
+	bool read(T)(string opts, string help, T* pval = null)
 	{
+		OptionElement opte;
 		import std.array : split;
-		immutable string[] elems = split(opte.opt, "|");
-		SplitedElement sopte;
+		import std.algorithm : sort, any;
+		import std.array : array;
+		opte.opts = opts.split("|").sort!((a, b) => a.length < b.length)().array();
+		opte.val = !is(T == bool);
+		opte.help = help;
 
-		assert(elems.length == 1, "Blank option elements not allowed!");
+		if(_opts.any!(o => o.opts == opte.opts)())
+			throw new OptionHandlerException("Trying to read the same option name twice");
 
-		switch(_type)
-		{
-			case OptionType.Posix:
-				if(elems.length > 1)
-				{
-					sopte.optShort = "-" ~ ((elems[0].length < elems[1].length) ? elems[0] : elems[1]);
-					sopte.optLong = "--" ~ ((elems[0].length > elems[1].length) ? elems[0] : elems[1]);
-				}
-				else if (elems[0].length > 1)
-				{
-					sopte.optLong = "--" ~ elems[0];
-				}
-				else
-				{
-					sopte.optShort = "-" ~ elems[0];
-				}
-				break;
-			
-			case OptionType.Windows:
-				if (elems.length > 1)
-				{
-					sopte.optShort = "/" ~ ((elems[0].length < elems[1].length) ? elems[0] : elems[1]);
-					sopte.optLong = "/" ~ ((elems[0].length > elems[1].length) ? elems[0] : elems[1]);
-				}
-				else
-				{
-					sopte.optLong = "/" ~ elems[0];
-				}
-				break;
-			
-			case OptionType.None:
-			default:
-				if(elems.length > 1)
-				{
-					sopte.optShort = ((elems[0].length < elems[1].length) ? elems[0] : elems[1]);
-					sopte.optLong = ((elems[0].length > elems[1].length) ? elems[0] : elems[1]);
-				}
-				else
-				{
-					sopte.optLong = elems[0];
-				}
-				break;
-		}
-		sopte.desc = opte.desc;
-
-		foreach(size_t i, string arg; _args)
-			if((find(arg, sopte.optLong).empty &&
-				((arg.length == sopte.optLong.length) ||
-					((arg.length > sopte.optLong.length) && (arg[sopte.optLong.length .. arg.length][0] == '=')) ))
-				|| (find(arg, sopte.optShort).empty && (arg.length == sopte.optShort.length )) )
-			{
-				if(arg.length > sopte.optLong.length) sopte.valpos = sopte.optLong.length;
-				else sopte.valpos = -1;
-				sopte.active = true;
-				sopte.count = i;
-			}
-			else {
-				sopte.active = false;
-			}
-
-		_opts ~= sopte;
-	}
-
-	pragma(inline, true) void add(string opt, string desc) { add(Element(opt, desc)); }
-
-	void add(Element[] mopte)
-	{
-		foreach(Element opte; mopte)
-			add(opte);
-	}
-
-	SplitedElement option(string opt)
-	{
-		foreach(SplitedElement sopte; _opts)
-			if(!find(sopte.optLong, opt).empty || !find(sopte.optShort, opt).empty)
-				return sopte;
-
-		assert(0, "Invalid option name!");
-	}
-
-	string value(SplitedElement sopte)
-	{
-		if(sopte.valpos == -1)
-			return _args[sopte.count+1];
-		else
-			return _args[sopte.count][sopte.valpos .. _args[sopte.count].length];
-	}
-
-	pragma(inline, true) string value(string opt) { return value(option(opt)); }
-
-	void print(string fmt = "  %s\t%s\t\t%s") @safe
-	{
-		pragma(msg, debugMsgPrefix, "FIXME: Need to be implemented");
+		_opts ~= opte;
 	}
 
 private:
 	string[] _args;
-	SplitedElement[] _opts;
+	OptionElement[] _opts;
 	OptionType _type;
 
 	version(Windows) enum OptionType __currentType = OptionType.Windows;
 	else enum OptionType __currentType = OptionType.Posix;
+}
+
+@system unittest
+{
+	auto args = ["prog", "--foo", "-b"];
+	bool isFoo;
+	OptionHandler optHandler = OptionHandler(args);
+	optHandler.read("foo|f", "Some information about foo.", &isFoo);
+	//assert(isFoo == true);
 }
