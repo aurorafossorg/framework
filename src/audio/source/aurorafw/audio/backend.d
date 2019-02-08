@@ -1,5 +1,5 @@
 /*
-								   / _|
+                                   / _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
@@ -134,7 +134,7 @@ public:
 	static ref AudioListener getInstance() {
 		if(!_instance)
 			_instance = new AudioListener;
-		
+
 		return _instance;
 	}
 
@@ -152,7 +152,7 @@ public:
 	static ref AudioBackend getInstance() {
 		if(!_instance)
 			_instance = new AudioBackend();
-		
+
 		return _instance;
 	}
 
@@ -209,7 +209,7 @@ private:
 		soundio = soundio_create();
 		if(!soundio)
 			throw new SNDFileException(SoundIoError.SoundIoErrorNoMem);
-		
+
 		// Connects to a backend
 		catchSOUNDIOProblem(cast(SoundIoError)soundio_connect(soundio));
 

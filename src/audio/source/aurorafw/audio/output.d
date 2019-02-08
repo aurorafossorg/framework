@@ -1,5 +1,5 @@
 /*
-								   / _|
+                                   / _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
@@ -122,7 +122,7 @@ extern(C) void audioOutputCallback(SoundIoOutStream* stream, int minFrames, int 
 		} while(framesToRead > 0 && audioStream.audioPlayMode == AudioPlayMode.Loop);
 
 		debug trace("Frames to read: ", framesToRead, "\tFrames read: ", framesRead, "\tFrames left: ", framesLeft);
-		
+
 		// If the read frames didn't fill the buffer to read, it reached EOF
 		if(framesToRead > 0 && audioStream.audioPlayMode
 			== AudioPlayMode.Once) {
