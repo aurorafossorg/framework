@@ -6,7 +6,7 @@
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
-Copyright (C) 2010 The Android Open Source Project.
+Copyright (C) 2017 The Android Open Source Project.
 Copyright (C) 2018-2019 Aurora Free Open Source Software.
 
 This file is part of the Aurora Free Open Source Software. This
@@ -37,15 +37,16 @@ This file has bindings for an existing code, part of The Android Open Source
 Project implementation. Check it out at android.googlesource.com .
 */
 
-module aurorafw.android.platform.rect;
+module aurorafw.android.platform.sharedmem_jni;
 
 /**
- * @addtogroup NativeActivity Native Activity
+ * @addtogroup Memory
  * @{
  */
 
 /**
- * @file aurorafw/android/platform/rect.d
+ * @file aurorafw/android/platform/sharedmem_jni.d
+ * @brief Shared memory buffers that can be shared across process.
  */
 
 version (Android):
@@ -54,28 +55,42 @@ extern (C):
 nothrow:
 @nogc:
 
-/**
- * Rectangular window area.
+/******************************************************************
  *
- * This is the NDK equivalent of the android.graphics.Rect class in Java. It is
- * used with {@link ANativeActivityCallbacks::onContentRectChanged} event
- * callback and the ANativeWindow_lock() function.
+ * IMPORTANT NOTICE:
  *
- * In a valid ARect, left <= right and top <= bottom. ARect with left=0, top=10,
- * right=1, bottom=11 contains only one pixel at x=0, y=10.
+ *   This file is part of Android's set of stable system headers
+ *   exposed by the Android NDK (Native Development Kit).
+ *
+ *   Third-party source AND binary code relies on the definitions
+ *   here to be FROZEN ON ALL UPCOMING PLATFORM RELEASES.
+ *
+ *   - DO NOT MODIFY ENUMS (EXCEPT IF YOU ADD NEW 32-BIT VALUES)
+ *   - DO NOT MODIFY CONSTANTS OR FUNCTIONAL MACROS
+ *   - DO NOT CHANGE THE SIGNATURE OF FUNCTIONS IN ANY WAY
+ *   - DO NOT CHANGE THE LAYOUT OR SIZE OF STRUCTURES
  */
-struct ARect
-{
-    /// Minimum X coordinate of the rectangle.
-    int left;
-    /// Minimum Y coordinate of the rectangle.
-    int top;
-    /// Maximum X coordinate of the rectangle.
-    int right;
-    /// Maximum Y coordinate of the rectangle.
-    int bottom;
-}
 
-// ANDROID_RECT_H
+/**
+ * Returns a dup'd FD from the given Java android.os.SharedMemory object. The returned file
+ * descriptor has all the same properties & capabilities as the FD returned from
+ * ASharedMemory_create(), however the protection flags will be the same as those of the
+ * android.os.SharedMemory object.
+ *
+ * Use close() to release the shared memory region.
+ *
+ * Available since API level 27.
+ *
+ * \param env The JNIEnv* pointer
+ * \param sharedMemory The Java android.os.SharedMemory object
+ * \return file descriptor that denotes the shared memory; -1 if the shared memory object is
+ *      already closed, if the JNIEnv or jobject is NULL, or if there are too many open file
+ *      descriptors (errno=EMFILE)
+ */
+int ASharedMemory_dupFromJava (JNIEnv* env, jobject sharedMemory);
+
+// __ANDROID_API__ >= 27
+
+// ANDROID_SHARED_MEMORY_JNI_H
 
 /** @} */

@@ -6,7 +6,7 @@
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
-Copyright (C) 2010 The Android Open Source Project.
+Copyright (C) 2018 The Android Open Source Project.
 Copyright (C) 2018-2019 Aurora Free Open Source Software.
 
 This file is part of the Aurora Free Open Source Software. This
@@ -37,15 +37,15 @@ This file has bindings for an existing code, part of The Android Open Source
 Project implementation. Check it out at android.googlesource.com .
 */
 
-module aurorafw.android.platform.rect;
+module aurorafw.android.platform.surface_texture_jni;
 
 /**
- * @addtogroup NativeActivity Native Activity
+ * @addtogroup SurfaceTexture
  * @{
  */
 
 /**
- * @file aurorafw/android/platform/rect.d
+ * @file aurorafw/android/platform/surface_texture_jni.d
  */
 
 version (Android):
@@ -55,27 +55,19 @@ nothrow:
 @nogc:
 
 /**
- * Rectangular window area.
+ * Get a reference to the native ASurfaceTexture from the corresponding java object.
  *
- * This is the NDK equivalent of the android.graphics.Rect class in Java. It is
- * used with {@link ANativeActivityCallbacks::onContentRectChanged} event
- * callback and the ANativeWindow_lock() function.
+ * The caller must keep a reference to the Java SurfaceTexture during the lifetime of the returned
+ * ASurfaceTexture. Failing to do so could result in the ASurfaceTexture to stop functioning
+ * properly once the Java object gets finalized.
+ * However, this will not result in program termination.
  *
- * In a valid ARect, left <= right and top <= bottom. ARect with left=0, top=10,
- * right=1, bottom=11 contains only one pixel at x=0, y=10.
+ * \param env JNI environment
+ * \param surfacetexture Instance of Java SurfaceTexture object
+ * \return native ASurfaceTexture reference or nullptr if the java object is not a SurfaceTexture.
+ *         The returned reference MUST BE released when it's no longer needed using
+ *         ASurfaceTexture_release().
  */
-struct ARect
-{
-    /// Minimum X coordinate of the rectangle.
-    int left;
-    /// Minimum Y coordinate of the rectangle.
-    int top;
-    /// Maximum X coordinate of the rectangle.
-    int right;
-    /// Maximum Y coordinate of the rectangle.
-    int bottom;
-}
+ASurfaceTexture* ASurfaceTexture_fromSurfaceTexture (JNIEnv* env, jobject surfacetexture);
 
-// ANDROID_RECT_H
-
-/** @} */
+/* ANDROID_NATIVE_SURFACE_TEXTURE_JNI_H */

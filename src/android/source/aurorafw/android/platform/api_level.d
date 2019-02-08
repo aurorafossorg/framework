@@ -6,7 +6,7 @@
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
-Copyright (C) 2010 The Android Open Source Project.
+Copyright (C) 2008 The Android Open Source Project.
 Copyright (C) 2018-2019 Aurora Free Open Source Software.
 
 This file is part of the Aurora Free Open Source Software. This
@@ -37,16 +37,7 @@ This file has bindings for an existing code, part of The Android Open Source
 Project implementation. Check it out at android.googlesource.com .
 */
 
-module aurorafw.android.platform.rect;
-
-/**
- * @addtogroup NativeActivity Native Activity
- * @{
- */
-
-/**
- * @file aurorafw/android/platform/rect.d
- */
+module aurorafw.android.platform.api_level;
 
 version (Android):
 extern (C):
@@ -54,28 +45,27 @@ extern (C):
 nothrow:
 @nogc:
 
-/**
- * Rectangular window area.
- *
- * This is the NDK equivalent of the android.graphics.Rect class in Java. It is
- * used with {@link ANativeActivityCallbacks::onContentRectChanged} event
- * callback and the ANativeWindow_lock() function.
- *
- * In a valid ARect, left <= right and top <= bottom. ARect with left=0, top=10,
- * right=1, bottom=11 contains only one pixel at x=0, y=10.
+/*
+ * Magic version number for a current development build, which has
+ * not yet turned into an official release.
  */
-struct ARect
-{
-    /// Minimum X coordinate of the rectangle.
-    int left;
-    /// Minimum Y coordinate of the rectangle.
-    int top;
-    /// Maximum X coordinate of the rectangle.
-    int right;
-    /// Maximum Y coordinate of the rectangle.
-    int bottom;
-}
 
-// ANDROID_RECT_H
+enum __ANDROID_API_FUTURE__ = 10000;
 
-/** @} */
+enum __ANDROID_API__ = __ANDROID_API_FUTURE__;
+
+enum __ANDROID_API_G__ = 9;
+enum __ANDROID_API_I__ = 14;
+enum __ANDROID_API_J__ = 16;
+enum __ANDROID_API_J_MR1__ = 17;
+enum __ANDROID_API_J_MR2__ = 18;
+enum __ANDROID_API_K__ = 19;
+enum __ANDROID_API_L__ = 21;
+enum __ANDROID_API_L_MR1__ = 22;
+enum __ANDROID_API_M__ = 23;
+enum __ANDROID_API_N__ = 24;
+enum __ANDROID_API_N_MR1__ = 25;
+enum __ANDROID_API_O__ = 26;
+enum __ANDROID_API_O_MR1__ = 27;
+enum __ANDROID_API_P__ = 28;
+

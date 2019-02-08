@@ -6,7 +6,7 @@
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
-Copyright (C) 2010 The Android Open Source Project.
+Copyright (C) 2015 The Android Open Source Project.
 Copyright (C) 2018-2019 Aurora Free Open Source Software.
 
 This file is part of the Aurora Free Open Source Software. This
@@ -37,15 +37,21 @@ This file has bindings for an existing code, part of The Android Open Source
 Project implementation. Check it out at android.googlesource.com .
 */
 
-module aurorafw.android.platform.rect;
+module aurorafw.android.platform.trace;
 
 /**
- * @addtogroup NativeActivity Native Activity
+ * @addtogroup Tracing
  * @{
  */
 
 /**
- * @file aurorafw/android/platform/rect.d
+ * @file aurorafw/android/platform/trace.d
+ * @brief Writes trace events to the system trace buffer.
+ *
+ * These trace events can be collected and visualized using the Systrace tool.
+ * For information about using the Systrace tool, read <a href="https://developer.android.com/studio/profile/systrace.html">Analyzing UI Performance with Systrace</a>.
+ *
+ * Available since API level 23.
  */
 
 version (Android):
@@ -55,27 +61,37 @@ nothrow:
 @nogc:
 
 /**
- * Rectangular window area.
+ * Returns true if tracing is enabled. Use this to avoid expensive computation only necessary
+ * when tracing is enabled.
  *
- * This is the NDK equivalent of the android.graphics.Rect class in Java. It is
- * used with {@link ANativeActivityCallbacks::onContentRectChanged} event
- * callback and the ANativeWindow_lock() function.
- *
- * In a valid ARect, left <= right and top <= bottom. ARect with left=0, top=10,
- * right=1, bottom=11 contains only one pixel at x=0, y=10.
+ * Available since API level 23.
  */
-struct ARect
-{
-    /// Minimum X coordinate of the rectangle.
-    int left;
-    /// Minimum Y coordinate of the rectangle.
-    int top;
-    /// Maximum X coordinate of the rectangle.
-    int right;
-    /// Maximum Y coordinate of the rectangle.
-    int bottom;
-}
+bool ATrace_isEnabled ();
 
-// ANDROID_RECT_H
+/**
+ * Writes a tracing message to indicate that the given section of code has begun. This call must be
+ * followed by a corresponding call to {@link ATrace_endSection} on the same thread.
+ *
+ * Note: At this time the vertical bar character '|' and newline character '\\n' are used internally
+ * by the tracing mechanism. If \p sectionName contains these characters they will be replaced with a
+ * space character in the trace.
+ *
+ * Available since API level 23.
+ */
+void ATrace_beginSection (const(char)* sectionName);
+
+/**
+ * Writes a tracing message to indicate that a given section of code has ended. This call must be
+ * preceeded by a corresponding call to {@link ATrace_beginSection} on the same thread. Calling this method
+ * will mark the end of the most recently begun section of code, so care must be taken to ensure
+ * that {@link ATrace_beginSection}/{@link ATrace_endSection} pairs are properly nested and called from the same thread.
+ *
+ * Available since API level 23.
+ */
+void ATrace_endSection ();
+
+/* __ANDROID_API__ >= 23 */
+
+// ANDROID_NATIVE_TRACE_H
 
 /** @} */

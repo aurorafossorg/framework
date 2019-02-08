@@ -37,15 +37,15 @@ This file has bindings for an existing code, part of The Android Open Source
 Project implementation. Check it out at android.googlesource.com .
 */
 
-module aurorafw.android.platform.rect;
+module aurorafw.android.platform.obb;
 
 /**
- * @addtogroup NativeActivity Native Activity
+ * @addtogroup Storage
  * @{
  */
 
 /**
- * @file aurorafw/android/platform/rect.d
+ * @file aurorafw/android/platform/obb.d
  */
 
 version (Android):
@@ -54,28 +54,41 @@ extern (C):
 nothrow:
 @nogc:
 
-/**
- * Rectangular window area.
- *
- * This is the NDK equivalent of the android.graphics.Rect class in Java. It is
- * used with {@link ANativeActivityCallbacks::onContentRectChanged} event
- * callback and the ANativeWindow_lock() function.
- *
- * In a valid ARect, left <= right and top <= bottom. ARect with left=0, top=10,
- * right=1, bottom=11 contains only one pixel at x=0, y=10.
- */
-struct ARect
+struct AObbInfo;
+/** {@link AObbInfo} is an opaque type representing information for obb storage. */
+
+/** Flag for an obb file, returned by AObbInfo_getFlags(). */
+enum
 {
-    /// Minimum X coordinate of the rectangle.
-    int left;
-    /// Minimum Y coordinate of the rectangle.
-    int top;
-    /// Maximum X coordinate of the rectangle.
-    int right;
-    /// Maximum Y coordinate of the rectangle.
-    int bottom;
+    /** overlay */
+    AOBBINFO_OVERLAY = 1
 }
 
-// ANDROID_RECT_H
+/**
+ * Scan an OBB and get information about it.
+ */
+AObbInfo* AObbScanner_getObbInfo (const(char)* filename);
+
+/**
+ * Destroy the AObbInfo object. You must call this when finished with the object.
+ */
+void AObbInfo_delete (AObbInfo* obbInfo);
+
+/**
+ * Get the package name for the OBB.
+ */
+const(char)* AObbInfo_getPackageName (AObbInfo* obbInfo);
+
+/**
+ * Get the version of an OBB file.
+ */
+int AObbInfo_getVersion (AObbInfo* obbInfo);
+
+/**
+ * Get the flags of an OBB file.
+ */
+int AObbInfo_getFlags (AObbInfo* obbInfo);
+
+// ANDROID_OBB_H
 
 /** @} */

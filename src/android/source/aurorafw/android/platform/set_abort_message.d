@@ -6,7 +6,7 @@
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
-Copyright (C) 2010 The Android Open Source Project.
+Copyright (C) 2014 The Android Open Source Project.
 Copyright (C) 2018-2019 Aurora Free Open Source Software.
 
 This file is part of the Aurora Free Open Source Software. This
@@ -37,16 +37,7 @@ This file has bindings for an existing code, part of The Android Open Source
 Project implementation. Check it out at android.googlesource.com .
 */
 
-module aurorafw.android.platform.rect;
-
-/**
- * @addtogroup NativeActivity Native Activity
- * @{
- */
-
-/**
- * @file aurorafw/android/platform/rect.d
- */
+module aurorafw.android.platform.set_abort_message;
 
 version (Android):
 extern (C):
@@ -54,28 +45,6 @@ extern (C):
 nothrow:
 @nogc:
 
-/**
- * Rectangular window area.
- *
- * This is the NDK equivalent of the android.graphics.Rect class in Java. It is
- * used with {@link ANativeActivityCallbacks::onContentRectChanged} event
- * callback and the ANativeWindow_lock() function.
- *
- * In a valid ARect, left <= right and top <= bottom. ARect with left=0, top=10,
- * right=1, bottom=11 contains only one pixel at x=0, y=10.
- */
-struct ARect
-{
-    /// Minimum X coordinate of the rectangle.
-    int left;
-    /// Minimum Y coordinate of the rectangle.
-    int top;
-    /// Maximum X coordinate of the rectangle.
-    int right;
-    /// Maximum Y coordinate of the rectangle.
-    int bottom;
-}
+void android_set_abort_message (const(char)* __msg);
+/* __ANDROID_API__ >= 21 */
 
-// ANDROID_RECT_H
-
-/** @} */

@@ -6,7 +6,7 @@
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
-Copyright (C) 2010 The Android Open Source Project.
+Copyright (C) 2017 The Android Open Source Project.
 Copyright (C) 2018-2019 Aurora Free Open Source Software.
 
 This file is part of the Aurora Free Open Source Software. This
@@ -37,15 +37,10 @@ This file has bindings for an existing code, part of The Android Open Source
 Project implementation. Check it out at android.googlesource.com .
 */
 
-module aurorafw.android.platform.rect;
+module aurorafw.android.platform.hardware_buffer_jni;
 
 /**
- * @addtogroup NativeActivity Native Activity
- * @{
- */
-
-/**
- * @file aurorafw/android/platform/rect.d
+ * @file aurorafw/android/platform/hardware_buffer_jni.d
  */
 
 version (Android):
@@ -55,27 +50,23 @@ nothrow:
 @nogc:
 
 /**
- * Rectangular window area.
- *
- * This is the NDK equivalent of the android.graphics.Rect class in Java. It is
- * used with {@link ANativeActivityCallbacks::onContentRectChanged} event
- * callback and the ANativeWindow_lock() function.
- *
- * In a valid ARect, left <= right and top <= bottom. ARect with left=0, top=10,
- * right=1, bottom=11 contains only one pixel at x=0, y=10.
+ * Return the AHardwareBuffer associated with a Java HardwareBuffer object,
+ * for interacting with it through native code. This method does not acquire any
+ * additional reference to the AHardwareBuffer that is returned. To keep the
+ * AHardwareBuffer live after the Java HardwareBuffer object got garbage
+ * collected, be sure to use AHardwareBuffer_acquire() to acquire an additional
+ * reference.
  */
-struct ARect
-{
-    /// Minimum X coordinate of the rectangle.
-    int left;
-    /// Minimum Y coordinate of the rectangle.
-    int top;
-    /// Maximum X coordinate of the rectangle.
-    int right;
-    /// Maximum Y coordinate of the rectangle.
-    int bottom;
-}
+AHardwareBuffer* AHardwareBuffer_fromHardwareBuffer (
+    JNIEnv* env,
+    jobject hardwareBufferObj);
 
-// ANDROID_RECT_H
+/**
+ * Return a new Java HardwareBuffer object that wraps the passed native
+ * AHardwareBuffer object.
+ */
+jobject AHardwareBuffer_toHardwareBuffer (
+    JNIEnv* env,
+    AHardwareBuffer* hardwareBuffer);
 
-/** @} */
+// ANDROID_HARDWARE_BUFFER_JNI_H

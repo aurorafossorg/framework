@@ -6,7 +6,7 @@
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
-Copyright (C) 2010 The Android Open Source Project.
+Copyright (C) 2015 The Android Open Source Project.
 Copyright (C) 2018-2019 Aurora Free Open Source Software.
 
 This file is part of the Aurora Free Open Source Software. This
@@ -37,16 +37,18 @@ This file has bindings for an existing code, part of The Android Open Source
 Project implementation. Check it out at android.googlesource.com .
 */
 
-module aurorafw.android.platform.rect;
+module aurorafw.android.platform.choreographer;
 
 /**
- * @addtogroup NativeActivity Native Activity
+ * @addtogroup Choreographer
  * @{
  */
 
 /**
- * @file aurorafw/android/platform/rect.d
+ * @file aurorafw/android/platform/choreographer.d
  */
+
+import core.stdc.config;
 
 version (Android):
 extern (C):
@@ -54,28 +56,46 @@ extern (C):
 nothrow:
 @nogc:
 
-/**
- * Rectangular window area.
- *
- * This is the NDK equivalent of the android.graphics.Rect class in Java. It is
- * used with {@link ANativeActivityCallbacks::onContentRectChanged} event
- * callback and the ANativeWindow_lock() function.
- *
- * In a valid ARect, left <= right and top <= bottom. ARect with left=0, top=10,
- * right=1, bottom=11 contains only one pixel at x=0, y=10.
- */
-struct ARect
-{
-    /// Minimum X coordinate of the rectangle.
-    int left;
-    /// Minimum Y coordinate of the rectangle.
-    int top;
-    /// Maximum X coordinate of the rectangle.
-    int right;
-    /// Maximum Y coordinate of the rectangle.
-    int bottom;
-}
+struct AChoreographer;
 
-// ANDROID_RECT_H
+/**
+ * Prototype of the function that is called when a new frame is being rendered.
+ * It's passed the time that the frame is being rendered as nanoseconds in the
+ * CLOCK_MONOTONIC time base, as well as the data pointer provided by the
+ * application that registered a callback. All callbacks that run as part of
+ * rendering a frame will observe the same frame time, so it should be used
+ * whenever events need to be synchronized (e.g. animations).
+ */
+alias AChoreographer_frameCallback = void function (c_long frameTimeNanos, void* data);
+
+/**
+ * Get the AChoreographer instance for the current thread. This must be called
+ * on an ALooper thread.
+ */
+AChoreographer* AChoreographer_getInstance ();
+
+/**
+ * Post a callback to be run on the next frame. The data pointer provided will
+ * be passed to the callback function when it's called.
+ */
+void AChoreographer_postFrameCallback (
+    AChoreographer* choreographer,
+    AChoreographer_frameCallback callback,
+    void* data);
+
+/**
+ * Post a callback to be run on the frame following the specified delay. The
+ * data pointer provided will be passed to the callback function when it's
+ * called.
+ */
+void AChoreographer_postFrameCallbackDelayed (
+    AChoreographer* choreographer,
+    AChoreographer_frameCallback callback,
+    void* data,
+    c_long delayMillis);
+
+/* __ANDROID_API__ >= 24 */
+
+// ANDROID_CHOREOGRAPHER_H
 
 /** @} */
