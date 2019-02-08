@@ -45,6 +45,8 @@ android.googlesource.com .
 
 module aurorafw.jni.platform.jni;
 
+/// TODO: add documentation from android source
+
 import core.stdc.stdarg;
 
 extern (C):
