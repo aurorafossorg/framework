@@ -8,6 +8,7 @@
 
 Copyright © 2013-2016, Mike Parker.
 Copyright © 2016, 渡世白玉.
+Copyright © 2018, Michael D. Parker
 Copyright © 2018-2019, Aurora Free Open Source Software.
 
 This file is part of the Aurora Free Open Source Software. This
@@ -39,9 +40,14 @@ from DerelictOrg. Check it out at derelictorg.github.io .
 
 This file is an improvement of an existing code, developed by 渡世白玉
 and available on github at https://github.com/huntlabs/DerelictUtil .
+
+This file is an improvement of an existing code, part of bindbc-loader
+from BindBC. Check it out at github.com/BindBC/bindbc-loader .
 */
 
 module aurorafw.core.dylib;
+
+///TODO: Need documentation
 
 import std.array;
 import std.string;
