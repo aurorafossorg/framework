@@ -50,274 +50,338 @@ import std.traits;
 version(Posix) import core.sys.posix.dlfcn;
 else version(Windows) import core.sys.windows.windows;
 
-
-struct DylibVersion
+version(D_BetterC)
 {
-	uint major;
-	uint minor;
-	uint patch;
-}
+	import std.conv : to;
 
-class DylibLoadException : Exception {
-	this(string msg, size_t line = __LINE__, string file = __FILE__)
+	@nogc nothrow:
+	void* dylib_load(const(char)* name)
 	{
-		super(msg, file, line, null);
+		version(Posix) void* handle = dlopen(name, RTLD_NOW);
+		else version(Windows) void* handle = LoadLibraryA(name);
+		if(handle) return handle;
+		else return null;
 	}
 
-	this(string[] names, string[] reasons, size_t line = __LINE__, string file = __FILE__)
-	{
-		string msg = "Failed to load one or more shared libraries:";
-		foreach(i, name; names) {
-			msg ~= "\n\t" ~ name ~ " - ";
-			if(i < reasons.length)
-				msg ~= reasons[i];
-			else
-				msg ~= "Unknown";
+	void dylib_unload(ref void* handle) {
+		if(handle) {
+			version(Posix) dlclose(handle);
+			else version(Windows) FreeLibrary(handle);
+			handle = null;
 		}
-		this(msg, line, file);
 	}
 
-	this(string msg, string name = "", size_t line = __LINE__, string file = __FILE__)
+	void dylib_bindSymbol(void* handle, void** ptr, const(char)* name)
 	{
-		super(msg, file, line, null);
-		_name = name;
+		assert(handle);
+		version(Posix) void* sym = dlsym(handle, name);
+		else version(Windows) void* sym = GetProcAddress(handle, name);
+
+		*ptr = sym;
 	}
 
-	pure nothrow @nogc
-	@property string name()
+	void dylib_sysError(char* buf, size_t len)
 	{
-		return _name;
+		import core.stdc.string;
+		version(Windows) {
+			char* msgBuf;
+			enum uint langID = MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT);
+
+			FormatMessageA(
+				FORMAT_MESSAGE_ALLOCATE_BUFFER |
+				FORMAT_MESSAGE_FROM_SYSTEM |
+				FORMAT_MESSAGE_IGNORE_INSERTS,
+				null,
+				GetLastError(),
+				langID,
+				cast(char*)&msgBuf,
+				0,
+				null
+			);
+
+			if(msgBuf) {
+				strncpy(buf, msgBuf, len);
+				buf[len - 1] = 0;
+				LocalFree(msgBuf);
+			}
+			else strncpy(buf, "Unknown Error\0", len);
+		}
+		else version(Posix) {
+			char* msg = dlerror();
+			strncpy(buf, msg != null ? msg : "Unknown Error", len);
+			buf[len - 1] = 0;
+		}
 	}
-	private string _name;
 }
-
-class DylibSymbolLoadException : Exception {
-	this(string msg, size_t line = __LINE__, string file = __FILE__) {
-		super(msg, file, line, null);
+else {
+	struct DylibVersion
+	{
+		uint major;
+		uint minor;
+		uint patch;
 	}
 
-	this(string lib, string symbol, size_t line = __LINE__, string file = __FILE__)
-	{
-		_lib = lib;
-		_symbol = symbol;
-		this("Failed to load symbol " ~ symbol ~ " from shared library " ~ lib, line, file);
-	}
-
-	@property string lib()
-	{
-		return _lib;
-	}
-
-	@property string symbol()
-	{
-		return _symbol;
-	}
-
-private:
-	string _lib;
-	string _symbol;
-}
-
-pure struct Dylib
-{
-	void load(string[] names)
-	{
-		if(isLoaded)
-			return;
-
-		string[] fnames;
-		string[] freasons;
-
-		foreach(name; names)
+	class DylibLoadException : Exception {
+		this(string msg, size_t line = __LINE__, string file = __FILE__)
 		{
-			import std.stdio;
-			import std.conv;
+			super(msg, file, line, null);
+		}
 
-			version(Posix) _handle = dlopen(name.toStringz(), RTLD_NOW);
-			else version(Windows) _handle = LoadLibraryA(name.toStringz());
-			if(isLoaded) {
-				_name = name;
-				break;
+		this(string[] names, string[] reasons, size_t line = __LINE__, string file = __FILE__)
+		{
+			string msg = "Failed to load one or more shared libraries:";
+			foreach(i, name; names) {
+				msg ~= "\n\t" ~ name ~ " - ";
+				if(i < reasons.length)
+					msg ~= reasons[i];
+				else
+					msg ~= "Unknown";
 			}
+			this(msg, line, file);
+		}
 
-			fnames ~= name;
+		this(string msg, string name = "", size_t line = __LINE__, string file = __FILE__)
+		{
+			super(msg, file, line, null);
+			_name = name;
+		}
 
-			import std.conv : to;
+		pure nothrow @nogc
+		@property string name()
+		{
+			return _name;
+		}
+		private string _name;
+	}
 
-			version(Posix) {
-				string err = to!string(dlerror());
-				if(err is null)
-					err = "Unknown error";
-			}
-			else version(Windows)
+	class DylibSymbolLoadException : Exception {
+		this(string msg, size_t line = __LINE__, string file = __FILE__) {
+			super(msg, file, line, null);
+		}
+
+		this(string lib, string symbol, size_t line = __LINE__, string file = __FILE__)
+		{
+			_lib = lib;
+			_symbol = symbol;
+			this("Failed to load symbol " ~ symbol ~ " from shared library " ~ lib, line, file);
+		}
+
+		@property string lib()
+		{
+			return _lib;
+		}
+
+		@property string symbol()
+		{
+			return _symbol;
+		}
+
+	private:
+		string _lib;
+		string _symbol;
+	}
+
+	pure struct Dylib
+	{
+		void load(string[] names)
+		{
+			if(isLoaded)
+				return;
+
+			string[] fnames;
+			string[] freasons;
+
+			foreach(name; names)
 			{
-				import std.windows.syserror;
-				string err = sysErrorString(GetLastError());
-			}
+				import std.stdio;
+				import std.conv;
 
-			freasons ~= err;
-		}
-		if(!isLoaded)
-			throw new DylibLoadException(fnames, freasons);
-	}
-
-	void* loadSymbol(string name, bool required = true)
-	{
-		version(Posix) void* sym = dlsym(_handle, name.toStringz());
-		else version(Windows) void* sym = GetProcAddress(_handle, name.toStringz());
-
-		if(required && !sym)
-		{
-			if(_callback !is null)
-				required = _callback(name);
-			if(required)
-				throw new DylibSymbolLoadException(_name, name);
-		}
-
-		return sym;
-	}
-
-	void unload()
-	{
-		if(isLoaded)
-		{
-			version(Posix) dlclose(_handle);
-			else version(Windows) FreeLibrary(_handle);
-			_handle = null;
-		}
-	}
-
-	@property bool isLoaded()
-	{
-		return _handle !is null;
-	}
-
-	@property bool delegate(string) missingSymbolCallback()
-	{
-		return _callback;
-	}
-
-	@property void missingSymbolCallback(bool delegate(string) callback)
-	{
-		_callback = callback;
-	}
-
-	@property void missingSymbolCallback(bool function(string) callback)
-	{
-		import std.functional : toDelegate;
-		_callback = toDelegate(callback);
-	}
-
-private:
-	string _name;
-	void* _handle;
-	bool delegate(string) _callback;
-}
-
-abstract class DylibLoader
-{
-	this(string libs)
-	{
-		string[] libs_ = libs.split(",");
-		foreach(ref string l; libs_)
-			l = l.strip();
-		this(libs_);
-	}
-
-	this(string[] libs)
-	{
-		_libs = libs;
-		dylib.load(_libs);
-		loadSymbols();
-	}
-
-	final this(string[] libs, DylibVersion ver)
-	{
-		configureMinimumVersion(ver);
-		this(libs);
-	}
-
-	final this(string libs, DylibVersion ver)
-	{
-		configureMinimumVersion(ver);
-		this(libs);
-	}
-
-	protected void loadSymbols() {}
-
-	protected void configureMinimumVersion(DylibVersion minVersion)
-	{
-		assert(0, "DylibVersion is not supported by this loader.");
-	}
-
-	protected final void bindFunc(void** ptr, string name, bool required = true)
-	{
-		void* func = dylib.loadSymbol(name, required);
-		*ptr = func;
-	}
-
-	protected final void bindFunc(TFUN)(ref TFUN fun, string name, bool required = true)
-		if(isFunctionPointer!(TFUN))
-	{
-		void* func = dylib.loadSymbol(name, required);
-		fun = cast(TFUN)func;
-	}
-
-	protected final void bindFunc_stdcall(Func)(ref Func f, string unmangledName)
-	{
-		version(Win32) {
-			import std.format : format;
-			import std.traits : ParameterTypeTuple;
-
-			// get type-tuple of parameters
-			ParameterTypeTuple!f params;
-
-			size_t sizeOfParametersOnStack(A...)(A args)
-			{
-				size_t sum = 0;
-				foreach (arg; args) {
-					sum += arg.sizeof;
-
-					// align on 32-bit stack
-					if (sum % 4 != 0)
-						sum += 4 - (sum % 4);
+				version(Posix) _handle = dlopen(name.toStringz(), RTLD_NOW);
+				else version(Windows) _handle = LoadLibraryA(name.toStringz());
+				if(isLoaded) {
+					_name = name;
+					break;
 				}
-				return sum;
+
+				fnames ~= name;
+
+				import std.conv : to;
+
+				version(Posix) {
+					string err = to!string(dlerror());
+					if(err is null)
+						err = "Unknown error";
+				}
+				else version(Windows)
+				{
+					import std.windows.syserror;
+					string err = sysErrorString(GetLastError());
+				}
+
+				freasons ~= err;
 			}
-			unmangledName = format("_%s@%s", unmangledName, sizeOfParametersOnStack(params));
+			if(!isLoaded)
+				throw new DylibLoadException(fnames, freasons);
 		}
-		bindFunc(cast(void**)&f, unmangledName);
-	}
 
-	@property final string[] libs()
-	{
-		return _libs;
-	}
-
-	Dylib dylib;
-	private string[] _libs;
-}
-
-template DylibBuildLoadSymbols(alias T, bool required = false)
-{
-	string _buildLoadSymbols(alias T, bool required = false)()
-	{
-		static if(required)
-			enum dthrow = "true";
-		else
-			enum dthrow = "false";
-
-		string bindlist = "\n{";
-		foreach(mem; __traits(derivedMembers, T))
+		void* loadSymbol(string name, bool required = true)
 		{
-			static if( isFunctionPointer!(__traits(getMember, T, mem)) /*&& !is(typeof(__traits(getMember, T, mem)) == immutable)*/)
+			version(Posix) void* sym = dlsym(_handle, name.toStringz());
+			else version(Windows) void* sym = GetProcAddress(_handle, name.toStringz());
+
+			if(required && !sym)
 			{
-				bindlist ~= "\tbindFunc(" ~ mem ~ ", \"" ~ mem ~ "\", " ~ dthrow ~ ");\n";
+				if(_callback !is null)
+					required = _callback(name);
+				if(required)
+					throw new DylibSymbolLoadException(_name, name);
+			}
+
+			return sym;
+		}
+
+		void unload()
+		{
+			if(isLoaded)
+			{
+				version(Posix) dlclose(_handle);
+				else version(Windows) FreeLibrary(_handle);
+				_handle = null;
 			}
 		}
-		bindlist ~= "}";
-		return bindlist;
+
+		@property bool isLoaded()
+		{
+			return _handle !is null;
+		}
+
+		@property bool delegate(string) missingSymbolCallback()
+		{
+			return _callback;
+		}
+
+		@property void missingSymbolCallback(bool delegate(string) callback)
+		{
+			_callback = callback;
+		}
+
+		@property void missingSymbolCallback(bool function(string) callback)
+		{
+			import std.functional : toDelegate;
+			_callback = toDelegate(callback);
+		}
+
+	private:
+		string _name;
+		void* _handle;
+		bool delegate(string) _callback;
 	}
 
-	enum DylibBuildLoadSymbols = _buildLoadSymbols!(T, required)();
+	abstract class DylibLoader
+	{
+		this(string libs)
+		{
+			string[] libs_ = libs.split(",");
+			foreach(ref string l; libs_)
+				l = l.strip();
+			this(libs_);
+		}
+
+		this(string[] libs)
+		{
+			_libs = libs;
+			dylib.load(_libs);
+			loadSymbols();
+		}
+
+		final this(string[] libs, DylibVersion ver)
+		{
+			configureMinimumVersion(ver);
+			this(libs);
+		}
+
+		final this(string libs, DylibVersion ver)
+		{
+			configureMinimumVersion(ver);
+			this(libs);
+		}
+
+		protected void loadSymbols() {}
+
+		protected void configureMinimumVersion(DylibVersion minVersion)
+		{
+			assert(0, "DylibVersion is not supported by this loader.");
+		}
+
+		protected final void bindFunc(void** ptr, string name, bool required = true)
+		{
+			void* func = dylib.loadSymbol(name, required);
+			*ptr = func;
+		}
+
+		protected final void bindFunc(TFUN)(ref TFUN fun, string name, bool required = true)
+			if(isFunctionPointer!(TFUN))
+		{
+			void* func = dylib.loadSymbol(name, required);
+			fun = cast(TFUN)func;
+		}
+
+		protected final void bindFunc_stdcall(Func)(ref Func f, string unmangledName)
+		{
+			version(Win32) {
+				import std.format : format;
+				import std.traits : ParameterTypeTuple;
+
+				// get type-tuple of parameters
+				ParameterTypeTuple!f params;
+
+				size_t sizeOfParametersOnStack(A...)(A args)
+				{
+					size_t sum = 0;
+					foreach (arg; args) {
+						sum += arg.sizeof;
+
+						// align on 32-bit stack
+						if (sum % 4 != 0)
+							sum += 4 - (sum % 4);
+					}
+					return sum;
+				}
+				unmangledName = format("_%s@%s", unmangledName, sizeOfParametersOnStack(params));
+			}
+			bindFunc(cast(void**)&f, unmangledName);
+		}
+
+		@property final string[] libs()
+		{
+			return _libs;
+		}
+
+		Dylib dylib;
+		private string[] _libs;
+	}
+
+	template DylibBuildLoadSymbols(alias T, bool required = false)
+	{
+		string _buildLoadSymbols(alias T, bool required = false)()
+		{
+			static if(required)
+				enum dthrow = "true";
+			else
+				enum dthrow = "false";
+
+			string bindlist = "\n{";
+			foreach(mem; __traits(derivedMembers, T))
+			{
+				static if( isFunctionPointer!(__traits(getMember, T, mem)) /*&& !is(typeof(__traits(getMember, T, mem)) == immutable)*/)
+				{
+					bindlist ~= "\tbindFunc(" ~ mem ~ ", \"" ~ mem ~ "\", " ~ dthrow ~ ");\n";
+				}
+			}
+			bindlist ~= "}";
+			return bindlist;
+		}
+
+		enum DylibBuildLoadSymbols = _buildLoadSymbols!(T, required)();
+	}
 }
