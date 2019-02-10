@@ -1,6 +1,6 @@
 /*
-                                    __
-                                   / _|
+									__
+								   / _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
@@ -46,6 +46,10 @@ module aurorafw.core.dylib;
 import std.array;
 import std.string;
 import std.traits;
+
+version(Posix) import core.sys.posix.dlfcn;
+else version(Windows) import core.sys.windows.windows;
+
 
 struct DylibVersion
 {
@@ -116,8 +120,6 @@ private:
 
 pure struct Dylib
 {
-	version(Posix) import core.sys.posix.dlfcn;
-	else version(Windows) import core.sys.windows.windows;
 	void load(string[] names)
 	{
 		if(isLoaded)
@@ -128,7 +130,11 @@ pure struct Dylib
 
 		foreach(name; names)
 		{
-			version(Posix) _handle = dlopen(_name.toStringz(), RTLD_NOW);
+			import std.stdio;
+			import std.conv;
+
+			version(Posix) _handle = dlopen(name.toStringz(), RTLD_NOW);
+			else version(Windows) _handle = LoadLibraryA(name.toStringz());
 			if(isLoaded) {
 				_name = name;
 				break;
@@ -250,11 +256,37 @@ abstract class DylibLoader
 		*ptr = func;
 	}
 
-	final void bindFunc(TFUN)(ref TFUN fun, string name, bool required = true)
+	protected final void bindFunc(TFUN)(ref TFUN fun, string name, bool required = true)
 		if(isFunctionPointer!(TFUN))
 	{
 		void* func = dylib.loadSymbol(name, required);
 		fun = cast(TFUN)func;
+	}
+
+	protected final void bindFunc_stdcall(Func)(ref Func f, string unmangledName)
+	{
+		version(Win32) {
+			import std.format : format;
+			import std.traits : ParameterTypeTuple;
+
+			// get type-tuple of parameters
+			ParameterTypeTuple!f params;
+
+			size_t sizeOfParametersOnStack(A...)(A args)
+			{
+				size_t sum = 0;
+				foreach (arg; args) {
+					sum += arg.sizeof;
+
+					// align on 32-bit stack
+					if (sum % 4 != 0)
+						sum += 4 - (sum % 4);
+				}
+				return sum;
+			}
+			unmangledName = format("_%s@%s", unmangledName, sizeOfParametersOnStack(params));
+		}
+		bindFunc(cast(void**)&f, unmangledName);
 	}
 
 	@property final string[] libs()
