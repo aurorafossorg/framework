@@ -74,7 +74,7 @@ pure class X11Backend : Backend {
 		// get system content scale
 		float xdpi = X.XDisplayWidth(_display, _screen) * 25.4f / X.XDisplayWidthMM(_display, _screen);
 		float ydpi = X.XDisplayHeight(_display, _screen) * 25.4f / X.XDisplayHeightMM(_display, _screen);
-		
+
 		char* rms = X.XResourceManagerString(_display);
 		if (rms)
 		{
@@ -99,6 +99,7 @@ pure class X11Backend : Backend {
 
 		//init x11 extensions
 		// TODO
+		initX11Extensions();
 
 		X.XSetWindowAttributes wa;
 		wa.event_mask = X.PropertyChangeMask;
@@ -108,7 +109,7 @@ pure class X11Backend : Backend {
 			X.InputOnly,
 			X.XDefaultVisual(_display, _screen),
 			X.CWEventMask, &wa);
-		
+
 		immutable byte[16 * 16 * 4] pixels;
 		_hiddenCursorHandle = createXCursor(16, 16, pixels, 0, 0);
 
@@ -190,6 +191,13 @@ pure class X11Backend : Backend {
 	X.Display* display() @property { return _display; }
 	int screen() @property { return _screen; }
 	X.Window root() @property { return _root; }
+
+	void initX11Extensions()
+	{
+		import aurorafw.gui.platform.x11.xcursor;
+		try _xcursor_handle = new X.XCursorDylibLoader(); catch(Exception) {}
+
+	}
 
 private:
 	X.Display* _display;

@@ -49,7 +49,7 @@ class X11Window : Window {
 	import aurorafw.gui.api.x11.backend : X11Backend;
 	this(VisualPreferences vpref = VisualPreferences())
 	{
-		X11Backend _backend = cast(X11Backend)Backend.get();
+		_backend = cast(X11Backend)Backend.get();
 
 		if(vpref.visual is null)
 			vpref.visual = X.XDefaultVisual(_backend.display, _backend.screen);
@@ -78,7 +78,42 @@ class X11Window : Window {
 		}
 		X.XSelectInput(_backend.display, _handle, X.ExposureMask | X.KeyPressMask);
 		X.XMapWindow(_backend.display, _handle);
-		X.XEvent _event;
+		import std.string;
+		X.XStoreName(_backend.display, _handle, _name.toStringz());
+	}
+
+	import aurorafw.core.input.manager;
+	override void pollEvents(InputManager inmanager = InputManager())
+	{
+		X.XPending(_backend.display);
+		while (X.XQLength(_backend.display))
+		{
+			X.XEvent e;
+			X.XNextEvent(_backend.display, &e);
+
+			import aurorafw.core.input.events;
+			import aurorafw.gui.api.x11.input;
+			switch(e.type)
+			{
+				case X.KeyPress:
+					inmanager.keyPressed(KeyboardEvent(translateKeycodeX11(e.xkey.keycode), translateInputModifierX11(e.xkey.state)));
+					break;
+
+				case X.KeyRelease:
+					inmanager.keyReleased(KeyboardEvent(translateKeycodeX11(e.xkey.keycode), translateInputModifierX11(e.xkey.state)));
+					break;
+
+				case X.ButtonPress:
+					inmanager.mousePressed(MouseButtonEvent(translateInputButtonX11(e.xbutton.state), translateInputModifierX11(e.xbutton.state)));
+					break;
+
+				case X.ButtonRelease:
+					inmanager.mouseReleased(MouseButtonEvent(translateInputButtonX11(e.xbutton.state), translateInputModifierX11(e.xbutton.state)));
+					break;
+
+				default: break;
+			}
+		}
 	}
 
 	~this()
@@ -89,4 +124,5 @@ class X11Window : Window {
 private:
 	X.Window _handle;
 	X.Colormap _colormap;
+	X11Backend _backend;
 }

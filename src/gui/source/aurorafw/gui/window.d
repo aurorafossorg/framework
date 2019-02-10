@@ -42,18 +42,24 @@ struct WindowProperties {
 }
 
 abstract class Window {
-	static final Window create(string name, WindowProperties wp)
+	static final Window create(string name, WindowProperties wp = WindowProperties())
 	{
+		Window _instance;
 		version(linux)
 		{
 			import std.process : environment;
-			import aurorafw.gui.api.x11.window : X11Window;
-			import aurorafw.gui.api.wayland.window : WLWindow;
+
 			immutable auto xdg_session_type = environment.get("XDG_SESSION_TYPE");
 			if(xdg_session_type == "x11")
+			{
+				import aurorafw.gui.api.x11.window : X11Window;
 				_instance = new X11Window();
+			}
 			else if(xdg_session_type == "wayland")
+			{
+				import aurorafw.gui.api.wayland.window : WLWindow;
 				_instance = new WLWindow();
+			}
 		}
 
 		_instance._name = name;
@@ -61,8 +67,10 @@ abstract class Window {
 		return _instance;
 	}
 
+	import aurorafw.core.input.manager;
+	void pollEvents(InputManager inmanager = InputManager());
+
 protected:
-	static Window _instance;
 	string _name;
 	WindowProperties _wp;
 }

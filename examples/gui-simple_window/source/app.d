@@ -29,8 +29,17 @@ directly send an email to: contact (at) aurorafoss.org .
 
 import aurorafw.gui.window;
 
+import aurorafw.core.input.rawlistener;
+
+class MyInputListener : RawInputListener {
+
+}
+
 void main()
 {
-	WindowProperties wp;
-	Window.create("Hello", wp);
+	Window win = Window.create("Aurora Framework Example");
+	while(true)
+	{
+		win.pollEvents();
+	}
 }

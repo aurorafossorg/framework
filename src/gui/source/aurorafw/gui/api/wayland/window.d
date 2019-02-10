@@ -42,6 +42,9 @@ class WLWindow : Window {
 	this()
 	{}
 
+	import aurorafw.core.input.manager;
+	override void pollEvents(InputManager inmanager = InputManager()) {}
+
 	~this()
 	{}
 }

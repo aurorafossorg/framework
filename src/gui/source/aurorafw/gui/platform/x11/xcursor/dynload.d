@@ -43,7 +43,12 @@ public import aurorafw.gui.platform.x11.xcursor.dynfun;
 class XCursorDylibLoader : DylibLoader {
 	this()
 	{
-		super([""]);
+
+		version(Cygwin)
+			super(["libXcursor-1.so"]);
+		else
+			super(["libXcursor.so", "libXcursor.so.1"]);
+
 	}
 
 	override void loadSymbols()
