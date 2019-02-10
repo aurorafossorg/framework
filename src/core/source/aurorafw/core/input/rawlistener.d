@@ -33,12 +33,22 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.core;
+module aurorafw.core.input.rawlistener;
 
-public:
-	import aurorafw.core.appcontext;
-	import aurorafw.core.application;
-	import aurorafw.core.debugmanager;
-	import aurorafw.core.input;
-	import aurorafw.core.logger;
-	import aurorafw.core.opt;
+/// TODO: Need documentation
+
+import aurorafw.core.input.events;
+
+pure @safe abstract class RawInputListener {
+	~this() {}
+
+	void keyPressed(immutable KeyboardEvent e, bool lastState) {}
+	void keyReleased(immutable KeyboardEvent e) {}
+	void mousePressed(immutable MouseButtonEvent e, bool lastState) {}
+	void mouseReleased(immutable MouseButtonEvent e) {}
+	void mouseMoved(immutable MouseMotionEvent e) {}
+	void mouseScrolled(immutable MouseScrollEvent e) {}
+	void touchMoved(immutable TouchFingerEvent e) {}
+	void touchPressed(immutable TouchFingerEvent e, bool lastState) {}
+	void touchReleased(immutable TouchFingerEvent e) {}
+}

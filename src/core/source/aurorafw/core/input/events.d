@@ -33,12 +33,32 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.core;
+module aurorafw.core.input.events;
 
-public:
-	import aurorafw.core.appcontext;
-	import aurorafw.core.application;
-	import aurorafw.core.debugmanager;
-	import aurorafw.core.input;
-	import aurorafw.core.logger;
-	import aurorafw.core.opt;
+///TODO: Need documentation
+
+import aurorafw.core.input.keys;
+
+struct KeyboardEvent {
+	Keycode key;
+	InputModifier mods;
+}
+
+struct MouseButtonEvent {
+	InputButton btn;
+	InputModifier mods;
+}
+
+struct MouseMotionEvent {
+	double xpos, ypos;
+}
+
+struct MouseScrollEvent {
+	double xoffset, yoffset;
+}
+
+struct TouchFingerEvent {
+	float dx, dy;
+	float x, y;
+	ubyte fingerID;
+}

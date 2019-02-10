@@ -33,44 +33,9 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.core.inputlistener;
-
-pure @safe abstract class InputListener {
-	struct KeyboardEvent {
-		int key, scancode;
-		ushort mods;
-	}
-
-	struct MouseButtonEvent {
-		int btn;
-		ushort mods;
-	}
-
-	struct MouseMotionEvent {
-		double xpos, ypos;
-	}
-
-	struct MouseScrollEvent {
-		double xoffset, yoffset;
-	}
-
-	~this() {}
-
-	bool keyPressed(immutable ref KeyboardEvent )
-	{ return true; }
-
-	bool keyReleased(immutable ref KeyboardEvent )
-	{ return true; }
-
-	bool mousePressed(immutable ref MouseButtonEvent )
-	{ return true; }
-
-	bool mouseReleased(immutable ref MouseButtonEvent )
-	{ return true; }
-
-	bool mouseMoved(immutable ref MouseMotionEvent )
-	{ return true; }
-
-	bool mouseScrolled(immutable ref MouseScrollEvent )
-	{ return true; }
-}
+public:
+	import aurorafw.core.input.keys;
+	import aurorafw.core.input.manager;
+	import aurorafw.core.input.rawlistener;
+	import aurorafw.core.input.state;
+	import aurorafw.core.input.events;

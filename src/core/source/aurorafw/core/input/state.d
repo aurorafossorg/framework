@@ -33,12 +33,66 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.core;
+module aurorafw.core.input.state;
 
-public:
-	import aurorafw.core.appcontext;
-	import aurorafw.core.application;
-	import aurorafw.core.debugmanager;
-	import aurorafw.core.input;
-	import aurorafw.core.logger;
-	import aurorafw.core.opt;
+///TODO: Need documentation
+
+import aurorafw.core.input.keys;
+
+struct KeyboardState {
+	private bool[short] keys;
+
+	bool isKeyPressed(Keycode key) const
+	{
+		return keys[key];
+	}
+
+	void pressKey(Keycode key)
+	{
+		if(keys[key] == false) keys[key] = true;
+	}
+
+	void releaseKey(Keycode key)
+	{
+		keys[key] = false;
+	}
+}
+
+struct MouseState {
+	private bool[8] buttons;
+	double x, y;
+
+	bool isButtonPressed(InputButton button) const
+	{
+		return buttons[button];
+	}
+
+	void pressButton(InputButton button)
+	{
+		if(buttons[button] == false) buttons[button] = true;
+	}
+
+	void releaseButton(InputButton button)
+	{
+		buttons[button] = false;
+	}
+}
+
+struct TouchState {
+	private bool[ubyte] fingers;
+
+	bool isTouchPressed(ubyte id) const
+	{
+		return fingers[id];
+	}
+
+	void touchPress(ubyte id)
+	{
+		if(fingers[id] == false) fingers[id] = true;
+	}
+
+	void touchRelease(ubyte id)
+	{
+		fingers[id] = false;
+	}
+}
