@@ -44,7 +44,7 @@ module aurorafw.math.matrix;
 
 /** A struct that represents a variable matrix. A struct that store's
  * N*M array, allows to manipulate it.
- * @since snapshot20190930
+ * @since snapshot20180930
  */
 @nogc pure @safe struct mat(T, size_t M, size_t N) {
 	this(T num)
