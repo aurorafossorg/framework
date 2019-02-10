@@ -10,6 +10,7 @@ enum PDFVersion : Version {
 	PDF_1_2=Version(1,2),
 	PDF_1_3=Version(1,3),
 	PDF_1_4=Version(1,4),
+	PDF_1_5=Version(1,5),
 	PDF_1_6=Version(1,6),
 	PDF_1_7=Version(1,7),
 	PDF_2_0=Version(2,0),
