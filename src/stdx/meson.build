@@ -30,74 +30,40 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-#subdir('legacy')
+d_stdx_inc = include_directories('source')
 
-subdir('stdx')
-subdir('core')
-subdir('math')
-subdir('audio')
-subdir('image')
-subdir('gui')
-subdir('graphics')
-
-
-d_inc = include_directories('source')
-
-d_src = [
-	'source/aurorafw/package.d'
+d_stdx_src = [
+	'source/aurorafw/stdx/concurrency.d',
+	'source/aurorafw/stdx/getopt.d',
+	'source/aurorafw/stdx/string.d'
 ]
 
 install_subdir('source/aurorafw/', install_dir: 'include/d/aurorafw/')
 
-d_lib = library('aurorafw',
-	[d_src],
-	include_directories: [d_inc],
+d_stdx_lib = library('aurorafw-stdx',
+	d_stdx_src,
+	include_directories: [d_stdx_inc],
 	install: true,
-	dependencies: [
-		d_core_dep,
-		d_math_dep,
-		d_audio_dep,
-		d_graphics_dep,
-		d_image_dep,
-		d_gui_dep
-	],
-	version: meson.project_version()
+	version: project_version
 )
 
-pkgc.generate(name: 'aurorafw',
-	libraries: [d_lib],
-	requires: ['aurorafw-core'],
+pkgc.generate(d_stdx_lib,
+	name: 'aurorafw-stdx',
 	subdirs: 'd/aurorafw',
-	version: meson.project_version(),
+	version: project_version,
 	description: ''
 )
 
-d_dep = declare_dependency(
-	link_with: [d_lib],
-	include_directories: [d_inc],
-	dependencies: [
-		d_core_dep,
-		d_math_dep,
-		d_audio_dep,
-		d_graphics_dep,
-		d_image_dep,
-		d_gui_dep
-	]
+d_stdx_dep = declare_dependency(
+	link_with: [d_stdx_lib],
+	include_directories: [d_stdx_inc]
 )
 
-d_exe = executable('aurorafw-test',
-	[d_src],
-	include_directories: [d_inc],
-	dependencies: [
-		d_core_dep,
-		d_math_dep,
-		d_audio_dep,
-		d_graphics_dep,
-		d_image_dep,
-		d_gui_dep
-	],
+d_stdx_exe = executable('aurorafw-stdx-test',
+	[d_stdx_src],
 	d_unittest: true,
-	link_args: '-main'
+	link_args: '-main',
+	include_directories: [d_stdx_inc]
 )
 
-test('aurorafw-test', d_exe)
+test('aurorafw-stdx-test', d_stdx_exe)

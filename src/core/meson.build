@@ -38,7 +38,12 @@ d_core_src = [
 	'source/aurorafw/core/application.d',
 	'source/aurorafw/core/debugmanager.d',
 	'source/aurorafw/core/dylib.d',
-	'source/aurorafw/core/inputlistener.d',
+	'source/aurorafw/core/input/events.d',
+	'source/aurorafw/core/input/keys.d',
+	'source/aurorafw/core/input/manager.d',
+	'source/aurorafw/core/input/package.d',
+	'source/aurorafw/core/input/rawlistener.d',
+	'source/aurorafw/core/input/state.d',
 	'source/aurorafw/core/logger.d',
 	'source/aurorafw/core/opt.d'
 ]
@@ -49,7 +54,10 @@ d_core_lib = library('aurorafw-core',
 	d_core_src,
 	include_directories: [d_core_inc],
 	install: true,
-	version: project_version
+	version: project_version,
+	dependencies: [
+		d_stdx_dep
+	]
 )
 
 pkgc.generate(d_core_lib,
@@ -61,14 +69,20 @@ pkgc.generate(d_core_lib,
 
 d_core_dep = declare_dependency(
 	link_with: [d_core_lib],
-	include_directories: [d_core_inc]
+	include_directories: [d_core_inc],
+	dependencies: [
+		d_stdx_dep
+	]
 )
 
 d_core_exe = executable('aurorafw-core-test',
 	[d_core_src],
 	include_directories: [d_core_inc],
 	d_unittest: true,
-	link_args: '-main'
+	link_args: '-main',
+	dependencies: [
+		d_stdx_dep
+	]
 )
 
 test('aurorafw-core-test', d_core_exe)
