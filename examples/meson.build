@@ -30,7 +30,7 @@
 # For more info about intellectual property visit: aurorafoss.org or
 # directly send an email to: contact (at) aurorafoss.org .
 
-subdir('legacy')
+#subdir('legacy')
 
 subdir('gui-simple_window')
 subdir('audio-cli_player')
