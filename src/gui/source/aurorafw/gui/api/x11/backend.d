@@ -159,7 +159,7 @@ pure class X11Backend : Backend {
 	{
 		X.Cursor cursor;
 
-		if (!_xcursor_handle)
+		if (!_xcursor_handle.dylib.isLoaded)
 			return X.None;
 
 		X.XcursorImage* native = X.XcursorImageCreate(width, height);
@@ -195,8 +195,14 @@ pure class X11Backend : Backend {
 	void initX11Extensions()
 	{
 		import aurorafw.gui.platform.x11.xcursor;
-		try _xcursor_handle = new X.XCursorDylibLoader(); catch(Exception) {}
+		try _xf86vmode.handle = new X.XF86VModeDylibLoader(); catch(Exception e) debug trace(afwDebugFlag, e.msg);
 
+		if(_xf86vmode.handle.dylib.isLoaded)
+		{
+			_xf86vmode.available = X.XF86VidModeQueryExtension(_display,_xf86vmode.eventBase, _xf86vmode.errorBase);
+		}
+
+		try _xcursor.handle = new X.XCursorDylibLoader(); catch(Exception e) debug trace(afwDebugFlag, e.msg);
 	}
 
 private:
@@ -208,5 +214,17 @@ private:
 	X.XIM _im;
 	X.Window _helperWindowHandle;
 	X.Cursor _hiddenCursorHandle;
-	X.XCursorDylibLoader _xcursor_handle;
+	XCursorExtension _xcursor;
+	XF86VModeExtension _xf86vmode;
+}
+
+struct XCursorExtension {
+	X.XCursorDylibLoader handle;
+}
+
+struct XF86VModeExtension {
+	X.XF86VModeDylibLoader handle;
+	bool available;
+	int eventBase;
+	int errorBase;
 }

@@ -33,7 +33,7 @@ For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
 
-module aurorafw.gui.platform.x11.extensions.xf86vmode;
+module aurorafw.gui.platform.x11.extensions.xf86vmode.types;
 
 import X = aurorafw.gui.platform.x11.x;
 import core.stdc.config;
