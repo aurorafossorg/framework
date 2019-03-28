@@ -80,6 +80,8 @@ enum OptionType {
 			throw new OptionHandlerException("Trying to read the same option name twice");
 
 		_opts ~= opte;
+
+		return true;
 	}
 
 private:
