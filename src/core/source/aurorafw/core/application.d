@@ -38,32 +38,15 @@ module aurorafw.core.application;
 import core.stdc.stdlib : exit, EXIT_SUCCESS, EXIT_FAILURE;
 import aurorafw.core.debugmanager;
 
-struct Application {
+abstract class Application {
 public:
-	this(immutable shared string[] args, immutable void function(Application) func)
+	import core.runtime : Runtime;
+	this(immutable string packageName, string[] args)
 	{
-		this.args = args;
-		foreach(string str; this.args)
-			if(str == "--afw-debug")
-			{
-				debug afwDebugFlag = true;
-				debug trace(afwDebugFlag, "Debug is now enabled");
-			}
-
-		func(this);
+		this.packageName = packageName;
+		this.args = cast(immutable(string[])) args;
 	}
 
-	static void exitSuccess() @trusted
-	{
-		debug trace(afwDebugFlag, "application return success code: ", EXIT_SUCCESS);
-		exit(EXIT_SUCCESS);
-	}
-
-	static void exitFail() @trusted
-	{
-		debug trace(afwDebugFlag, "application return error code: ", EXIT_FAILURE);
-		exit(EXIT_FAILURE);
-	}
-
-	immutable shared string[] args;
+	private immutable string packageName;
+	private immutable(string[]) args;
 }

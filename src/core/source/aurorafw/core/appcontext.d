@@ -35,59 +35,46 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.core.appcontext;
 
-import aurorafw.core.opt;
-import aurorafw.core.debugmanager;
+import aurorafw.core.application;
 
-abstract class ApplicationContext {
+abstract class ApplicationContext : Application {
 public:
-	final this(string name = "AuroraFW Application", string[] args = null)
+	import core.runtime : Runtime;
+	this(immutable string packageName, string[] args = Runtime.args())
 	{
-		_name = name;
-		//_opts = OptionHandler(args);
-		//_opts.add("afw-debug", "Enable the aurora built-in debug logger");
-		//if(_opts.option("afw-debug").active)
-		{
-			debug afwDebugFlag = true;
-			debug trace(afwDebugFlag, "Debug is now enabled");
-		}
-
-		debug trace(afwDebugFlag, "creating new application");
-		debug trace(afwDebugFlag, "application is created.");
+		super(packageName, args);
 	}
 
-	pure ~this() @safe
-	{
-		debug trace(afwDebugFlag, "application is destroyed.");
+	protected void onStart() {}
+	protected void onClose() {}
+
+	protected void loop() {
+		stop();
 	}
 
-	void onStart() @safe;
-	void onClose() @safe;
-
-	final void start() @safe
+	final public void start()
 	{
-		debug trace(afwDebugFlag, "application is starting");
-		_internalStart();
 		onStart();
-		debug trace(afwDebugFlag, "application started");
+		running = true;
+		while(running)
+			loop();
 	}
 
-	final void close() @safe
+	final public void close()
 	{
-		debug trace(afwDebugFlag, "application is closing");
-		_internalClose();
 		onClose();
-		debug trace(afwDebugFlag, "application closed");
 	}
 
-	pure @property string name() @safe { return _name; }
-	pure @property string name(string name) @safe { return _name = name; }
+	final public void stop()
+	{
+		running = false;
+	}
 
-protected:
-	void _internalSetName(string ) @safe;
-	void _internalStart() @safe;
-	void _internalClose() @safe;
+	final public @property bool isRunning()
+	{
+		return running;
+	}
 
-private:
-	string _name;
-	OptionHandler _opts;
+	private bool running;
+	// private OptionHandler _opts;
 }
