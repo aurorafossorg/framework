@@ -35,7 +35,9 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.gui.api.x11.backend;
 
-import X = aurorafw.gui.platform.x11;
+import X = aurorafw.gui.platform.x;
+import riverd.xcursor;
+
 import std.conv : emplace;
 import core.stdc.stdlib : malloc, free;
 import aurorafw.math.vector : Vector2f;
@@ -159,7 +161,7 @@ pure class X11Backend : Backend {
 	{
 		X.Cursor cursor;
 
-		if (!_xcursor_handle.dylib.isLoaded)
+		if (!X.dylib_is_loaded(_xcursor.handle))
 			return X.None;
 
 		X.XcursorImage* native = X.XcursorImageCreate(width, height);
@@ -192,17 +194,19 @@ pure class X11Backend : Backend {
 	int screen() @property { return _screen; }
 	X.Window root() @property { return _root; }
 
-	void initX11Extensions()
+	private void initX11Extensions()
 	{
-		import aurorafw.gui.platform.x11.xcursor;
-		try _xf86vmode.handle = new X.XF86VModeDylibLoader(); catch(Exception e) debug trace(afwDebugFlag, e.msg);
+		//TODO: Remove/improve logger
+		import std.experimental.logger;
+		import aurorafw.core.debugmanager;
+		try _xf86vmode.handle = X.dylib_load_xxf86vm(); catch(Exception e) debug trace(afwDebugFlag, e.msg);
 
-		if(_xf86vmode.handle.dylib.isLoaded)
+		if(X.dylib_is_loaded(_xf86vmode.handle))
 		{
-			_xf86vmode.available = X.XF86VidModeQueryExtension(_display,_xf86vmode.eventBase, _xf86vmode.errorBase);
+			_xf86vmode.available = cast(bool)X.XF86VidModeQueryExtension(_display, &_xf86vmode.eventBase, &_xf86vmode.errorBase);
 		}
 
-		try _xcursor.handle = new X.XCursorDylibLoader(); catch(Exception e) debug trace(afwDebugFlag, e.msg);
+		try _xcursor.handle = X.dylib_load_xcursor(); catch(Exception e) debug trace(afwDebugFlag, e.msg);
 	}
 
 private:
@@ -219,11 +223,11 @@ private:
 }
 
 struct XCursorExtension {
-	X.XCursorDylibLoader handle;
+	void* handle;
 }
 
 struct XF86VModeExtension {
-	X.XF86VModeDylibLoader handle;
+	void* handle;
 	bool available;
 	int eventBase;
 	int errorBase;

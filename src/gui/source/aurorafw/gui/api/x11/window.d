@@ -36,7 +36,7 @@ directly send an email to: contact (at) aurorafoss.org .
 module aurorafw.gui.api.x11.window;
 
 import aurorafw.gui.window : Window;
-import X = aurorafw.gui.platform.x11;
+import X = aurorafw.gui.platform.x;
 
 class X11Window : Window {
 	struct VisualPreferences

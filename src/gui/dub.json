@@ -8,55 +8,22 @@
 		"source/aurorafw/gui/api/backend.d"
 	],
 	"sourceFiles-linux": [
-		"source/aurorafw/gui/platform/x11/x.d",
-		"source/aurorafw/gui/platform/x11/xlib.d",
-		"source/aurorafw/gui/platform/x11/xresource.d",
-		"source/aurorafw/gui/platform/x11/xutil.d",
-		"source/aurorafw/gui/platform/x11/package.d",
-		"source/aurorafw/gui/platform/x11/xcursor/package.d",
-		"source/aurorafw/gui/platform/x11/xcursor/types.d",
-		"source/aurorafw/gui/platform/x11/xcursor/xcursor.d",
-		"source/aurorafw/gui/platform/x11/xcursor/dynload.d",
-		"source/aurorafw/gui/platform/x11/xcursor/dynfun.d",
-		"source/aurorafw/gui/platform/x11/xcursor/statfun.d",
-		"source/aurorafw/gui/platform/x11/extensions/xf86vmode/package.d",
-		"source/aurorafw/gui/platform/x11/extensions/xf86vmode/dynload.d",
-		"source/aurorafw/gui/platform/x11/extensions/xf86vmode/dynfun.d",
-		"source/aurorafw/gui/platform/x11/extensions/xf86vmode/statfun.d",
-		"source/aurorafw/gui/platform/x11/extensions/xf86vmode/types.d",
 		"source/aurorafw/gui/api/x11/window.d",
 		"source/aurorafw/gui/api/x11/backend.d",
 		"source/aurorafw/gui/api/wayland/window.d",
 		"source/aurorafw/gui/api/wayland/backend.d"
 	],
-	"configurations": [
-		{
-			"name": "aurorafw-gui-xcursor-dynamic",
-			"platforms": ["linux"],
-			"excludedSourceFiles": [
-				"source/aurorafw/gui/platform/x11/xcursor/statfun.d"
-			]
-		},
-		{
-			"name": "aurorafw-gui-xcursor-static",
-			"platforms": ["linux"],
-			"excludedSourceFiles": [
-				"source/aurorafw/gui/platform/x11/xcursor/dynload.d"
-			],
-			"versions": [
-				"AuroraFW_Static_X11_XCursor"
-			],
-			"libs-linux": [
-				"xcursor"
-			]
-		}
-	],
 	"importPaths": [ "source" ],
+	"subConfigurations": {
+		"riverd-x11": "static",
+		"riverd-xcursor": "dynamic",
+		"riverd-xxf86vm": "dynamic"
+	},
 	"dependencies": {
 		"aurorafw:core": "*",
-		"aurorafw:math": "*"
-	},
-	"libs-linux": [
-		"x11"
-	]
+		"aurorafw:math": "*",
+		"riverd-x11": "~>0.1.1",
+		"riverd-xxf86vm": "~>1.0.0",
+		"riverd-xcursor": "~>1.0.0"
+	}
 }
