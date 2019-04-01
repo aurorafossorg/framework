@@ -16,6 +16,7 @@
 	"dependencies": {
 		":math": "*",
 		":core": "*",
+		":cli": "*",
 		":audio": "*",
 		":graphics": "*",
 		":image": "*",
@@ -28,6 +29,7 @@
 	},
 	"subPackages": [
 		"src/core",
+		"src/cli",
 		"src/math",
 		"src/audio",
 		"src/image",
