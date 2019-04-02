@@ -40,7 +40,7 @@ addons:
     - gcc-7
     - g++-7
     - libsndfile1-dev
-		- jack
+    - jack
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CC=gcc-7; export CXX=g++-7; fi;
