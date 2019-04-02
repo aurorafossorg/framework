@@ -77,20 +77,32 @@ struct Terminal {
 		alternateScreen(true);
 	}
 
-	public void viewCursor(bool val)
+	public void viewCursor(bool val, bool flush = false)
 	{
+		string ret;
 		if(val)
-			write("\x1b[?25h");
+			ret = "\x1b[?25h";
 		else
-			write("\x1b[?25l");
+			ret = "\x1b[?25l";
+
+		if(flush)
+			writeDescriptor(ret);
+		else
+			writeBuffer(ret);
 	}
 
-	public void alternateScreen(bool val)
+	public void alternateScreen(bool val, bool flush = false)
 	{
+		string ret;
 		if(val)
-			write("\x1b[?1049h");
+			ret = "\x1b[?1049h";
 		else
-			write("\x1b[?1049l");
+			ret = "\x1b[?1049l";
+
+		if(flush)
+			writeDescriptor(ret);
+		else
+			writeBuffer(ret);
 	}
 
 	public void disableRawMode()
@@ -99,30 +111,52 @@ struct Terminal {
 			return;
 		rawMode = false;
 
-		alternateScreen(false);
+		alternateScreen(false, true);
 
 		if (tcsetattr(inputDescriptor, TCSAFLUSH, &origTermios) == -1)
 			throw new TerminalDieException(this, "tcsetattr");
 	}
 
-	public void clear()
+	public void clear(bool flush = false)
 	{
 		if(outType == OutputType.CELL)
 		{
-			write("\x1b[2J\x1b[H");
+			string ret = "\x1b[2J\x1b[H";
+			if(flush)
+				writeDescriptor(ret);
+			else
+				writeBuffer(ret);
 		}
 	}
-	public void setCursorPos(size_t x = 0, size_t y = 0)
+	public void setCursorPos(size_t x = 0, size_t y = 0, bool flush = false)
 	{
-		write("\x1b["~to!string(y + 1)~";"~to!string(x + 1)~"H");
+		string ret = "\x1b["~to!string(y + 1)~";"~to!string(x + 1)~"H";
+		if(flush)
+			writeDescriptor(ret);
+		else
+			writeBuffer(ret);
 	}
 
-	public void write(string str)
+	public void writeBuffer(string str)
 	{
-		write(str.toStringz, str.length);
+		buffer ~= str;
 	}
 
-	public void write(const(char*) cstr, size_t len)
+	public void writeDescriptor(string str)
+	{
+		writeDescriptor(str.toStringz, str.length);
+	}
+
+	public void flushBuffer()
+	{
+		if(buffer.length>0)
+		{
+			writeDescriptor(buffer.toStringz, buffer.length);
+			buffer.length = 0;
+		}
+	}
+
+	public void writeDescriptor(const(char*) cstr, size_t len)
 	{
 		.write(outputDescriptor, cstr, len);
 	}
@@ -191,6 +225,7 @@ struct Terminal {
 	private OutputType outType;
 	private int outputDescriptor;
 	private int inputDescriptor;
+	private string buffer;
 	private termios origTermios;
 	private bool rawMode = false;
 }
