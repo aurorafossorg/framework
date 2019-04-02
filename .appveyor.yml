@@ -22,6 +22,28 @@ environment:
     - DC: ldc
       DVersion: stable
       arch: x64
+    allow_failures:
+      - DC: dmd
+        DVersion: nightly
+        arch: x64
+      - DC: dmd
+        DVersion: nightly
+        arch: x86
+      - DC: dmd
+        DVersion: beta
+        arch: x64
+      - DC: dmd
+        DVersion: beta
+        arch: x86
+      - DC: dmd
+        DVersion: stable
+        arch: x64
+      - DC: dmd
+        DVersion: stable
+        arch: x86
+      - DC: ldc
+        DVersion: stable
+        arch: x64
 
 skip_tags: false
 
