@@ -40,6 +40,7 @@ addons:
     - gcc-7
     - g++-7
     - libsndfile1-dev
+		- jack
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CC=gcc-7; export CXX=g++-7; fi;
@@ -47,7 +48,7 @@ before_script:
   - mkdir -p .tmp && pushd .tmp
   - git clone https://github.com/andrewrk/libsoundio && pushd libsoundio
   - mkdir -p build && pushd build
-  - cmake ..
+  - cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr -D CMAKE_INSTALL_LIBDIR=lib -D BUILD_EXAMPLE_PROGRAMS=OFF -D BUILD_TESTS=OFF -D BUILD_STATIC_LIBS=OFF -D ENABLE_JACK=ON ..
   - make
   - sudo make install
   - popd; popd; popd;
