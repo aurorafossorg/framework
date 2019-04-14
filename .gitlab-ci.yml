@@ -40,7 +40,8 @@ editorconfig:
     paths:
       - .dub/
   image: aurorafossorg/dlang:latest
-  script: ./tools/dub.sh $BUILD_DUB_FLAGS
+  script:
+    - ./tools/dub.sh $BUILD_DUB_FLAGS
 
 .x86_64-linux-deps_template: &x86_64-linux-deps_definition
   before_script:
@@ -88,4 +89,5 @@ code_coverage:
   <<: *x86_64-linux-deps_definition
   variables:
     BUILD_DUB_FLAGS: $CI_JOB_STAGE --build=unittest-cov
-  after_script: bash <(curl -s https://codecov.io/bash)
+  after_script:
+    - bash <(curl -s https://codecov.io/bash)
