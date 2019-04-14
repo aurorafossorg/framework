@@ -1,6 +1,6 @@
 /*
-                                    __
-                                   / _|
+									__
+									/ _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
@@ -71,427 +71,427 @@ struct AConfiguration;
  */
 enum
 {
-    /** Orientation: not specified. */
-    ACONFIGURATION_ORIENTATION_ANY = 0,
-    /**
-     * Orientation: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#OrientationQualifier">port</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_ORIENTATION_PORT = 1,
-    /**
-     * Orientation: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#OrientationQualifier">land</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_ORIENTATION_LAND = 2,
-    /** @deprecated Not currently supported or used. */
-    ACONFIGURATION_ORIENTATION_SQUARE = 3,
+	/** Orientation: not specified. */
+	ACONFIGURATION_ORIENTATION_ANY = 0,
+	/**
+	 * Orientation: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#OrientationQualifier">port</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_ORIENTATION_PORT = 1,
+	/**
+	 * Orientation: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#OrientationQualifier">land</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_ORIENTATION_LAND = 2,
+	/** @deprecated Not currently supported or used. */
+	ACONFIGURATION_ORIENTATION_SQUARE = 3,
 
-    /** Touchscreen: not specified. */
-    ACONFIGURATION_TOUCHSCREEN_ANY = 0,
-    /**
-     * Touchscreen: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#TouchscreenQualifier">notouch</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_TOUCHSCREEN_NOTOUCH = 1,
-    /** @deprecated Not currently supported or used. */
-    ACONFIGURATION_TOUCHSCREEN_STYLUS = 2,
-    /**
-     * Touchscreen: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#TouchscreenQualifier">finger</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_TOUCHSCREEN_FINGER = 3,
+	/** Touchscreen: not specified. */
+	ACONFIGURATION_TOUCHSCREEN_ANY = 0,
+	/**
+	 * Touchscreen: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#TouchscreenQualifier">notouch</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_TOUCHSCREEN_NOTOUCH = 1,
+	/** @deprecated Not currently supported or used. */
+	ACONFIGURATION_TOUCHSCREEN_STYLUS = 2,
+	/**
+	 * Touchscreen: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#TouchscreenQualifier">finger</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_TOUCHSCREEN_FINGER = 3,
 
-    /** Density: default density. */
-    ACONFIGURATION_DENSITY_DEFAULT = 0,
-    /**
-     * Density: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">ldpi</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_DENSITY_LOW = 120,
-    /**
-     * Density: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">mdpi</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_DENSITY_MEDIUM = 160,
-    /**
-     * Density: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">tvdpi</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_DENSITY_TV = 213,
-    /**
-     * Density: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">hdpi</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_DENSITY_HIGH = 240,
-    /**
-     * Density: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">xhdpi</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_DENSITY_XHIGH = 320,
-    /**
-     * Density: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">xxhdpi</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_DENSITY_XXHIGH = 480,
-    /**
-     * Density: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">xxxhdpi</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_DENSITY_XXXHIGH = 640,
-    /** Density: any density. */
-    ACONFIGURATION_DENSITY_ANY = 65534,
-    /** Density: no density specified. */
-    ACONFIGURATION_DENSITY_NONE = 65535,
+	/** Density: default density. */
+	ACONFIGURATION_DENSITY_DEFAULT = 0,
+	/**
+	 * Density: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">ldpi</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_DENSITY_LOW = 120,
+	/**
+	 * Density: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">mdpi</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_DENSITY_MEDIUM = 160,
+	/**
+	 * Density: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">tvdpi</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_DENSITY_TV = 213,
+	/**
+	 * Density: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">hdpi</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_DENSITY_HIGH = 240,
+	/**
+	 * Density: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">xhdpi</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_DENSITY_XHIGH = 320,
+	/**
+	 * Density: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">xxhdpi</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_DENSITY_XXHIGH = 480,
+	/**
+	 * Density: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">xxxhdpi</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_DENSITY_XXXHIGH = 640,
+	/** Density: any density. */
+	ACONFIGURATION_DENSITY_ANY = 65534,
+	/** Density: no density specified. */
+	ACONFIGURATION_DENSITY_NONE = 65535,
 
-    /** Keyboard: not specified. */
-    ACONFIGURATION_KEYBOARD_ANY = 0,
-    /**
-     * Keyboard: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ImeQualifier">nokeys</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_KEYBOARD_NOKEYS = 1,
-    /**
-     * Keyboard: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ImeQualifier">qwerty</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_KEYBOARD_QWERTY = 2,
-    /**
-     * Keyboard: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ImeQualifier">12key</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_KEYBOARD_12KEY = 3,
+	/** Keyboard: not specified. */
+	ACONFIGURATION_KEYBOARD_ANY = 0,
+	/**
+	 * Keyboard: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ImeQualifier">nokeys</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_KEYBOARD_NOKEYS = 1,
+	/**
+	 * Keyboard: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ImeQualifier">qwerty</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_KEYBOARD_QWERTY = 2,
+	/**
+	 * Keyboard: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ImeQualifier">12key</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_KEYBOARD_12KEY = 3,
 
-    /** Navigation: not specified. */
-    ACONFIGURATION_NAVIGATION_ANY = 0,
-    /**
-     * Navigation: value corresponding to the
-     * <a href="@@dacRoot/guide/topics/resources/providing-resources.html#NavigationQualifier">nonav</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_NAVIGATION_NONAV = 1,
-    /**
-     * Navigation: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NavigationQualifier">dpad</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_NAVIGATION_DPAD = 2,
-    /**
-     * Navigation: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NavigationQualifier">trackball</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_NAVIGATION_TRACKBALL = 3,
-    /**
-     * Navigation: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NavigationQualifier">wheel</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_NAVIGATION_WHEEL = 4,
+	/** Navigation: not specified. */
+	ACONFIGURATION_NAVIGATION_ANY = 0,
+	/**
+	 * Navigation: value corresponding to the
+	 * <a href="@@dacRoot/guide/topics/resources/providing-resources.html#NavigationQualifier">nonav</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_NAVIGATION_NONAV = 1,
+	/**
+	 * Navigation: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NavigationQualifier">dpad</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_NAVIGATION_DPAD = 2,
+	/**
+	 * Navigation: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NavigationQualifier">trackball</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_NAVIGATION_TRACKBALL = 3,
+	/**
+	 * Navigation: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NavigationQualifier">wheel</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_NAVIGATION_WHEEL = 4,
 
-    /** Keyboard availability: not specified. */
-    ACONFIGURATION_KEYSHIDDEN_ANY = 0,
-    /**
-     * Keyboard availability: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#KeyboardAvailQualifier">keysexposed</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_KEYSHIDDEN_NO = 1,
-    /**
-     * Keyboard availability: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#KeyboardAvailQualifier">keyshidden</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_KEYSHIDDEN_YES = 2,
-    /**
-     * Keyboard availability: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#KeyboardAvailQualifier">keyssoft</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_KEYSHIDDEN_SOFT = 3,
+	/** Keyboard availability: not specified. */
+	ACONFIGURATION_KEYSHIDDEN_ANY = 0,
+	/**
+	 * Keyboard availability: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#KeyboardAvailQualifier">keysexposed</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_KEYSHIDDEN_NO = 1,
+	/**
+	 * Keyboard availability: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#KeyboardAvailQualifier">keyshidden</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_KEYSHIDDEN_YES = 2,
+	/**
+	 * Keyboard availability: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#KeyboardAvailQualifier">keyssoft</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_KEYSHIDDEN_SOFT = 3,
 
-    /** Navigation availability: not specified. */
-    ACONFIGURATION_NAVHIDDEN_ANY = 0,
-    /**
-     * Navigation availability: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NavAvailQualifier">navexposed</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_NAVHIDDEN_NO = 1,
-    /**
-     * Navigation availability: value corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NavAvailQualifier">navhidden</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_NAVHIDDEN_YES = 2,
+	/** Navigation availability: not specified. */
+	ACONFIGURATION_NAVHIDDEN_ANY = 0,
+	/**
+	 * Navigation availability: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NavAvailQualifier">navexposed</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_NAVHIDDEN_NO = 1,
+	/**
+	 * Navigation availability: value corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NavAvailQualifier">navhidden</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_NAVHIDDEN_YES = 2,
 
-    /** Screen size: not specified. */
-    ACONFIGURATION_SCREENSIZE_ANY = 0,
-    /**
-     * Screen size: value indicating the screen is at least
-     * approximately 320x426 dp units, corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ScreenSizeQualifier">small</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_SCREENSIZE_SMALL = 1,
-    /**
-     * Screen size: value indicating the screen is at least
-     * approximately 320x470 dp units, corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ScreenSizeQualifier">normal</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_SCREENSIZE_NORMAL = 2,
-    /**
-     * Screen size: value indicating the screen is at least
-     * approximately 480x640 dp units, corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ScreenSizeQualifier">large</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_SCREENSIZE_LARGE = 3,
-    /**
-     * Screen size: value indicating the screen is at least
-     * approximately 720x960 dp units, corresponding to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ScreenSizeQualifier">xlarge</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_SCREENSIZE_XLARGE = 4,
+	/** Screen size: not specified. */
+	ACONFIGURATION_SCREENSIZE_ANY = 0,
+	/**
+	 * Screen size: value indicating the screen is at least
+	 * approximately 320x426 dp units, corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ScreenSizeQualifier">small</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_SCREENSIZE_SMALL = 1,
+	/**
+	 * Screen size: value indicating the screen is at least
+	 * approximately 320x470 dp units, corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ScreenSizeQualifier">normal</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_SCREENSIZE_NORMAL = 2,
+	/**
+	 * Screen size: value indicating the screen is at least
+	 * approximately 480x640 dp units, corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ScreenSizeQualifier">large</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_SCREENSIZE_LARGE = 3,
+	/**
+	 * Screen size: value indicating the screen is at least
+	 * approximately 720x960 dp units, corresponding to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ScreenSizeQualifier">xlarge</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_SCREENSIZE_XLARGE = 4,
 
-    /** Screen layout: not specified. */
-    ACONFIGURATION_SCREENLONG_ANY = 0,
-    /**
-     * Screen layout: value that corresponds to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ScreenAspectQualifier">notlong</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_SCREENLONG_NO = 1,
-    /**
-     * Screen layout: value that corresponds to the
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ScreenAspectQualifier">long</a>
-     * resource qualifier.
-     */
-    ACONFIGURATION_SCREENLONG_YES = 2,
+	/** Screen layout: not specified. */
+	ACONFIGURATION_SCREENLONG_ANY = 0,
+	/**
+	 * Screen layout: value that corresponds to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ScreenAspectQualifier">notlong</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_SCREENLONG_NO = 1,
+	/**
+	 * Screen layout: value that corresponds to the
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ScreenAspectQualifier">long</a>
+	 * resource qualifier.
+	 */
+	ACONFIGURATION_SCREENLONG_YES = 2,
 
-    ACONFIGURATION_SCREENROUND_ANY = 0,
-    ACONFIGURATION_SCREENROUND_NO = 1,
-    ACONFIGURATION_SCREENROUND_YES = 2,
+	ACONFIGURATION_SCREENROUND_ANY = 0,
+	ACONFIGURATION_SCREENROUND_NO = 1,
+	ACONFIGURATION_SCREENROUND_YES = 2,
 
-    /** Wide color gamut: not specified. */
-    ACONFIGURATION_WIDE_COLOR_GAMUT_ANY = 0,
-    /**
-     * Wide color gamut: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#WideColorGamutQualifier">no
-     * nowidecg</a> resource qualifier specified.
-     */
-    ACONFIGURATION_WIDE_COLOR_GAMUT_NO = 1,
-    /**
-     * Wide color gamut: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#WideColorGamutQualifier">
-     * widecg</a> resource qualifier specified.
-     */
-    ACONFIGURATION_WIDE_COLOR_GAMUT_YES = 2,
+	/** Wide color gamut: not specified. */
+	ACONFIGURATION_WIDE_COLOR_GAMUT_ANY = 0,
+	/**
+	 * Wide color gamut: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#WideColorGamutQualifier">no
+	 * nowidecg</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_WIDE_COLOR_GAMUT_NO = 1,
+	/**
+	 * Wide color gamut: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#WideColorGamutQualifier">
+	 * widecg</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_WIDE_COLOR_GAMUT_YES = 2,
 
-    /** HDR: not specified. */
-    ACONFIGURATION_HDR_ANY = 0,
-    /**
-     * HDR: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#HDRQualifier">
-     * lowdr</a> resource qualifier specified.
-     */
-    ACONFIGURATION_HDR_NO = 1,
-    /**
-     * HDR: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#HDRQualifier">
-     * highdr</a> resource qualifier specified.
-     */
-    ACONFIGURATION_HDR_YES = 2,
+	/** HDR: not specified. */
+	ACONFIGURATION_HDR_ANY = 0,
+	/**
+	 * HDR: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#HDRQualifier">
+	 * lowdr</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_HDR_NO = 1,
+	/**
+	 * HDR: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#HDRQualifier">
+	 * highdr</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_HDR_YES = 2,
 
-    /** UI mode: not specified. */
-    ACONFIGURATION_UI_MODE_TYPE_ANY = 0,
-    /**
-     * UI mode: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">no
-     * UI mode type</a> resource qualifier specified.
-     */
-    ACONFIGURATION_UI_MODE_TYPE_NORMAL = 1,
-    /**
-     * UI mode: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">desk</a> resource qualifier specified.
-     */
-    ACONFIGURATION_UI_MODE_TYPE_DESK = 2,
-    /**
-     * UI mode: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">car</a> resource qualifier specified.
-     */
-    ACONFIGURATION_UI_MODE_TYPE_CAR = 3,
-    /**
-     * UI mode: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">television</a> resource qualifier specified.
-     */
-    ACONFIGURATION_UI_MODE_TYPE_TELEVISION = 4,
-    /**
-     * UI mode: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">appliance</a> resource qualifier specified.
-     */
-    ACONFIGURATION_UI_MODE_TYPE_APPLIANCE = 5,
-    /**
-     * UI mode: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">watch</a> resource qualifier specified.
-     */
-    ACONFIGURATION_UI_MODE_TYPE_WATCH = 6,
-    /**
-     * UI mode: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">vr</a> resource qualifier specified.
-     */
-    ACONFIGURATION_UI_MODE_TYPE_VR_HEADSET = 7,
+	/** UI mode: not specified. */
+	ACONFIGURATION_UI_MODE_TYPE_ANY = 0,
+	/**
+	 * UI mode: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">no
+	 * UI mode type</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_UI_MODE_TYPE_NORMAL = 1,
+	/**
+	 * UI mode: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">desk</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_UI_MODE_TYPE_DESK = 2,
+	/**
+	 * UI mode: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">car</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_UI_MODE_TYPE_CAR = 3,
+	/**
+	 * UI mode: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">television</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_UI_MODE_TYPE_TELEVISION = 4,
+	/**
+	 * UI mode: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">appliance</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_UI_MODE_TYPE_APPLIANCE = 5,
+	/**
+	 * UI mode: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">watch</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_UI_MODE_TYPE_WATCH = 6,
+	/**
+	 * UI mode: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">vr</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_UI_MODE_TYPE_VR_HEADSET = 7,
 
-    /** UI night mode: not specified.*/
-    ACONFIGURATION_UI_MODE_NIGHT_ANY = 0,
-    /**
-     * UI night mode: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NightQualifier">notnight</a> resource qualifier specified.
-     */
-    ACONFIGURATION_UI_MODE_NIGHT_NO = 1,
-    /**
-     * UI night mode: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NightQualifier">night</a> resource qualifier specified.
-     */
-    ACONFIGURATION_UI_MODE_NIGHT_YES = 2,
+	/** UI night mode: not specified.*/
+	ACONFIGURATION_UI_MODE_NIGHT_ANY = 0,
+	/**
+	 * UI night mode: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NightQualifier">notnight</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_UI_MODE_NIGHT_NO = 1,
+	/**
+	 * UI night mode: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NightQualifier">night</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_UI_MODE_NIGHT_YES = 2,
 
-    /** Screen width DPI: not specified. */
-    ACONFIGURATION_SCREEN_WIDTH_DP_ANY = 0,
+	/** Screen width DPI: not specified. */
+	ACONFIGURATION_SCREEN_WIDTH_DP_ANY = 0,
 
-    /** Screen height DPI: not specified. */
-    ACONFIGURATION_SCREEN_HEIGHT_DP_ANY = 0,
+	/** Screen height DPI: not specified. */
+	ACONFIGURATION_SCREEN_HEIGHT_DP_ANY = 0,
 
-    /** Smallest screen width DPI: not specified.*/
-    ACONFIGURATION_SMALLEST_SCREEN_WIDTH_DP_ANY = 0,
+	/** Smallest screen width DPI: not specified.*/
+	ACONFIGURATION_SMALLEST_SCREEN_WIDTH_DP_ANY = 0,
 
-    /** Layout direction: not specified. */
-    ACONFIGURATION_LAYOUTDIR_ANY = 0,
-    /**
-     * Layout direction: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#LayoutDirectionQualifier">ldltr</a> resource qualifier specified.
-     */
-    ACONFIGURATION_LAYOUTDIR_LTR = 1,
-    /**
-     * Layout direction: value that corresponds to
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#LayoutDirectionQualifier">ldrtl</a> resource qualifier specified.
-     */
-    ACONFIGURATION_LAYOUTDIR_RTL = 2,
+	/** Layout direction: not specified. */
+	ACONFIGURATION_LAYOUTDIR_ANY = 0,
+	/**
+	 * Layout direction: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#LayoutDirectionQualifier">ldltr</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_LAYOUTDIR_LTR = 1,
+	/**
+	 * Layout direction: value that corresponds to
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#LayoutDirectionQualifier">ldrtl</a> resource qualifier specified.
+	 */
+	ACONFIGURATION_LAYOUTDIR_RTL = 2,
 
-    /**
-     * Bit mask for
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#MccQualifier">mcc</a>
-     * configuration.
-     */
-    ACONFIGURATION_MCC = 1,
-    /**
-     * Bit mask for
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#MccQualifier">mnc</a>
-     * configuration.
-     */
-    ACONFIGURATION_MNC = 2,
-    /**
-     * Bit mask for
-     * <a href="{@docRoot}guide/topics/resources/providing-resources.html#LocaleQualifier">locale</a>
-     * configuration.
-     */
-    ACONFIGURATION_LOCALE = 4,
-    /**
-     * Bit mask for
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#TouchscreenQualifier">touchscreen</a>
-     * configuration.
-     */
-    ACONFIGURATION_TOUCHSCREEN = 8,
-    /**
-     * Bit mask for
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ImeQualifier">keyboard</a>
-     * configuration.
-     */
-    ACONFIGURATION_KEYBOARD = 16,
-    /**
-     * Bit mask for
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#KeyboardAvailQualifier">keyboardHidden</a>
-     * configuration.
-     */
-    ACONFIGURATION_KEYBOARD_HIDDEN = 32,
-    /**
-     * Bit mask for
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NavigationQualifier">navigation</a>
-     * configuration.
-     */
-    ACONFIGURATION_NAVIGATION = 64,
-    /**
-     * Bit mask for
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#OrientationQualifier">orientation</a>
-     * configuration.
-     */
-    ACONFIGURATION_ORIENTATION = 128,
-    /**
-     * Bit mask for
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">density</a>
-     * configuration.
-     */
-    ACONFIGURATION_DENSITY = 256,
-    /**
-     * Bit mask for
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ScreenSizeQualifier">screen size</a>
-     * configuration.
-     */
-    ACONFIGURATION_SCREEN_SIZE = 512,
-    /**
-     * Bit mask for
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#VersionQualifier">platform version</a>
-     * configuration.
-     */
-    ACONFIGURATION_VERSION = 1024,
-    /**
-     * Bit mask for screen layout configuration.
-     */
-    ACONFIGURATION_SCREEN_LAYOUT = 2048,
-    /**
-     * Bit mask for
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">ui mode</a>
-     * configuration.
-     */
-    ACONFIGURATION_UI_MODE = 4096,
-    /**
-     * Bit mask for
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#SmallestScreenWidthQualifier">smallest screen width</a>
-     * configuration.
-     */
-    ACONFIGURATION_SMALLEST_SCREEN_SIZE = 8192,
-    /**
-     * Bit mask for
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#LayoutDirectionQualifier">layout direction</a>
-     * configuration.
-     */
-    ACONFIGURATION_LAYOUTDIR = 16384,
-    ACONFIGURATION_SCREEN_ROUND = 32768,
-    /**
-     * Bit mask for
-     * <a href="@dacRoot/guide/topics/resources/providing-resources.html#WideColorGamutQualifier">wide color gamut</a>
-     * and <a href="@dacRoot/guide/topics/resources/providing-resources.html#HDRQualifier">HDR</a> configurations.
-     */
-    ACONFIGURATION_COLOR_MODE = 65536,
-    /**
-     * Constant used to to represent MNC (Mobile Network Code) zero.
-     * 0 cannot be used, since it is used to represent an undefined MNC.
-     */
-    ACONFIGURATION_MNC_ZERO = 65535
+	/**
+	 * Bit mask for
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#MccQualifier">mcc</a>
+	 * configuration.
+	 */
+	ACONFIGURATION_MCC = 1,
+	/**
+	 * Bit mask for
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#MccQualifier">mnc</a>
+	 * configuration.
+	 */
+	ACONFIGURATION_MNC = 2,
+	/**
+	 * Bit mask for
+	 * <a href="{@docRoot}guide/topics/resources/providing-resources.html#LocaleQualifier">locale</a>
+	 * configuration.
+	 */
+	ACONFIGURATION_LOCALE = 4,
+	/**
+	 * Bit mask for
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#TouchscreenQualifier">touchscreen</a>
+	 * configuration.
+	 */
+	ACONFIGURATION_TOUCHSCREEN = 8,
+	/**
+	 * Bit mask for
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ImeQualifier">keyboard</a>
+	 * configuration.
+	 */
+	ACONFIGURATION_KEYBOARD = 16,
+	/**
+	 * Bit mask for
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#KeyboardAvailQualifier">keyboardHidden</a>
+	 * configuration.
+	 */
+	ACONFIGURATION_KEYBOARD_HIDDEN = 32,
+	/**
+	 * Bit mask for
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#NavigationQualifier">navigation</a>
+	 * configuration.
+	 */
+	ACONFIGURATION_NAVIGATION = 64,
+	/**
+	 * Bit mask for
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#OrientationQualifier">orientation</a>
+	 * configuration.
+	 */
+	ACONFIGURATION_ORIENTATION = 128,
+	/**
+	 * Bit mask for
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#DensityQualifier">density</a>
+	 * configuration.
+	 */
+	ACONFIGURATION_DENSITY = 256,
+	/**
+	 * Bit mask for
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#ScreenSizeQualifier">screen size</a>
+	 * configuration.
+	 */
+	ACONFIGURATION_SCREEN_SIZE = 512,
+	/**
+	 * Bit mask for
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#VersionQualifier">platform version</a>
+	 * configuration.
+	 */
+	ACONFIGURATION_VERSION = 1024,
+	/**
+	 * Bit mask for screen layout configuration.
+	 */
+	ACONFIGURATION_SCREEN_LAYOUT = 2048,
+	/**
+	 * Bit mask for
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#UiModeQualifier">ui mode</a>
+	 * configuration.
+	 */
+	ACONFIGURATION_UI_MODE = 4096,
+	/**
+	 * Bit mask for
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#SmallestScreenWidthQualifier">smallest screen width</a>
+	 * configuration.
+	 */
+	ACONFIGURATION_SMALLEST_SCREEN_SIZE = 8192,
+	/**
+	 * Bit mask for
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#LayoutDirectionQualifier">layout direction</a>
+	 * configuration.
+	 */
+	ACONFIGURATION_LAYOUTDIR = 16384,
+	ACONFIGURATION_SCREEN_ROUND = 32768,
+	/**
+	 * Bit mask for
+	 * <a href="@dacRoot/guide/topics/resources/providing-resources.html#WideColorGamutQualifier">wide color gamut</a>
+	 * and <a href="@dacRoot/guide/topics/resources/providing-resources.html#HDRQualifier">HDR</a> configurations.
+	 */
+	ACONFIGURATION_COLOR_MODE = 65536,
+	/**
+	 * Constant used to to represent MNC (Mobile Network Code) zero.
+	 * 0 cannot be used, since it is used to represent an undefined MNC.
+	 */
+	ACONFIGURATION_MNC_ZERO = 65535
 }
 
 /**
@@ -763,9 +763,9 @@ int AConfiguration_match (AConfiguration* base, AConfiguration* requested);
  * AConfiguration_match().
  */
 int AConfiguration_isBetterThan (
-    AConfiguration* base,
-    AConfiguration* test,
-    AConfiguration* requested);
+	AConfiguration* base,
+	AConfiguration* test,
+	AConfiguration* requested);
 
 // ANDROID_CONFIGURATION_H
 

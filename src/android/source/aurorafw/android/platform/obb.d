@@ -60,8 +60,8 @@ struct AObbInfo;
 /** Flag for an obb file, returned by AObbInfo_getFlags(). */
 enum
 {
-    /** overlay */
-    AOBBINFO_OVERLAY = 1
+	/** overlay */
+	AOBBINFO_OVERLAY = 1
 }
 
 /**

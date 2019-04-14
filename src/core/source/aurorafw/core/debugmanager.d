@@ -37,7 +37,7 @@ module aurorafw.core.debugmanager;
 
 public import aurorafw.core.logger : trace;
 
-enum string debugMsgPrefix(string f = __FILE__, size_t l = __LINE__) {
+string debugMsgPrefix(string f = __FILE__, size_t l = __LINE__) {
 	import std.conv : to;
 	return f ~ ":" ~ l.to!string ~ ": ";
 }

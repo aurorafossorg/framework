@@ -1,6 +1,6 @@
 /*
-                                    __
-                                   / _|
+									__
+									/ _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
@@ -58,15 +58,15 @@ nothrow:
  * reference.
  */
 AHardwareBuffer* AHardwareBuffer_fromHardwareBuffer (
-    JNIEnv* env,
-    jobject hardwareBufferObj);
+	JNIEnv* env,
+	jobject hardwareBufferObj);
 
 /**
  * Return a new Java HardwareBuffer object that wraps the passed native
  * AHardwareBuffer object.
  */
 jobject AHardwareBuffer_toHardwareBuffer (
-    JNIEnv* env,
-    AHardwareBuffer* hardwareBuffer);
+	JNIEnv* env,
+	AHardwareBuffer* hardwareBuffer);
 
 // ANDROID_HARDWARE_BUFFER_JNI_H

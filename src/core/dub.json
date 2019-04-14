@@ -1,7 +1,7 @@
 {
 	"name": "core",
 	"targetType": "library",
-	"targetPath": ".out/bin",
+	"targetPath": "../../.out/bin",
 	"sourcePaths": [ "source" ],
 	"importPaths": [ "source" ],
 	"dependencies": {

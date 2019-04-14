@@ -66,14 +66,14 @@ nothrow:
  */
 struct ARect
 {
-    /// Minimum X coordinate of the rectangle.
-    int left;
-    /// Minimum Y coordinate of the rectangle.
-    int top;
-    /// Maximum X coordinate of the rectangle.
-    int right;
-    /// Maximum Y coordinate of the rectangle.
-    int bottom;
+	/// Minimum X coordinate of the rectangle.
+	int left;
+	/// Minimum Y coordinate of the rectangle.
+	int top;
+	/// Maximum X coordinate of the rectangle.
+	int right;
+	/// Maximum Y coordinate of the rectangle.
+	int bottom;
 }
 
 // ANDROID_RECT_H

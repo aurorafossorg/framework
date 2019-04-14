@@ -125,11 +125,11 @@ int android_setprocnetwork (net_handle_t network);
  *
  */
 int android_getaddrinfofornetwork (
-    net_handle_t network,
-    const(char)* node,
-    const(char)* service,
-    const(addrinfo)* hints,
-    addrinfo** res);
+	net_handle_t network,
+	const(char)* node,
+	const(char)* service,
+	const(addrinfo)* hints,
+	addrinfo** res);
 
 /* __ANDROID_API__ >= 23 */
 

@@ -68,4 +68,3 @@ enum __ANDROID_API_N_MR1__ = 25;
 enum __ANDROID_API_O__ = 26;
 enum __ANDROID_API_O_MR1__ = 27;
 enum __ANDROID_API_P__ = 28;
-

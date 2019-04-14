@@ -1,6 +1,6 @@
 /*
-                                    __
-                                   / _|
+									__
+									/ _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
@@ -79,9 +79,9 @@ AChoreographer* AChoreographer_getInstance ();
  * be passed to the callback function when it's called.
  */
 void AChoreographer_postFrameCallback (
-    AChoreographer* choreographer,
-    AChoreographer_frameCallback callback,
-    void* data);
+	AChoreographer* choreographer,
+	AChoreographer_frameCallback callback,
+	void* data);
 
 /**
  * Post a callback to be run on the frame following the specified delay. The
@@ -89,10 +89,10 @@ void AChoreographer_postFrameCallback (
  * called.
  */
 void AChoreographer_postFrameCallbackDelayed (
-    AChoreographer* choreographer,
-    AChoreographer_frameCallback callback,
-    void* data,
-    c_long delayMillis);
+	AChoreographer* choreographer,
+	AChoreographer_frameCallback callback,
+	void* data,
+	c_long delayMillis);
 
 /* __ANDROID_API__ >= 24 */
 

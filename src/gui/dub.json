@@ -1,7 +1,7 @@
 {
 	"name": "gui",
 	"targetType": "library",
-	"targetPath": ".out/bin",
+	"targetPath": "../../.out/bin",
 	"sourceFiles": [
 		"source/aurorafw/gui/package.d",
 		"source/aurorafw/gui/window.d",

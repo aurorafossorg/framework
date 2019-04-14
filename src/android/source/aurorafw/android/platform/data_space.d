@@ -1,6 +1,6 @@
 /*
-                                    __
-                                   / _|
+									__
+									/ _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
@@ -54,76 +54,76 @@ nothrow:
  */
 enum ADataSpace
 {
-    /**
-     * Default-assumption data space, when not explicitly specified.
-     *
-     * It is safest to assume the buffer is an image with sRGB primaries and
-     * encoding ranges, but the consumer and/or the producer of the data may
-     * simply be using defaults. No automatic gamma transform should be
-     * expected, except for a possible display gamma transform when drawn to a
-     * screen.
-     */
-    ADATASPACE_UNKNOWN = 0,
+	/**
+	 * Default-assumption data space, when not explicitly specified.
+	 *
+	 * It is safest to assume the buffer is an image with sRGB primaries and
+	 * encoding ranges, but the consumer and/or the producer of the data may
+	 * simply be using defaults. No automatic gamma transform should be
+	 * expected, except for a possible display gamma transform when drawn to a
+	 * screen.
+	 */
+	ADATASPACE_UNKNOWN = 0,
 
-    /**
-     * scRGB linear encoding:
-     *
-     * The red, green, and blue components are stored in extended sRGB space,
-     * but are linear, not gamma-encoded.
-     * The RGB primaries and the white point are the same as BT.709.
-     *
-     * The values are floating point.
-     * A pixel value of 1.0, 1.0, 1.0 corresponds to sRGB white (D65) at 80 nits.
-     * Values beyond the range [0.0 - 1.0] would correspond to other colors
-     * spaces and/or HDR content.
-     */
-    ADATASPACE_SCRGB_LINEAR = 406913024, // STANDARD_BT709 | TRANSFER_LINEAR | RANGE_EXTENDED
+	/**
+	 * scRGB linear encoding:
+	 *
+	 * The red, green, and blue components are stored in extended sRGB space,
+	 * but are linear, not gamma-encoded.
+	 * The RGB primaries and the white point are the same as BT.709.
+	 *
+	 * The values are floating point.
+	 * A pixel value of 1.0, 1.0, 1.0 corresponds to sRGB white (D65) at 80 nits.
+	 * Values beyond the range [0.0 - 1.0] would correspond to other colors
+	 * spaces and/or HDR content.
+	 */
+	ADATASPACE_SCRGB_LINEAR = 406913024, // STANDARD_BT709 | TRANSFER_LINEAR | RANGE_EXTENDED
 
-    /**
-     * sRGB gamma encoding:
-     *
-     * The red, green and blue components are stored in sRGB space, and
-     * converted to linear space when read, using the SRGB transfer function
-     * for each of the R, G and B components. When written, the inverse
-     * transformation is performed.
-     *
-     * The alpha component, if present, is always stored in linear space and
-     * is left unmodified when read or written.
-     *
-     * Use full range and BT.709 standard.
-     */
-    ADATASPACE_SRGB = 142671872, // STANDARD_BT709 | TRANSFER_SRGB | RANGE_FULL
+	/**
+	 * sRGB gamma encoding:
+	 *
+	 * The red, green and blue components are stored in sRGB space, and
+	 * converted to linear space when read, using the SRGB transfer function
+	 * for each of the R, G and B components. When written, the inverse
+	 * transformation is performed.
+	 *
+	 * The alpha component, if present, is always stored in linear space and
+	 * is left unmodified when read or written.
+	 *
+	 * Use full range and BT.709 standard.
+	 */
+	ADATASPACE_SRGB = 142671872, // STANDARD_BT709 | TRANSFER_SRGB | RANGE_FULL
 
-    /**
-     * scRGB:
-     *
-     * The red, green, and blue components are stored in extended sRGB space,
-     * but are linear, not gamma-encoded.
-     * The RGB primaries and the white point are the same as BT.709.
-     *
-     * The values are floating point.
-     * A pixel value of 1.0, 1.0, 1.0 corresponds to sRGB white (D65) at 80 nits.
-     * Values beyond the range [0.0 - 1.0] would correspond to other colors
-     * spaces and/or HDR content.
-     */
-    ADATASPACE_SCRGB = 411107328, // STANDARD_BT709 | TRANSFER_SRGB | RANGE_EXTENDED
+	/**
+	 * scRGB:
+	 *
+	 * The red, green, and blue components are stored in extended sRGB space,
+	 * but are linear, not gamma-encoded.
+	 * The RGB primaries and the white point are the same as BT.709.
+	 *
+	 * The values are floating point.
+	 * A pixel value of 1.0, 1.0, 1.0 corresponds to sRGB white (D65) at 80 nits.
+	 * Values beyond the range [0.0 - 1.0] would correspond to other colors
+	 * spaces and/or HDR content.
+	 */
+	ADATASPACE_SCRGB = 411107328, // STANDARD_BT709 | TRANSFER_SRGB | RANGE_EXTENDED
 
-    /**
-     * Display P3
-     *
-     * Use same primaries and white-point as DCI-P3
-     * but sRGB transfer function.
-     */
-    ADATASPACE_DISPLAY_P3 = 143261696, // STANDARD_DCI_P3 | TRANSFER_SRGB | RANGE_FULL
+	/**
+	 * Display P3
+	 *
+	 * Use same primaries and white-point as DCI-P3
+	 * but sRGB transfer function.
+	 */
+	ADATASPACE_DISPLAY_P3 = 143261696, // STANDARD_DCI_P3 | TRANSFER_SRGB | RANGE_FULL
 
-    /**
-     * ITU-R Recommendation 2020 (BT.2020)
-     *
-     * Ultra High-definition television
-     *
-     * Use full range, SMPTE 2084 (PQ) transfer and BT2020 standard
-     */
-    ADATASPACE_BT2020_PQ = 163971072 // STANDARD_BT2020 | TRANSFER_ST2084 | RANGE_FULL
+	/**
+	 * ITU-R Recommendation 2020 (BT.2020)
+	 *
+	 * Ultra High-definition television
+	 *
+	 * Use full range, SMPTE 2084 (PQ) transfer and BT2020 standard
+	 */
+	ADATASPACE_BT2020_PQ = 163971072 // STANDARD_BT2020 | TRANSFER_ST2084 | RANGE_FULL
 }
 
 // ANDROID_DATA_SPACE_H

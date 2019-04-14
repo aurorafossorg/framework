@@ -96,146 +96,146 @@ enum ASENSOR_DELAY_INVALID = INT32_MIN;
  */
 enum
 {
-    /**
-     * Invalid sensor type. Returned by {@link ASensor_getType} as error value.
-     */
-    ASENSOR_TYPE_INVALID = -1,
-    /**
-     * {@link ASENSOR_TYPE_ACCELEROMETER}
-     * reporting-mode: continuous
-     *
-     *  All values are in SI units (m/s^2) and measure the acceleration of the
-     *  device minus the force of gravity.
-     */
-    ASENSOR_TYPE_ACCELEROMETER = 1,
-    /**
-     * {@link ASENSOR_TYPE_MAGNETIC_FIELD}
-     * reporting-mode: continuous
-     *
-     *  All values are in micro-Tesla (uT) and measure the geomagnetic
-     *  field in the X, Y and Z axis.
-     */
-    ASENSOR_TYPE_MAGNETIC_FIELD = 2,
-    /**
-     * {@link ASENSOR_TYPE_GYROSCOPE}
-     * reporting-mode: continuous
-     *
-     *  All values are in radians/second and measure the rate of rotation
-     *  around the X, Y and Z axis.
-     */
-    ASENSOR_TYPE_GYROSCOPE = 4,
-    /**
-     * {@link ASENSOR_TYPE_LIGHT}
-     * reporting-mode: on-change
-     *
-     * The light sensor value is returned in SI lux units.
-     */
-    ASENSOR_TYPE_LIGHT = 5,
-    /**
-     * {@link ASENSOR_TYPE_PRESSURE}
-     *
-     * The pressure sensor value is returned in hPa (millibar).
-     */
-    ASENSOR_TYPE_PRESSURE = 6,
-    /**
-     * {@link ASENSOR_TYPE_PROXIMITY}
-     * reporting-mode: on-change
-     *
-     * The proximity sensor which turns the screen off and back on during calls is the
-     * wake-up proximity sensor. Implement wake-up proximity sensor before implementing
-     * a non wake-up proximity sensor. For the wake-up proximity sensor set the flag
-     * SENSOR_FLAG_WAKE_UP.
-     * The value corresponds to the distance to the nearest object in centimeters.
-     */
-    ASENSOR_TYPE_PROXIMITY = 8,
-    /**
-     * {@link ASENSOR_TYPE_GRAVITY}
-     *
-     * All values are in SI units (m/s^2) and measure the direction and
-     * magnitude of gravity. When the device is at rest, the output of
-     * the gravity sensor should be identical to that of the accelerometer.
-     */
-    ASENSOR_TYPE_GRAVITY = 9,
-    /**
-     * {@link ASENSOR_TYPE_LINEAR_ACCELERATION}
-     * reporting-mode: continuous
-     *
-     *  All values are in SI units (m/s^2) and measure the acceleration of the
-     *  device not including the force of gravity.
-     */
-    ASENSOR_TYPE_LINEAR_ACCELERATION = 10,
-    /**
-     * {@link ASENSOR_TYPE_ROTATION_VECTOR}
-     */
-    ASENSOR_TYPE_ROTATION_VECTOR = 11,
-    /**
-     * {@link ASENSOR_TYPE_RELATIVE_HUMIDITY}
-     *
-     * The relative humidity sensor value is returned in percent.
-     */
-    ASENSOR_TYPE_RELATIVE_HUMIDITY = 12,
-    /**
-     * {@link ASENSOR_TYPE_AMBIENT_TEMPERATURE}
-     *
-     * The ambient temperature sensor value is returned in Celcius.
-     */
-    ASENSOR_TYPE_AMBIENT_TEMPERATURE = 13,
-    /**
-     * {@link ASENSOR_TYPE_MAGNETIC_FIELD_UNCALIBRATED}
-     */
-    ASENSOR_TYPE_MAGNETIC_FIELD_UNCALIBRATED = 14,
-    /**
-     * {@link ASENSOR_TYPE_GAME_ROTATION_VECTOR}
-     */
-    ASENSOR_TYPE_GAME_ROTATION_VECTOR = 15,
-    /**
-     * {@link ASENSOR_TYPE_GYROSCOPE_UNCALIBRATED}
-     */
-    ASENSOR_TYPE_GYROSCOPE_UNCALIBRATED = 16,
-    /**
-     * {@link ASENSOR_TYPE_SIGNIFICANT_MOTION}
-     */
-    ASENSOR_TYPE_SIGNIFICANT_MOTION = 17,
-    /**
-     * {@link ASENSOR_TYPE_STEP_DETECTOR}
-     */
-    ASENSOR_TYPE_STEP_DETECTOR = 18,
-    /**
-     * {@link ASENSOR_TYPE_STEP_COUNTER}
-     */
-    ASENSOR_TYPE_STEP_COUNTER = 19,
-    /**
-     * {@link ASENSOR_TYPE_GEOMAGNETIC_ROTATION_VECTOR}
-     */
-    ASENSOR_TYPE_GEOMAGNETIC_ROTATION_VECTOR = 20,
-    /**
-     * {@link ASENSOR_TYPE_HEART_RATE}
-     */
-    ASENSOR_TYPE_HEART_RATE = 21,
-    /**
-     * {@link ASENSOR_TYPE_POSE_6DOF}
-     */
-    ASENSOR_TYPE_POSE_6DOF = 28,
-    /**
-     * {@link ASENSOR_TYPE_STATIONARY_DETECT}
-     */
-    ASENSOR_TYPE_STATIONARY_DETECT = 29,
-    /**
-     * {@link ASENSOR_TYPE_MOTION_DETECT}
-     */
-    ASENSOR_TYPE_MOTION_DETECT = 30,
-    /**
-     * {@link ASENSOR_TYPE_HEART_BEAT}
-     */
-    ASENSOR_TYPE_HEART_BEAT = 31,
-    /**
-     * {@link ASENSOR_TYPE_LOW_LATENCY_OFFBODY_DETECT}
-     */
-    ASENSOR_TYPE_LOW_LATENCY_OFFBODY_DETECT = 34,
-    /**
-     * {@link ASENSOR_TYPE_ACCELEROMETER_UNCALIBRATED}
-     */
-    ASENSOR_TYPE_ACCELEROMETER_UNCALIBRATED = 35
+	/**
+	 * Invalid sensor type. Returned by {@link ASensor_getType} as error value.
+	 */
+	ASENSOR_TYPE_INVALID = -1,
+	/**
+	 * {@link ASENSOR_TYPE_ACCELEROMETER}
+	 * reporting-mode: continuous
+	 *
+	 *  All values are in SI units (m/s^2) and measure the acceleration of the
+	 *  device minus the force of gravity.
+	 */
+	ASENSOR_TYPE_ACCELEROMETER = 1,
+	/**
+	 * {@link ASENSOR_TYPE_MAGNETIC_FIELD}
+	 * reporting-mode: continuous
+	 *
+	 *  All values are in micro-Tesla (uT) and measure the geomagnetic
+	 *  field in the X, Y and Z axis.
+	 */
+	ASENSOR_TYPE_MAGNETIC_FIELD = 2,
+	/**
+	 * {@link ASENSOR_TYPE_GYROSCOPE}
+	 * reporting-mode: continuous
+	 *
+	 *  All values are in radians/second and measure the rate of rotation
+	 *  around the X, Y and Z axis.
+	 */
+	ASENSOR_TYPE_GYROSCOPE = 4,
+	/**
+	 * {@link ASENSOR_TYPE_LIGHT}
+	 * reporting-mode: on-change
+	 *
+	 * The light sensor value is returned in SI lux units.
+	 */
+	ASENSOR_TYPE_LIGHT = 5,
+	/**
+	 * {@link ASENSOR_TYPE_PRESSURE}
+	 *
+	 * The pressure sensor value is returned in hPa (millibar).
+	 */
+	ASENSOR_TYPE_PRESSURE = 6,
+	/**
+	 * {@link ASENSOR_TYPE_PROXIMITY}
+	 * reporting-mode: on-change
+	 *
+	 * The proximity sensor which turns the screen off and back on during calls is the
+	 * wake-up proximity sensor. Implement wake-up proximity sensor before implementing
+	 * a non wake-up proximity sensor. For the wake-up proximity sensor set the flag
+	 * SENSOR_FLAG_WAKE_UP.
+	 * The value corresponds to the distance to the nearest object in centimeters.
+	 */
+	ASENSOR_TYPE_PROXIMITY = 8,
+	/**
+	 * {@link ASENSOR_TYPE_GRAVITY}
+	 *
+	 * All values are in SI units (m/s^2) and measure the direction and
+	 * magnitude of gravity. When the device is at rest, the output of
+	 * the gravity sensor should be identical to that of the accelerometer.
+	 */
+	ASENSOR_TYPE_GRAVITY = 9,
+	/**
+	 * {@link ASENSOR_TYPE_LINEAR_ACCELERATION}
+	 * reporting-mode: continuous
+	 *
+	 *  All values are in SI units (m/s^2) and measure the acceleration of the
+	 *  device not including the force of gravity.
+	 */
+	ASENSOR_TYPE_LINEAR_ACCELERATION = 10,
+	/**
+	 * {@link ASENSOR_TYPE_ROTATION_VECTOR}
+	 */
+	ASENSOR_TYPE_ROTATION_VECTOR = 11,
+	/**
+	 * {@link ASENSOR_TYPE_RELATIVE_HUMIDITY}
+	 *
+	 * The relative humidity sensor value is returned in percent.
+	 */
+	ASENSOR_TYPE_RELATIVE_HUMIDITY = 12,
+	/**
+	 * {@link ASENSOR_TYPE_AMBIENT_TEMPERATURE}
+	 *
+	 * The ambient temperature sensor value is returned in Celcius.
+	 */
+	ASENSOR_TYPE_AMBIENT_TEMPERATURE = 13,
+	/**
+	 * {@link ASENSOR_TYPE_MAGNETIC_FIELD_UNCALIBRATED}
+	 */
+	ASENSOR_TYPE_MAGNETIC_FIELD_UNCALIBRATED = 14,
+	/**
+	 * {@link ASENSOR_TYPE_GAME_ROTATION_VECTOR}
+	 */
+	ASENSOR_TYPE_GAME_ROTATION_VECTOR = 15,
+	/**
+	 * {@link ASENSOR_TYPE_GYROSCOPE_UNCALIBRATED}
+	 */
+	ASENSOR_TYPE_GYROSCOPE_UNCALIBRATED = 16,
+	/**
+	 * {@link ASENSOR_TYPE_SIGNIFICANT_MOTION}
+	 */
+	ASENSOR_TYPE_SIGNIFICANT_MOTION = 17,
+	/**
+	 * {@link ASENSOR_TYPE_STEP_DETECTOR}
+	 */
+	ASENSOR_TYPE_STEP_DETECTOR = 18,
+	/**
+	 * {@link ASENSOR_TYPE_STEP_COUNTER}
+	 */
+	ASENSOR_TYPE_STEP_COUNTER = 19,
+	/**
+	 * {@link ASENSOR_TYPE_GEOMAGNETIC_ROTATION_VECTOR}
+	 */
+	ASENSOR_TYPE_GEOMAGNETIC_ROTATION_VECTOR = 20,
+	/**
+	 * {@link ASENSOR_TYPE_HEART_RATE}
+	 */
+	ASENSOR_TYPE_HEART_RATE = 21,
+	/**
+	 * {@link ASENSOR_TYPE_POSE_6DOF}
+	 */
+	ASENSOR_TYPE_POSE_6DOF = 28,
+	/**
+	 * {@link ASENSOR_TYPE_STATIONARY_DETECT}
+	 */
+	ASENSOR_TYPE_STATIONARY_DETECT = 29,
+	/**
+	 * {@link ASENSOR_TYPE_MOTION_DETECT}
+	 */
+	ASENSOR_TYPE_MOTION_DETECT = 30,
+	/**
+	 * {@link ASENSOR_TYPE_HEART_BEAT}
+	 */
+	ASENSOR_TYPE_HEART_BEAT = 31,
+	/**
+	 * {@link ASENSOR_TYPE_LOW_LATENCY_OFFBODY_DETECT}
+	 */
+	ASENSOR_TYPE_LOW_LATENCY_OFFBODY_DETECT = 34,
+	/**
+	 * {@link ASENSOR_TYPE_ACCELEROMETER_UNCALIBRATED}
+	 */
+	ASENSOR_TYPE_ACCELEROMETER_UNCALIBRATED = 35
 }
 
 /**
@@ -243,16 +243,16 @@ enum
  */
 enum
 {
-    /** no contact */
-    ASENSOR_STATUS_NO_CONTACT = -1,
-    /** unreliable */
-    ASENSOR_STATUS_UNRELIABLE = 0,
-    /** low accuracy */
-    ASENSOR_STATUS_ACCURACY_LOW = 1,
-    /** medium accuracy */
-    ASENSOR_STATUS_ACCURACY_MEDIUM = 2,
-    /** high accuracy */
-    ASENSOR_STATUS_ACCURACY_HIGH = 3
+	/** no contact */
+	ASENSOR_STATUS_NO_CONTACT = -1,
+	/** unreliable */
+	ASENSOR_STATUS_UNRELIABLE = 0,
+	/** low accuracy */
+	ASENSOR_STATUS_ACCURACY_LOW = 1,
+	/** medium accuracy */
+	ASENSOR_STATUS_ACCURACY_MEDIUM = 2,
+	/** high accuracy */
+	ASENSOR_STATUS_ACCURACY_HIGH = 3
 }
 
 /**
@@ -260,16 +260,16 @@ enum
  */
 enum
 {
-    /** invalid reporting mode */
-    AREPORTING_MODE_INVALID = -1,
-    /** continuous reporting */
-    AREPORTING_MODE_CONTINUOUS = 0,
-    /** reporting on change */
-    AREPORTING_MODE_ON_CHANGE = 1,
-    /** on shot reporting */
-    AREPORTING_MODE_ONE_SHOT = 2,
-    /** special trigger reporting */
-    AREPORTING_MODE_SPECIAL_TRIGGER = 3
+	/** invalid reporting mode */
+	AREPORTING_MODE_INVALID = -1,
+	/** continuous reporting */
+	AREPORTING_MODE_CONTINUOUS = 0,
+	/** reporting on change */
+	AREPORTING_MODE_ON_CHANGE = 1,
+	/** on shot reporting */
+	AREPORTING_MODE_ONE_SHOT = 2,
+	/** special trigger reporting */
+	AREPORTING_MODE_SPECIAL_TRIGGER = 3
 }
 
 /**
@@ -277,14 +277,14 @@ enum
  */
 enum
 {
-    /** stopped */
-    ASENSOR_DIRECT_RATE_STOP = 0,
-    /** nominal 50Hz */
-    ASENSOR_DIRECT_RATE_NORMAL = 1,
-    /** nominal 200Hz */
-    ASENSOR_DIRECT_RATE_FAST = 2,
-    /** nominal 800Hz */
-    ASENSOR_DIRECT_RATE_VERY_FAST = 3
+	/** stopped */
+	ASENSOR_DIRECT_RATE_STOP = 0,
+	/** nominal 50Hz */
+	ASENSOR_DIRECT_RATE_NORMAL = 1,
+	/** nominal 200Hz */
+	ASENSOR_DIRECT_RATE_FAST = 2,
+	/** nominal 800Hz */
+	ASENSOR_DIRECT_RATE_VERY_FAST = 3
 }
 
 /**
@@ -292,10 +292,10 @@ enum
  */
 enum
 {
-    /** shared memory created by ASharedMemory_create */
-    ASENSOR_DIRECT_CHANNEL_TYPE_SHARED_MEMORY = 1,
-    /** AHardwareBuffer */
-    ASENSOR_DIRECT_CHANNEL_TYPE_HARDWARE_BUFFER = 2
+	/** shared memory created by ASharedMemory_create */
+	ASENSOR_DIRECT_CHANNEL_TYPE_SHARED_MEMORY = 1,
+	/** AHardwareBuffer */
+	ASENSOR_DIRECT_CHANNEL_TYPE_HARDWARE_BUFFER = 2
 }
 
 /*
@@ -316,127 +316,127 @@ enum ASENSOR_MAGNETIC_FIELD_EARTH_MIN = 30.0f;
 /* NOTE: changes to these structs have to be backward compatible */
 struct ASensorVector
 {
-    union
-    {
-        float[3] v;
+	union
+	{
+		float[3] v;
 
-        struct
-        {
-            float x;
-            float y;
-            float z;
-        }
+		struct
+		{
+			float x;
+			float y;
+			float z;
+		}
 
-        struct
-        {
-            float azimuth;
-            float pitch;
-            float roll;
-        }
-    }
+		struct
+		{
+			float azimuth;
+			float pitch;
+			float roll;
+		}
+	}
 
-    byte status;
-    ubyte[3] reserved;
+	byte status;
+	ubyte[3] reserved;
 }
 
 struct AMetaDataEvent
 {
-    int what;
-    int sensor;
+	int what;
+	int sensor;
 }
 
 struct AUncalibratedEvent
 {
-    union
-    {
-        float[3] uncalib;
+	union
+	{
+		float[3] uncalib;
 
-        struct
-        {
-            float x_uncalib;
-            float y_uncalib;
-            float z_uncalib;
-        }
-    }
+		struct
+		{
+			float x_uncalib;
+			float y_uncalib;
+			float z_uncalib;
+		}
+	}
 
-    union
-    {
-        float[3] bias;
+	union
+	{
+		float[3] bias;
 
-        struct
-        {
-            float x_bias;
-            float y_bias;
-            float z_bias;
-        }
-    }
+		struct
+		{
+			float x_bias;
+			float y_bias;
+			float z_bias;
+		}
+	}
 }
 
 struct AHeartRateEvent
 {
-    float bpm;
-    byte status;
+	float bpm;
+	byte status;
 }
 
 struct ADynamicSensorEvent
 {
-    int connected;
-    int handle;
+	int connected;
+	int handle;
 }
 
 struct AAdditionalInfoEvent
 {
-    int type;
-    int serial;
+	int type;
+	int serial;
 
-    union
-    {
-        int[14] data_int32;
-        float[14] data_float;
-    }
+	union
+	{
+		int[14] data_int32;
+		float[14] data_float;
+	}
 }
 
 /* NOTE: changes to this struct has to be backward compatible */
 struct ASensorEvent
 {
-    int version_; /* sizeof(struct ASensorEvent) */
-    int sensor;
-    int type;
-    int reserved0;
-    long timestamp;
+	int version_; /* sizeof(struct ASensorEvent) */
+	int sensor;
+	int type;
+	int reserved0;
+	long timestamp;
 
-    union
-    {
-        union
-        {
-            float[16] data;
-            ASensorVector vector;
-            ASensorVector acceleration;
-            ASensorVector magnetic;
-            float temperature;
-            float distance;
-            float light;
-            float pressure;
-            float relative_humidity;
-            AUncalibratedEvent uncalibrated_gyro;
-            AUncalibratedEvent uncalibrated_magnetic;
-            AMetaDataEvent meta_data;
-            AHeartRateEvent heart_rate;
-            ADynamicSensorEvent dynamic_sensor_meta;
-            AAdditionalInfoEvent additional_info;
-        }
+	union
+	{
+		union
+		{
+			float[16] data;
+			ASensorVector vector;
+			ASensorVector acceleration;
+			ASensorVector magnetic;
+			float temperature;
+			float distance;
+			float light;
+			float pressure;
+			float relative_humidity;
+			AUncalibratedEvent uncalibrated_gyro;
+			AUncalibratedEvent uncalibrated_magnetic;
+			AMetaDataEvent meta_data;
+			AHeartRateEvent heart_rate;
+			ADynamicSensorEvent dynamic_sensor_meta;
+			AAdditionalInfoEvent additional_info;
+		}
 
-        union _Anonymous_0
-        {
-            ulong[8] data;
-            ulong step_counter;
-        }
+		union _Anonymous_0
+		{
+			ulong[8] data;
+			ulong step_counter;
+		}
 
-        _Anonymous_0 u64;
-    }
+		_Anonymous_0 u64;
+	}
 
-    uint flags;
-    int[3] reserved1;
+	uint flags;
+	int[3] reserved1;
 }
 
 struct ASensorManager;
@@ -560,11 +560,11 @@ const(ASensor)* ASensorManager_getDefaultSensorEx (ASensorManager* manager, int 
  * ALOOPER_POLL_CALLBACK if providing a non-NULL callback.
  */
 ASensorEventQueue* ASensorManager_createEventQueue (
-    ASensorManager* manager,
-    ALooper* looper,
-    int ident,
-    ALooper_callbackFunc callback,
-    void* data);
+	ASensorManager* manager,
+	ALooper* looper,
+	int ident,
+	ALooper_callbackFunc callback,
+	void* data);
 
 /**
  * Destroys the event queue and free all resources associated to it.
@@ -605,9 +605,9 @@ int ASensorManager_createSharedMemoryDirectChannel (ASensorManager* manager, int
  *         {@link ASensorManager_configureDirectReport}, or value less or equal to 0 for failures.
  */
 int ASensorManager_createHardwareBufferDirectChannel (
-    ASensorManager* manager,
-    const(AHardwareBuffer)* buffer,
-    size_t size);
+	ASensorManager* manager,
+	const(AHardwareBuffer)* buffer,
+	size_t size);
 
 /**
  * Destroy a direct channel
@@ -660,10 +660,10 @@ void ASensorManager_destroyDirectChannel (ASensorManager* manager, int channelId
  * \return positive token for success or negative error code.
  */
 int ASensorManager_configureDirectReport (
-    ASensorManager* manager,
-    const(ASensor)* sensor,
-    int channelId,
-    int rate);
+	ASensorManager* manager,
+	const(ASensor)* sensor,
+	int channelId,
+	int rate);
 /* __ANDROID_API__ >= 26 */
 
 /*****************************************************************************/
@@ -682,10 +682,10 @@ int ASensorManager_configureDirectReport (
  * \return 0 on success or a negative error code on failure.
  */
 int ASensorEventQueue_registerSensor (
-    ASensorEventQueue* queue,
-    const(ASensor)* sensor,
-    int samplingPeriodUs,
-    long maxBatchReportLatencyUs);
+	ASensorEventQueue* queue,
+	const(ASensor)* sensor,
+	int samplingPeriodUs,
+	long maxBatchReportLatencyUs);
 
 /**
  * Enable the selected sensor at default sampling rate.

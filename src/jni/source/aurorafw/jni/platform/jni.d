@@ -41,7 +41,7 @@ Corporation and/or The Android Open Source Project implementation.
 
 More information about The Android Open Source Project at
 android.googlesource.com .
-*/
+ */
 
 module aurorafw.jni.platform.jni;
 

@@ -1,6 +1,6 @@
 /*
-                                    __
-                                   / _|
+									__
+									/ _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
@@ -88,38 +88,38 @@ nothrow:
  */
 enum android_fdsan_owner_type
 {
-    /*
-     * Generic Java or native owners.
-     *
-     * Generic Java objects always use 255 as their type, using identityHashCode
-     * as the value of the tag, leaving bits 33-56 unset. Native pointers are sign
-     * extended from 48-bits of virtual address space, and so can have the MSB
-     * set to 255 as well. Use the value of bits 49-56 to distinguish between
-     * these cases.
-     */
-    ANDROID_FDSAN_OWNER_TYPE_GENERIC_00 = 0,
-    ANDROID_FDSAN_OWNER_TYPE_GENERIC_FF = 255,
+	/*
+	 * Generic Java or native owners.
+	 *
+	 * Generic Java objects always use 255 as their type, using identityHashCode
+	 * as the value of the tag, leaving bits 33-56 unset. Native pointers are sign
+	 * extended from 48-bits of virtual address space, and so can have the MSB
+	 * set to 255 as well. Use the value of bits 49-56 to distinguish between
+	 * these cases.
+	 */
+	ANDROID_FDSAN_OWNER_TYPE_GENERIC_00 = 0,
+	ANDROID_FDSAN_OWNER_TYPE_GENERIC_FF = 255,
 
-    /* FILE* */
-    ANDROID_FDSAN_OWNER_TYPE_FILE = 1,
+	/* FILE* */
+	ANDROID_FDSAN_OWNER_TYPE_FILE = 1,
 
-    /* DIR* */
-    ANDROID_FDSAN_OWNER_TYPE_DIR = 2,
+	/* DIR* */
+	ANDROID_FDSAN_OWNER_TYPE_DIR = 2,
 
-    /* android::base::unique_fd */
-    ANDROID_FDSAN_OWNER_TYPE_UNIQUE_FD = 3,
+	/* android::base::unique_fd */
+	ANDROID_FDSAN_OWNER_TYPE_UNIQUE_FD = 3,
 
-    /* java.io.FileInputStream */
-    ANDROID_FDSAN_OWNER_TYPE_FILEINPUTSTREAM = 251,
+	/* java.io.FileInputStream */
+	ANDROID_FDSAN_OWNER_TYPE_FILEINPUTSTREAM = 251,
 
-    /* java.io.FileOutputStream */
-    ANDROID_FDSAN_OWNER_TYPE_FILEOUTPUTSTREAM = 252,
+	/* java.io.FileOutputStream */
+	ANDROID_FDSAN_OWNER_TYPE_FILEOUTPUTSTREAM = 252,
 
-    /* java.io.RandomAccessFile */
-    ANDROID_FDSAN_OWNER_TYPE_RANDOMACCESSFILE = 253,
+	/* java.io.RandomAccessFile */
+	ANDROID_FDSAN_OWNER_TYPE_RANDOMACCESSFILE = 253,
 
-    /* android.os.ParcelFileDescriptor */
-    ANDROID_FDSAN_OWNER_TYPE_PARCELFILEDESCRIPTOR = 254
+	/* android.os.ParcelFileDescriptor */
+	ANDROID_FDSAN_OWNER_TYPE_PARCELFILEDESCRIPTOR = 254
 }
 
 /*
@@ -145,17 +145,17 @@ int android_fdsan_close_with_tag (int fd, ulong tag);
 
 enum android_fdsan_error_level
 {
-    // No errors.
-    ANDROID_FDSAN_ERROR_LEVEL_DISABLED = 0,
+	// No errors.
+	ANDROID_FDSAN_ERROR_LEVEL_DISABLED = 0,
 
-    // Warn once(ish) on error, and then downgrade to ANDROID_FDSAN_ERROR_LEVEL_DISABLED.
-    ANDROID_FDSAN_ERROR_LEVEL_WARN_ONCE = 1,
+	// Warn once(ish) on error, and then downgrade to ANDROID_FDSAN_ERROR_LEVEL_DISABLED.
+	ANDROID_FDSAN_ERROR_LEVEL_WARN_ONCE = 1,
 
-    // Warn always on error.
-    ANDROID_FDSAN_ERROR_LEVEL_WARN_ALWAYS = 2,
+	// Warn always on error.
+	ANDROID_FDSAN_ERROR_LEVEL_WARN_ALWAYS = 2,
 
-    // Abort on error.
-    ANDROID_FDSAN_ERROR_LEVEL_FATAL = 3
+	// Abort on error.
+	ANDROID_FDSAN_ERROR_LEVEL_FATAL = 3
 }
 
 /*
@@ -179,4 +179,3 @@ android_fdsan_error_level android_fdsan_get_error_level ();
  */
 android_fdsan_error_level android_fdsan_set_error_level (android_fdsan_error_level new_level);
 /* __ANDROID_API__ >= __ANDROID_API_FUTURE__ */
-

@@ -61,14 +61,14 @@ nothrow:
  */
 enum
 {
-    // NOTE: these values must match the values from graphics/common/x.x/types.hal
+	// NOTE: these values must match the values from graphics/common/x.x/types.hal
 
-    /** Red: 8 bits, Green: 8 bits, Blue: 8 bits, Alpha: 8 bits. **/
-    WINDOW_FORMAT_RGBA_8888 = 1,
-    /** Red: 8 bits, Green: 8 bits, Blue: 8 bits, Unused: 8 bits. **/
-    WINDOW_FORMAT_RGBX_8888 = 2,
-    /** Red: 5 bits, Green: 6 bits, Blue: 5 bits. **/
-    WINDOW_FORMAT_RGB_565 = 4
+	/** Red: 8 bits, Green: 8 bits, Blue: 8 bits, Alpha: 8 bits. **/
+	WINDOW_FORMAT_RGBA_8888 = 1,
+	/** Red: 8 bits, Green: 8 bits, Blue: 8 bits, Unused: 8 bits. **/
+	WINDOW_FORMAT_RGBX_8888 = 2,
+	/** Red: 5 bits, Green: 6 bits, Blue: 5 bits. **/
+	WINDOW_FORMAT_RGB_565 = 4
 }
 
 /**
@@ -80,13 +80,13 @@ enum
  */
 enum ANativeWindowTransform
 {
-    ANATIVEWINDOW_TRANSFORM_IDENTITY = 0,
-    ANATIVEWINDOW_TRANSFORM_MIRROR_HORIZONTAL = 1,
-    ANATIVEWINDOW_TRANSFORM_MIRROR_VERTICAL = 2,
-    ANATIVEWINDOW_TRANSFORM_ROTATE_90 = 4,
+	ANATIVEWINDOW_TRANSFORM_IDENTITY = 0,
+	ANATIVEWINDOW_TRANSFORM_MIRROR_HORIZONTAL = 1,
+	ANATIVEWINDOW_TRANSFORM_MIRROR_VERTICAL = 2,
+	ANATIVEWINDOW_TRANSFORM_ROTATE_90 = 4,
 
-    ANATIVEWINDOW_TRANSFORM_ROTATE_180 = 3,
-    ANATIVEWINDOW_TRANSFORM_ROTATE_270 = 7
+	ANATIVEWINDOW_TRANSFORM_ROTATE_180 = 3,
+	ANATIVEWINDOW_TRANSFORM_ROTATE_270 = 7
 }
 
 struct ANativeWindow;
@@ -103,24 +103,24 @@ struct ANativeWindow;
  */
 struct ANativeWindow_Buffer
 {
-    /// The number of pixels that are shown horizontally.
-    int width;
+	/// The number of pixels that are shown horizontally.
+	int width;
 
-    /// The number of pixels that are shown vertically.
-    int height;
+	/// The number of pixels that are shown vertically.
+	int height;
 
-    /// The number of *pixels* that a line in the buffer takes in
-    /// memory. This may be >= width.
-    int stride;
+	/// The number of *pixels* that a line in the buffer takes in
+	/// memory. This may be >= width.
+	int stride;
 
-    /// The format of the buffer. One of AHARDWAREBUFFER_FORMAT_*
-    int format;
+	/// The format of the buffer. One of AHARDWAREBUFFER_FORMAT_*
+	int format;
 
-    /// The actual bits.
-    void* bits;
+	/// The actual bits.
+	void* bits;
 
-    /// Do not touch.
-    uint[6] reserved;
+	/// Do not touch.
+	uint[6] reserved;
 }
 
 /**
@@ -173,10 +173,10 @@ int ANativeWindow_getFormat (ANativeWindow* window);
  * \return 0 for success, or a negative value on error.
  */
 int ANativeWindow_setBuffersGeometry (
-    ANativeWindow* window,
-    int width,
-    int height,
-    int format);
+	ANativeWindow* window,
+	int width,
+	int height,
+	int format);
 
 /**
  * Lock the window's next drawing surface for writing.
@@ -189,9 +189,9 @@ int ANativeWindow_setBuffersGeometry (
  * \return 0 for success, or a negative value on error.
  */
 int ANativeWindow_lock (
-    ANativeWindow* window,
-    ANativeWindow_Buffer* outBuffer,
-    ARect* inOutDirtyBounds);
+	ANativeWindow* window,
+	ANativeWindow_Buffer* outBuffer,
+	ARect* inOutDirtyBounds);
 
 /**
  * Unlock the window's drawing surface after previously locking it,

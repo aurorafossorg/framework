@@ -4,7 +4,9 @@
 
 A Powerful General Purpose Framework
 
-Aurora is a Software Framework for General Purpose developed by Luís Ferreira that runs in all platforms, like Windows NT and \*NIX Environments such as Linux and Apple Systems. It includes libraries to make code easier to use.
+Aurora is a Software Framework for General Purpose developed by Luís Ferreira 
+that runs in all platforms, like Windows NT and \*NIX Environments such as 
+Linux and Apple Systems. It includes libraries to make code easier to use.
 
 ### Contributors
 - Luís "ljmf00" Ferreira (Project Founder)
@@ -14,18 +16,23 @@ Aurora is a Software Framework for General Purpose developed by Luís Ferreira t
 Want to contribute? Great! Make a pull request on my github repository.
 
 ### Donations
-1$ is what you need to support the main developer of Aurora Framework. With this money you help me to buy 1 coffee per month! More coffee equals more code, so, lets [donate](https://www.aurorafoss.org/donate.html)!
+1$ is what you need to support the main developer of Aurora Framework. With
+this money you help me to buy 1 coffee per month! More coffee equals more
+code, so, lets [donate](https://www.aurorafoss.org/donate.html)!
 
 ## License
 
 GNU Lesser General Public License (Version 3, 29 June 2007)
 
-[![OSI](https://opensource.org/files/osi_logo_100X133_90ppi_0.png "Open Source Initiative")](https://opensource.org/) [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Open-source-hardware-logo.svg/512px-Open-source-hardware-logo.svg.png" alt="Open Source Hardware Association" width="120">](http://www.oshwa.org/ "Open Source Hardware Association")
+[![OSI](https://opensource.org/files/osi_logo_100X133_90ppi_0.png "Open Source Initiative")](https://opensource.org/)
+[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Open-source-hardware-logo.svg/512px-Open-source-hardware-logo.svg.png" alt="Open Source Hardware Association" width="120">](http://www.oshwa.org/ "Open Source Hardware Association")
 
 More details coming soon. **It's freedom, it's [opensource](https://opensource.org/)!**
-This document was written with [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/) and [Emoji](http://www.emoji-cheat-sheet.com/)
+This document was written with [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/) 
+and [Emoji](http://www.emoji-cheat-sheet.com/)
 
 ---
 Made with ❤ by a bunch of geeks
 
-[![License](https://img.shields.io/badge/license-LGPLv3-lightgrey.svg)](https://www.gnu.org/licenses/lgpl-3.0.html) [![Discord Server](https://discordapp.com/api/guilds/350229534832066572/embed.png)](https://discord.gg/4YuxJj)
+[![License](https://img.shields.io/badge/license-LGPLv3-lightgrey.svg)](https://www.gnu.org/licenses/lgpl-3.0.html)
+[![Discord Server](https://discordapp.com/api/guilds/350229534832066572/embed.png)](https://discord.gg/4YuxJj)

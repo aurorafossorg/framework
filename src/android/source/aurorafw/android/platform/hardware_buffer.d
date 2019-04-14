@@ -1,6 +1,6 @@
 /*
-                                    __
-                                   / _|
+									__
+									/ _|
   __ _ _   _ _ __ ___  _ __ __ _  | |_ ___  ___ ___
  / _` | | | | '__/ _ \| '__/ _` | |  _/ _ \/ __/ __|
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
@@ -59,97 +59,97 @@ nothrow:
  */
 enum
 {
-    /**
-     * Corresponding formats:
-     *   Vulkan: VK_FORMAT_R8G8B8A8_UNORM
-     *   OpenGL ES: GL_RGBA8
-     */
-    AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM = 1,
+	/**
+	 * Corresponding formats:
+	 *   Vulkan: VK_FORMAT_R8G8B8A8_UNORM
+	 *   OpenGL ES: GL_RGBA8
+	 */
+	AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM = 1,
 
-    /**
-     * 32 bits per pixel, 8 bits per channel format where alpha values are
-     * ignored (always opaque).
-     * Corresponding formats:
-     *   Vulkan: VK_FORMAT_R8G8B8A8_UNORM
-     *   OpenGL ES: GL_RGB8
-     */
-    AHARDWAREBUFFER_FORMAT_R8G8B8X8_UNORM = 2,
+	/**
+	 * 32 bits per pixel, 8 bits per channel format where alpha values are
+	 * ignored (always opaque).
+	 * Corresponding formats:
+	 *   Vulkan: VK_FORMAT_R8G8B8A8_UNORM
+	 *   OpenGL ES: GL_RGB8
+	 */
+	AHARDWAREBUFFER_FORMAT_R8G8B8X8_UNORM = 2,
 
-    /**
-     * Corresponding formats:
-     *   Vulkan: VK_FORMAT_R8G8B8_UNORM
-     *   OpenGL ES: GL_RGB8
-     */
-    AHARDWAREBUFFER_FORMAT_R8G8B8_UNORM = 3,
+	/**
+	 * Corresponding formats:
+	 *   Vulkan: VK_FORMAT_R8G8B8_UNORM
+	 *   OpenGL ES: GL_RGB8
+	 */
+	AHARDWAREBUFFER_FORMAT_R8G8B8_UNORM = 3,
 
-    /**
-     * Corresponding formats:
-     *   Vulkan: VK_FORMAT_R5G6B5_UNORM_PACK16
-     *   OpenGL ES: GL_RGB565
-     */
-    AHARDWAREBUFFER_FORMAT_R5G6B5_UNORM = 4,
+	/**
+	 * Corresponding formats:
+	 *   Vulkan: VK_FORMAT_R5G6B5_UNORM_PACK16
+	 *   OpenGL ES: GL_RGB565
+	 */
+	AHARDWAREBUFFER_FORMAT_R5G6B5_UNORM = 4,
 
-    /**
-     * Corresponding formats:
-     *   Vulkan: VK_FORMAT_R16G16B16A16_SFLOAT
-     *   OpenGL ES: GL_RGBA16F
-     */
-    AHARDWAREBUFFER_FORMAT_R16G16B16A16_FLOAT = 22,
+	/**
+	 * Corresponding formats:
+	 *   Vulkan: VK_FORMAT_R16G16B16A16_SFLOAT
+	 *   OpenGL ES: GL_RGBA16F
+	 */
+	AHARDWAREBUFFER_FORMAT_R16G16B16A16_FLOAT = 22,
 
-    /**
-     * Corresponding formats:
-     *   Vulkan: VK_FORMAT_A2B10G10R10_UNORM_PACK32
-     *   OpenGL ES: GL_RGB10_A2
-     */
-    AHARDWAREBUFFER_FORMAT_R10G10B10A2_UNORM = 43,
+	/**
+	 * Corresponding formats:
+	 *   Vulkan: VK_FORMAT_A2B10G10R10_UNORM_PACK32
+	 *   OpenGL ES: GL_RGB10_A2
+	 */
+	AHARDWAREBUFFER_FORMAT_R10G10B10A2_UNORM = 43,
 
-    /**
-     * An opaque binary blob format that must have height 1, with width equal to
-     * the buffer size in bytes.
-     */
-    AHARDWAREBUFFER_FORMAT_BLOB = 33,
+	/**
+	 * An opaque binary blob format that must have height 1, with width equal to
+	 * the buffer size in bytes.
+	 */
+	AHARDWAREBUFFER_FORMAT_BLOB = 33,
 
-    /**
-     * Corresponding formats:
-     *   Vulkan: VK_FORMAT_D16_UNORM
-     *   OpenGL ES: GL_DEPTH_COMPONENT16
-     */
-    AHARDWAREBUFFER_FORMAT_D16_UNORM = 48,
+	/**
+	 * Corresponding formats:
+	 *   Vulkan: VK_FORMAT_D16_UNORM
+	 *   OpenGL ES: GL_DEPTH_COMPONENT16
+	 */
+	AHARDWAREBUFFER_FORMAT_D16_UNORM = 48,
 
-    /**
-     * Corresponding formats:
-     *   Vulkan: VK_FORMAT_X8_D24_UNORM_PACK32
-     *   OpenGL ES: GL_DEPTH_COMPONENT24
-     */
-    AHARDWAREBUFFER_FORMAT_D24_UNORM = 49,
+	/**
+	 * Corresponding formats:
+	 *   Vulkan: VK_FORMAT_X8_D24_UNORM_PACK32
+	 *   OpenGL ES: GL_DEPTH_COMPONENT24
+	 */
+	AHARDWAREBUFFER_FORMAT_D24_UNORM = 49,
 
-    /**
-     * Corresponding formats:
-     *   Vulkan: VK_FORMAT_D24_UNORM_S8_UINT
-     *   OpenGL ES: GL_DEPTH24_STENCIL8
-     */
-    AHARDWAREBUFFER_FORMAT_D24_UNORM_S8_UINT = 50,
+	/**
+	 * Corresponding formats:
+	 *   Vulkan: VK_FORMAT_D24_UNORM_S8_UINT
+	 *   OpenGL ES: GL_DEPTH24_STENCIL8
+	 */
+	AHARDWAREBUFFER_FORMAT_D24_UNORM_S8_UINT = 50,
 
-    /**
-     * Corresponding formats:
-     *   Vulkan: VK_FORMAT_D32_SFLOAT
-     *   OpenGL ES: GL_DEPTH_COMPONENT32F
-     */
-    AHARDWAREBUFFER_FORMAT_D32_FLOAT = 51,
+	/**
+	 * Corresponding formats:
+	 *   Vulkan: VK_FORMAT_D32_SFLOAT
+	 *   OpenGL ES: GL_DEPTH_COMPONENT32F
+	 */
+	AHARDWAREBUFFER_FORMAT_D32_FLOAT = 51,
 
-    /**
-     * Corresponding formats:
-     *   Vulkan: VK_FORMAT_D32_SFLOAT_S8_UINT
-     *   OpenGL ES: GL_DEPTH32F_STENCIL8
-     */
-    AHARDWAREBUFFER_FORMAT_D32_FLOAT_S8_UINT = 52,
+	/**
+	 * Corresponding formats:
+	 *   Vulkan: VK_FORMAT_D32_SFLOAT_S8_UINT
+	 *   OpenGL ES: GL_DEPTH32F_STENCIL8
+	 */
+	AHARDWAREBUFFER_FORMAT_D32_FLOAT_S8_UINT = 52,
 
-    /**
-     * Corresponding formats:
-     *   Vulkan: VK_FORMAT_S8_UINT
-     *   OpenGL ES: GL_STENCIL_INDEX8
-     */
-    AHARDWAREBUFFER_FORMAT_S8_UINT = 53
+	/**
+	 * Corresponding formats:
+	 *   Vulkan: VK_FORMAT_S8_UINT
+	 *   OpenGL ES: GL_STENCIL_INDEX8
+	 */
+	AHARDWAREBUFFER_FORMAT_S8_UINT = 53
 }
 
 /**
@@ -157,67 +157,67 @@ enum
  */
 enum
 {
-    /// The buffer will never be read by the CPU.
-    AHARDWAREBUFFER_USAGE_CPU_READ_NEVER = 0,
-    /// The buffer will sometimes be read by the CPU.
-    AHARDWAREBUFFER_USAGE_CPU_READ_RARELY = 2,
-    /// The buffer will often be read by the CPU.
-    AHARDWAREBUFFER_USAGE_CPU_READ_OFTEN = 3,
-    /// CPU read value mask.
-    AHARDWAREBUFFER_USAGE_CPU_READ_MASK = 15,
+	/// The buffer will never be read by the CPU.
+	AHARDWAREBUFFER_USAGE_CPU_READ_NEVER = 0,
+	/// The buffer will sometimes be read by the CPU.
+	AHARDWAREBUFFER_USAGE_CPU_READ_RARELY = 2,
+	/// The buffer will often be read by the CPU.
+	AHARDWAREBUFFER_USAGE_CPU_READ_OFTEN = 3,
+	/// CPU read value mask.
+	AHARDWAREBUFFER_USAGE_CPU_READ_MASK = 15,
 
-    /// The buffer will never be written by the CPU.
-    AHARDWAREBUFFER_USAGE_CPU_WRITE_NEVER = 0,
-    /// The buffer will sometimes be written to by the CPU.
-    AHARDWAREBUFFER_USAGE_CPU_WRITE_RARELY = 32,
-    /// The buffer will often be written to by the CPU.
-    AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN = 48,
-    /// CPU write value mask.
-    AHARDWAREBUFFER_USAGE_CPU_WRITE_MASK = 240,
+	/// The buffer will never be written by the CPU.
+	AHARDWAREBUFFER_USAGE_CPU_WRITE_NEVER = 0,
+	/// The buffer will sometimes be written to by the CPU.
+	AHARDWAREBUFFER_USAGE_CPU_WRITE_RARELY = 32,
+	/// The buffer will often be written to by the CPU.
+	AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN = 48,
+	/// CPU write value mask.
+	AHARDWAREBUFFER_USAGE_CPU_WRITE_MASK = 240,
 
-    /// The buffer will be read from by the GPU as a texture.
-    AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE = 256,
-    /**
-     * The buffer will be written to by the GPU as a framebuffer attachment.
-     * Note that the name of this flag is somewhat misleading: it does not imply
-     * that the buffer contains a color format. A buffer with depth or stencil
-     * format that will be used as a framebuffer attachment should also have
-     * this flag.
-     */
-    AHARDWAREBUFFER_USAGE_GPU_COLOR_OUTPUT = 512,
-    /// The buffer must not be used outside of a protected hardware path.
-    AHARDWAREBUFFER_USAGE_PROTECTED_CONTENT = 16384,
-    /// The buffer will be read by a hardware video encoder.
-    AHARDWAREBUFFER_USAGE_VIDEO_ENCODE = 65536,
-    /// The buffer will be used for direct writes from sensors.
-    AHARDWAREBUFFER_USAGE_SENSOR_DIRECT_DATA = 8388608,
-    /// The buffer will be used as a shader storage or uniform buffer object.
-    AHARDWAREBUFFER_USAGE_GPU_DATA_BUFFER = 16777216,
-    /// The buffer will be used as a cube map texture.
-    AHARDWAREBUFFER_USAGE_GPU_CUBE_MAP = 33554432,
-    /// The buffer contains a complete mipmap hierarchy.
-    AHARDWAREBUFFER_USAGE_GPU_MIPMAP_COMPLETE = 67108864,
+	/// The buffer will be read from by the GPU as a texture.
+	AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE = 256,
+	/**
+	 * The buffer will be written to by the GPU as a framebuffer attachment.
+	 * Note that the name of this flag is somewhat misleading: it does not imply
+	 * that the buffer contains a color format. A buffer with depth or stencil
+	 * format that will be used as a framebuffer attachment should also have
+	 * this flag.
+	 */
+	AHARDWAREBUFFER_USAGE_GPU_COLOR_OUTPUT = 512,
+	/// The buffer must not be used outside of a protected hardware path.
+	AHARDWAREBUFFER_USAGE_PROTECTED_CONTENT = 16384,
+	/// The buffer will be read by a hardware video encoder.
+	AHARDWAREBUFFER_USAGE_VIDEO_ENCODE = 65536,
+	/// The buffer will be used for direct writes from sensors.
+	AHARDWAREBUFFER_USAGE_SENSOR_DIRECT_DATA = 8388608,
+	/// The buffer will be used as a shader storage or uniform buffer object.
+	AHARDWAREBUFFER_USAGE_GPU_DATA_BUFFER = 16777216,
+	/// The buffer will be used as a cube map texture.
+	AHARDWAREBUFFER_USAGE_GPU_CUBE_MAP = 33554432,
+	/// The buffer contains a complete mipmap hierarchy.
+	AHARDWAREBUFFER_USAGE_GPU_MIPMAP_COMPLETE = 67108864,
 
-    AHARDWAREBUFFER_USAGE_VENDOR_0 = 1UL << 28,
-    AHARDWAREBUFFER_USAGE_VENDOR_1 = 1UL << 29,
-    AHARDWAREBUFFER_USAGE_VENDOR_2 = 1UL << 30,
-    AHARDWAREBUFFER_USAGE_VENDOR_3 = 1UL << 31,
-    AHARDWAREBUFFER_USAGE_VENDOR_4 = 1UL << 48,
-    AHARDWAREBUFFER_USAGE_VENDOR_5 = 1UL << 49,
-    AHARDWAREBUFFER_USAGE_VENDOR_6 = 1UL << 50,
-    AHARDWAREBUFFER_USAGE_VENDOR_7 = 1UL << 51,
-    AHARDWAREBUFFER_USAGE_VENDOR_8 = 1UL << 52,
-    AHARDWAREBUFFER_USAGE_VENDOR_9 = 1UL << 53,
-    AHARDWAREBUFFER_USAGE_VENDOR_10 = 1UL << 54,
-    AHARDWAREBUFFER_USAGE_VENDOR_11 = 1UL << 55,
-    AHARDWAREBUFFER_USAGE_VENDOR_12 = 1UL << 56,
-    AHARDWAREBUFFER_USAGE_VENDOR_13 = 1UL << 57,
-    AHARDWAREBUFFER_USAGE_VENDOR_14 = 1UL << 58,
-    AHARDWAREBUFFER_USAGE_VENDOR_15 = 1UL << 59,
-    AHARDWAREBUFFER_USAGE_VENDOR_16 = 1UL << 60,
-    AHARDWAREBUFFER_USAGE_VENDOR_17 = 1UL << 61,
-    AHARDWAREBUFFER_USAGE_VENDOR_18 = 1UL << 62,
-    AHARDWAREBUFFER_USAGE_VENDOR_19 = 1UL << 63
+	AHARDWAREBUFFER_USAGE_VENDOR_0 = 1UL << 28,
+	AHARDWAREBUFFER_USAGE_VENDOR_1 = 1UL << 29,
+	AHARDWAREBUFFER_USAGE_VENDOR_2 = 1UL << 30,
+	AHARDWAREBUFFER_USAGE_VENDOR_3 = 1UL << 31,
+	AHARDWAREBUFFER_USAGE_VENDOR_4 = 1UL << 48,
+	AHARDWAREBUFFER_USAGE_VENDOR_5 = 1UL << 49,
+	AHARDWAREBUFFER_USAGE_VENDOR_6 = 1UL << 50,
+	AHARDWAREBUFFER_USAGE_VENDOR_7 = 1UL << 51,
+	AHARDWAREBUFFER_USAGE_VENDOR_8 = 1UL << 52,
+	AHARDWAREBUFFER_USAGE_VENDOR_9 = 1UL << 53,
+	AHARDWAREBUFFER_USAGE_VENDOR_10 = 1UL << 54,
+	AHARDWAREBUFFER_USAGE_VENDOR_11 = 1UL << 55,
+	AHARDWAREBUFFER_USAGE_VENDOR_12 = 1UL << 56,
+	AHARDWAREBUFFER_USAGE_VENDOR_13 = 1UL << 57,
+	AHARDWAREBUFFER_USAGE_VENDOR_14 = 1UL << 58,
+	AHARDWAREBUFFER_USAGE_VENDOR_15 = 1UL << 59,
+	AHARDWAREBUFFER_USAGE_VENDOR_16 = 1UL << 60,
+	AHARDWAREBUFFER_USAGE_VENDOR_17 = 1UL << 61,
+	AHARDWAREBUFFER_USAGE_VENDOR_18 = 1UL << 62,
+	AHARDWAREBUFFER_USAGE_VENDOR_19 = 1UL << 63
 }
 
 /**
@@ -226,14 +226,14 @@ enum
  */
 struct AHardwareBuffer_Desc
 {
-    uint width; ///< Width in pixels.
-    uint height; ///< Height in pixels.
-    uint layers; ///< Number of images in an image array.
-    uint format; ///< One of AHARDWAREBUFFER_FORMAT_*
-    ulong usage; ///< Combination of AHARDWAREBUFFER_USAGE_*
-    uint stride; ///< Row stride in pixels, ignored for AHardwareBuffer_allocate()
-    uint rfu0; ///< Initialize to zero, reserved for future use.
-    ulong rfu1; ///< Initialize to zero, reserved for future use.
+	uint width; ///< Width in pixels.
+	uint height; ///< Height in pixels.
+	uint layers; ///< Number of images in an image array.
+	uint format; ///< One of AHARDWAREBUFFER_FORMAT_*
+	ulong usage; ///< Combination of AHARDWAREBUFFER_USAGE_*
+	uint stride; ///< Row stride in pixels, ignored for AHardwareBuffer_allocate()
+	uint rfu0; ///< Initialize to zero, reserved for future use.
+	ulong rfu1; ///< Initialize to zero, reserved for future use.
 }
 
 struct AHardwareBuffer;
@@ -246,8 +246,8 @@ struct AHardwareBuffer;
  * any reason. The returned buffer has a reference count of 1.
  */
 int AHardwareBuffer_allocate (
-    const(AHardwareBuffer_Desc)* desc,
-    AHardwareBuffer** outBuffer);
+	const(AHardwareBuffer_Desc)* desc,
+	AHardwareBuffer** outBuffer);
 /**
  * Acquire a reference on the given AHardwareBuffer object.  This prevents the
  * object from being deleted until the last reference is removed.
@@ -265,8 +265,8 @@ void AHardwareBuffer_release (AHardwareBuffer* buffer);
  * AHardwareBuffer_Desc struct.
  */
 void AHardwareBuffer_describe (
-    const(AHardwareBuffer)* buffer,
-    AHardwareBuffer_Desc* outDesc);
+	const(AHardwareBuffer)* buffer,
+	AHardwareBuffer_Desc* outDesc);
 
 /**
  * Lock the AHardwareBuffer for reading or writing, depending on the usage flags
@@ -302,11 +302,11 @@ void AHardwareBuffer_describe (
  * number of the lock fails for any reason.
  */
 int AHardwareBuffer_lock (
-    AHardwareBuffer* buffer,
-    ulong usage,
-    int fence,
-    const(ARect)* rect,
-    void** outVirtualAddress);
+	AHardwareBuffer* buffer,
+	ulong usage,
+	int fence,
+	const(ARect)* rect,
+	void** outVirtualAddress);
 
 /**
  * Unlock the AHardwareBuffer; must be called after all changes to the buffer

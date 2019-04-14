@@ -78,14 +78,14 @@ ALooper* ALooper_forThread ();
 /** Option for for ALooper_prepare(). */
 enum
 {
-    /**
-     * This looper will accept calls to ALooper_addFd() that do not
-     * have a callback (that is provide NULL for the callback).  In
-     * this case the caller of ALooper_pollOnce() or ALooper_pollAll()
-     * MUST check the return from these functions to discover when
-     * data is available on such fds and process it.
-     */
-    ALOOPER_PREPARE_ALLOW_NON_CALLBACKS = 1
+	/**
+	 * This looper will accept calls to ALooper_addFd() that do not
+	 * have a callback (that is provide NULL for the callback).  In
+	 * this case the caller of ALooper_pollOnce() or ALooper_pollAll()
+	 * MUST check the return from these functions to discover when
+	 * data is available on such fds and process it.
+	 */
+	ALOOPER_PREPARE_ALLOW_NON_CALLBACKS = 1
 }
 
 /**
@@ -100,29 +100,29 @@ ALooper* ALooper_prepare (int opts);
 /** Result from ALooper_pollOnce() and ALooper_pollAll(). */
 enum
 {
-    /**
-     * The poll was awoken using wake() before the timeout expired
-     * and no callbacks were executed and no other file descriptors were ready.
-     */
-    ALOOPER_POLL_WAKE = -1,
+	/**
+	 * The poll was awoken using wake() before the timeout expired
+	 * and no callbacks were executed and no other file descriptors were ready.
+	 */
+	ALOOPER_POLL_WAKE = -1,
 
-    /**
-     * Result from ALooper_pollOnce() and ALooper_pollAll():
-     * One or more callbacks were executed.
-     */
-    ALOOPER_POLL_CALLBACK = -2,
+	/**
+	 * Result from ALooper_pollOnce() and ALooper_pollAll():
+	 * One or more callbacks were executed.
+	 */
+	ALOOPER_POLL_CALLBACK = -2,
 
-    /**
-     * Result from ALooper_pollOnce() and ALooper_pollAll():
-     * The timeout expired.
-     */
-    ALOOPER_POLL_TIMEOUT = -3,
+	/**
+	 * Result from ALooper_pollOnce() and ALooper_pollAll():
+	 * The timeout expired.
+	 */
+	ALOOPER_POLL_TIMEOUT = -3,
 
-    /**
-     * Result from ALooper_pollOnce() and ALooper_pollAll():
-     * An error occurred.
-     */
-    ALOOPER_POLL_ERROR = -4
+	/**
+	 * Result from ALooper_pollOnce() and ALooper_pollAll():
+	 * An error occurred.
+	 */
+	ALOOPER_POLL_ERROR = -4
 }
 
 /**
@@ -144,41 +144,41 @@ void ALooper_release (ALooper* looper);
  */
 enum
 {
-    /**
-     * The file descriptor is available for read operations.
-     */
-    ALOOPER_EVENT_INPUT = 1,
+	/**
+	 * The file descriptor is available for read operations.
+	 */
+	ALOOPER_EVENT_INPUT = 1,
 
-    /**
-     * The file descriptor is available for write operations.
-     */
-    ALOOPER_EVENT_OUTPUT = 2,
+	/**
+	 * The file descriptor is available for write operations.
+	 */
+	ALOOPER_EVENT_OUTPUT = 2,
 
-    /**
-     * The file descriptor has encountered an error condition.
-     *
-     * The looper always sends notifications about errors; it is not necessary
-     * to specify this event flag in the requested event set.
-     */
-    ALOOPER_EVENT_ERROR = 4,
+	/**
+	 * The file descriptor has encountered an error condition.
+	 *
+	 * The looper always sends notifications about errors; it is not necessary
+	 * to specify this event flag in the requested event set.
+	 */
+	ALOOPER_EVENT_ERROR = 4,
 
-    /**
-     * The file descriptor was hung up.
-     * For example, indicates that the remote end of a pipe or socket was closed.
-     *
-     * The looper always sends notifications about hangups; it is not necessary
-     * to specify this event flag in the requested event set.
-     */
-    ALOOPER_EVENT_HANGUP = 8,
+	/**
+	 * The file descriptor was hung up.
+	 * For example, indicates that the remote end of a pipe or socket was closed.
+	 *
+	 * The looper always sends notifications about hangups; it is not necessary
+	 * to specify this event flag in the requested event set.
+	 */
+	ALOOPER_EVENT_HANGUP = 8,
 
-    /**
-     * The file descriptor is invalid.
-     * For example, the file descriptor was closed prematurely.
-     *
-     * The looper always sends notifications about invalid file descriptors; it is not necessary
-     * to specify this event flag in the requested event set.
-     */
-    ALOOPER_EVENT_INVALID = 16
+	/**
+	 * The file descriptor is invalid.
+	 * For example, the file descriptor was closed prematurely.
+	 *
+	 * The looper always sends notifications about invalid file descriptors; it is not necessary
+	 * to specify this event flag in the requested event set.
+	 */
+	ALOOPER_EVENT_INVALID = 16
 }
 
 /**
@@ -265,12 +265,12 @@ void ALooper_wake (ALooper* looper);
  * This method may block briefly if it needs to wake the poll.
  */
 int ALooper_addFd (
-    ALooper* looper,
-    int fd,
-    int ident,
-    int events,
-    ALooper_callbackFunc callback,
-    void* data);
+	ALooper* looper,
+	int fd,
+	int ident,
+	int events,
+	ALooper_callbackFunc callback,
+	void* data);
 
 /**
  * Removes a previously added file descriptor from the looper.

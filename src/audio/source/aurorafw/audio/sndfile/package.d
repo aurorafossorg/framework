@@ -1,27 +1,27 @@
 /*
-** Copyright (C) 1999-2011 Erik de Castro Lopo <erikd@mega-nerd.com>
-**
-** This program is free software; you can redistribute it and/or modify
-** it under the terms of the GNU Lesser General Public License as published by
-** the Free Software Foundation; either version 2.1 of the License, or
-** (at your option) any later version.
-**
-** This program is distributed in the hope that it will be useful,
-** but WITHOUT ANY WARRANTY; without even the implied warranty of
-** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-** GNU Lesser General Public License for more details.
-**
-** You should have received a copy of the GNU Lesser General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-*/
+ ** Copyright (C) 1999-2011 Erik de Castro Lopo <erikd@mega-nerd.com>
+ **
+ ** This program is free software; you can redistribute it and/or modify
+ ** it under the terms of the GNU Lesser General Public License as published by
+ ** the Free Software Foundation; either version 2.1 of the License, or
+ ** (at your option) any later version.
+ **
+ ** This program is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ ** GNU Lesser General Public License for more details.
+ **
+ ** You should have received a copy of the GNU Lesser General Public License
+ ** along with this program; if not, write to the Free Software
+ ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
 
 /*
-** sndfile.h -- system-wide definitions
-**
-** API documentation is in the doc/ directory of the source code tarball
-** and at http://www.mega-nerd.com/libsndfile/api.html.
-*/
+ ** sndfile.h -- system-wide definitions
+ **
+ ** API documentation is in the doc/ directory of the source code tarball
+ ** and at http://www.mega-nerd.com/libsndfile/api.html.
+ */
 module aurorafw.audio.sndfile;
 
 import core.stdc.stdio : SEEK_SET, SEEK_CUR, SEEK_END;
@@ -32,11 +32,11 @@ extern(C):
 enum SNDFILE_1 = true;
 
 /* The following file types can be read and written.
-** A file type would consist of a major type (ie SF_FORMAT_WAV) bitwise
-** ORed with a minor type (ie SF_FORMAT_PCM). SF_FORMAT_TYPEMASK and
-** SF_FORMAT_SUBMASK can be used to separate the major and minor file
-** types.
-*/
+ ** A file type would consist of a major type (ie SF_FORMAT_WAV) bitwise
+ ** ORed with a minor type (ie SF_FORMAT_PCM). SF_FORMAT_TYPEMASK and
+ ** SF_FORMAT_SUBMASK can be used to separate the major and minor file
+ ** types.
+ */
 
 enum
 {	/* Major formats. */
@@ -113,10 +113,10 @@ enum
 }
 
 /*
-** The following are the valid command numbers for the sf_command()
-** interface.  The use of these commands is documented in the file
-** command.html in the doc directory of the source code distribution.
-*/
+ ** The following are the valid command numbers for the sf_command()
+ ** interface.  The use of these commands is documented in the file
+ ** command.html in the doc directory of the source code distribution.
+ */
 
 enum
 {	SFC_GET_LIB_VERSION				= 0x1000,
@@ -192,21 +192,21 @@ enum
 	SFC_TEST_IEEE_FLOAT_REPLACE		= 0x6001,
 
 	/*
-	** SFC_SET_ADD_* values are deprecated and will disappear at some
-	** time in the future. They are guaranteed to be here up to and
-	** including version 1.0.8 to avoid breakage of existng software.
-	** They currently do nothing and will continue to do nothing.
-	*/
+	 ** SFC_SET_ADD_* values are deprecated and will disappear at some
+	 ** time in the future. They are guaranteed to be here up to and
+	 ** including version 1.0.8 to avoid breakage of existng software.
+	 ** They currently do nothing and will continue to do nothing.
+	 */
 	SFC_SET_ADD_DITHER_ON_WRITE		= 0x1070,
 	SFC_SET_ADD_DITHER_ON_READ		= 0x1071
 }
 
 
 /*
-** String types that can be set and read from files. Not all file types
-** support this and even the file types which support one, may not support
-** all string types.
-*/
+ ** String types that can be set and read from files. Not all file types
+ ** support this and even the file types which support one, may not support
+ ** all string types.
+ */
 
 enum
 {	SF_STR_TITLE					= 0x01,
@@ -222,9 +222,9 @@ enum
 }
 
 /*
-** Use the following as the start and end index when doing metadata
-** transcoding.
-*/
+ ** Use the following as the start and end index when doing metadata
+ ** transcoding.
+ */
 
 alias	SF_STR_TITLE		SF_STR_FIRST;
 alias	SF_STR_GENRE		SF_STR_LAST;
@@ -244,10 +244,10 @@ enum
 }
 
 /* Public error values. These are guaranteed to remain unchanged for the duration
-** of the library major version number.
-** There are also a large number of private error numbers which are internal to
-** the library which can change at any time.
-*/
+ ** of the library major version number.
+ ** There are also a large number of private error numbers which are internal to
+ ** the library which can change at any time.
+ */
 
 enum
 {	SF_ERR_NO_ERROR				= 0,
@@ -259,7 +259,7 @@ enum
 
 
 /* Channel map values (used with SFC_SET/GET_CHANNEL_MAP).
-*/
+ */
 
 enum
 {	SF_CHANNEL_MAP_INVALID = 0,
@@ -301,19 +301,19 @@ struct SNDFILE_tag;
 alias SNDFILE_tag* SNDFILE;
 
 /* The following typedef is system specific and is defined when libsndfile is
-** compiled. sf_count_t will be a 64 bit value when the underlying OS allows
-** 64 bit file offsets.
-** On windows, we need to allow the same header file to be compiler by both GCC
-** and the Microsoft compiler.
-*/
+ ** compiled. sf_count_t will be a 64 bit value when the underlying OS allows
+ ** 64 bit file offsets.
+ ** On windows, we need to allow the same header file to be compiler by both GCC
+ ** and the Microsoft compiler.
+ */
 
 alias long sf_count_t;
 enum SF_COUNT_MAX = sf_count_t.max;
 
 /* A pointer to a SF_INFO structure is passed to sf_open () and filled in.
-** On write, the SF_INFO structure is filled in by the user and passed into
-** sf_open ().
-*/
+ ** On write, the SF_INFO structure is filled in by the user and passed into
+ ** sf_open ().
+ */
 
 struct SF_INFO
 {	sf_count_t	frames ;		/* Used to be called samples.  Changed to avoid confusion. */
@@ -326,15 +326,15 @@ struct SF_INFO
 
 
 /* The SF_FORMAT_INFO struct is used to retrieve information about the sound
-** file formats libsndfile supports using the sf_command () interface.
-**
-** Using this interface will allow applications to support new file formats
-** and encoding types when libsndfile is upgraded, without requiring
-** re-compilation of the application.
-**
-** Please consult the libsndfile documentation (particularly the information
-** on the sf_command () interface) for examples of its use.
-*/
+ ** file formats libsndfile supports using the sf_command () interface.
+ **
+ ** Using this interface will allow applications to support new file formats
+ ** and encoding types when libsndfile is upgraded, without requiring
+ ** re-compilation of the application.
+ **
+ ** Please consult the libsndfile documentation (particularly the information
+ ** on the sf_command () interface) for examples of its use.
+ */
 
 struct SF_FORMAT_INFO
 {	int			format ;
@@ -343,10 +343,10 @@ struct SF_FORMAT_INFO
 }
 
 /*
-** Enums and typedefs for adding dither on read and write.
-** See the html documentation for sf_command(), SFC_SET_DITHER_ON_WRITE
-** and SFC_SET_DITHER_ON_READ.
-*/
+ ** Enums and typedefs for adding dither on read and write.
+ ** See the html documentation for sf_command(), SFC_SET_DITHER_ON_WRITE
+ ** and SFC_SET_DITHER_ON_READ.
+ */
 
 enum
 {	SFD_DEFAULT_LEVEL	= 0,
@@ -364,8 +364,8 @@ struct SF_DITHER_INFO
 }
 
 /* Struct used to retrieve information about a file embedded within a
-** larger file. See SFC_GET_EMBED_FILE_INFO.
-*/
+ ** larger file. See SFC_GET_EMBED_FILE_INFO.
+ */
 
 struct SF_EMBED_FILE_INFO
 {	sf_count_t	offset ;
@@ -373,8 +373,8 @@ struct SF_EMBED_FILE_INFO
 }
 
 /*
-**	Structs used to retrieve music sample information from a file.
-*/
+ **	Structs used to retrieve music sample information from a file.
+ */
 
 enum
 {	/*
@@ -422,8 +422,8 @@ struct SF_LOOP_INFO
 }
 
 /*	Struct used to retrieve broadcast (EBU) information from a file.
-**	Strongly (!) based on EBU "bext" chunk format used in Broadcast WAVE.
-*/
+ **	Strongly (!) based on EBU "bext" chunk format used in Broadcast WAVE.
+ */
 struct SF_BROADCAST_INFO_VAR(size_t coding_hist_size)
 {	char [256]	description ;
 	char [32]	originator ;
@@ -460,25 +460,25 @@ struct SF_VIRTUAL_IO
 
 
 /* Open the specified file for read, write or both. On error, this will
-** return a NULL pointer. To find the error number, pass a NULL SNDFILE
-** to sf_strerror ().
-** All calls to sf_open() should be matched with a call to sf_close().
-*/
+ ** return a NULL pointer. To find the error number, pass a NULL SNDFILE
+ ** to sf_strerror ().
+ ** All calls to sf_open() should be matched with a call to sf_close().
+ */
 
 SNDFILE* 	sf_open		(const char *path, int mode, SF_INFO *sfinfo) ;
 
 
 /* Use the existing file descriptor to create a SNDFILE object. If close_desc
-** is TRUE, the file descriptor will be closed when sf_close() is called. If
-** it is FALSE, the descritor will not be closed.
-** When passed a descriptor like this, the library will assume that the start
-** of file header is at the current file offset. This allows sound files within
-** larger container files to be read and/or written.
-** On error, this will return a NULL pointer. To find the error number, pass a
-** NULL SNDFILE to sf_strerror ().
-** All calls to sf_open_fd() should be matched with a call to sf_close().
+ ** is TRUE, the file descriptor will be closed when sf_close() is called. If
+ ** it is FALSE, the descritor will not be closed.
+ ** When passed a descriptor like this, the library will assume that the start
+ ** of file header is at the current file offset. This allows sound files within
+ ** larger container files to be read and/or written.
+ ** On error, this will return a NULL pointer. To find the error number, pass a
+ ** NULL SNDFILE to sf_strerror ().
+ ** All calls to sf_open_fd() should be matched with a call to sf_close().
 
-*/
+ */
 
 SNDFILE* 	sf_open_fd	(int fd, int mode, SF_INFO *sfinfo, int close_desc) ;
 
@@ -486,31 +486,31 @@ SNDFILE* 	sf_open_virtual	(SF_VIRTUAL_IO *sfvirtual, int mode, SF_INFO *sfinfo, 
 
 
 /* sf_error () returns a error number which can be translated to a text
-** string using sf_error_number().
-*/
+ ** string using sf_error_number().
+ */
 
 int		sf_error		(SNDFILE *sndfile) ;
 
 
 /* sf_strerror () returns to the caller a pointer to the current error message for
-** the given SNDFILE.
-*/
+ ** the given SNDFILE.
+ */
 
 const(char)* sf_strerror (SNDFILE *sndfile) ;
 
 
 /* sf_error_number () allows the retrieval of the error string for each internal
-** error number.
-**
-*/
+ ** error number.
+ **
+ */
 
 const(char)*	sf_error_number	(int errnum) ;
 
 
 /* The following two error functions are deprecated but they will remain in the
-** library for the forseeable future. The function sf_strerror() should be used
-** in their place.
-*/
+ ** library for the forseeable future. The function sf_strerror() should be used
+ ** in their place.
+ */
 
 int		sf_perror		(SNDFILE *sndfile) ;
 int		sf_error_str	(SNDFILE *sndfile, char* str, size_t len) ;
@@ -527,16 +527,16 @@ int		sf_format_check	(const SF_INFO *info) ;
 
 
 /* Seek within the waveform data chunk of the SNDFILE. sf_seek () uses
-** the same values for whence (SEEK_SET, SEEK_CUR and SEEK_END) as
-** stdio.h function fseek ().
-** An offset of zero with whence set to SEEK_SET will position the
-** read / write pointer to the first data sample.
-** On success sf_seek returns the current position in (multi-channel)
-** samples from the start of the file.
-** Please see the libsndfile documentation for moving the read pointer
-** separately from the write pointer on files open in mode SFM_RDWR.
-** On error all of these functions return -1.
-*/
+ ** the same values for whence (SEEK_SET, SEEK_CUR and SEEK_END) as
+ ** stdio.h function fseek ().
+ ** An offset of zero with whence set to SEEK_SET will position the
+ ** read / write pointer to the first data sample.
+ ** On success sf_seek returns the current position in (multi-channel)
+ ** samples from the start of the file.
+ ** Please see the libsndfile documentation for moving the read pointer
+ ** separately from the write pointer on files open in mode SFM_RDWR.
+ ** On error all of these functions return -1.
+ */
 
 enum
 {	SF_SEEK_SET = SEEK_SET,
@@ -548,12 +548,12 @@ sf_count_t	sf_seek 		(SNDFILE *sndfile, sf_count_t frames, int whence) ;
 
 
 /* Functions for retrieving and setting string data within sound files.
-** Not all file types support this features; AIFF and WAV do. For both
-** functions, the str_type parameter must be one of the SF_STR_* values
-** defined above.
-** On error, sf_set_string() returns non-zero while sf_get_string()
-** returns NULL.
-*/
+ ** Not all file types support this features; AIFF and WAV do. For both
+ ** functions, the str_type parameter must be one of the SF_STR_* values
+ ** defined above.
+ ** On error, sf_set_string() returns non-zero while sf_get_string()
+ ** returns NULL.
+ */
 
 int sf_set_string (SNDFILE *sndfile, int str_type, const char* str) ;
 
@@ -566,21 +566,21 @@ const(char)* sf_version_string () ;
 
 
 /* Functions for reading/writing the waveform data of a sound file.
-*/
+ */
 
 sf_count_t	sf_read_raw		(SNDFILE *sndfile, void *ptr, sf_count_t bytes) ;
 sf_count_t	sf_write_raw 	(SNDFILE *sndfile, const void *ptr, sf_count_t bytes) ;
 
 
 /* Functions for reading and writing the data chunk in terms of frames.
-** The number of items actually read/written = frames * number of channels.
-**     sf_xxxx_raw		read/writes the raw data bytes from/to the file
-**     sf_xxxx_short	passes data in the native short format
-**     sf_xxxx_int		passes data in the native int format
-**     sf_xxxx_float	passes data in the native float format
-**     sf_xxxx_double	passes data in the native double format
-** All of these read/write function return number of frames read/written.
-*/
+ ** The number of items actually read/written = frames * number of channels.
+ **     sf_xxxx_raw		read/writes the raw data bytes from/to the file
+ **     sf_xxxx_short	passes data in the native short format
+ **     sf_xxxx_int		passes data in the native int format
+ **     sf_xxxx_float	passes data in the native float format
+ **     sf_xxxx_double	passes data in the native double format
+ ** All of these read/write function return number of frames read/written.
+ */
 
 sf_count_t	sf_readf_short	(SNDFILE *sndfile, short *ptr, sf_count_t frames) ;
 sf_count_t	sf_writef_short	(SNDFILE *sndfile, const short *ptr, sf_count_t frames) ;
@@ -596,9 +596,9 @@ sf_count_t	sf_writef_double	(SNDFILE *sndfile, const double *ptr, sf_count_t fra
 
 
 /* Functions for reading and writing the data chunk in terms of items.
-** Otherwise similar to above.
-** All of these read/write function return number of items read/written.
-*/
+ ** Otherwise similar to above.
+ ** All of these read/write function return number of items read/written.
+ */
 
 sf_count_t	sf_read_short	(SNDFILE *sndfile, short *ptr, sf_count_t items) ;
 sf_count_t	sf_write_short	(SNDFILE *sndfile, const short *ptr, sf_count_t items) ;
@@ -614,34 +614,34 @@ sf_count_t	sf_write_double	(SNDFILE *sndfile, const double *ptr, sf_count_t item
 
 
 /* Close the SNDFILE and clean up all memory allocations associated with this
-** file.
-** Returns 0 on success, or an error number.
-*/
+ ** file.
+ ** Returns 0 on success, or an error number.
+ */
 
 int		sf_close		(SNDFILE *sndfile) ;
 
 
 /* If the file is opened SFM_WRITE or SFM_RDWR, call fsync() on the file
-** to force the writing of data to disk. If the file is opened SFM_READ
-** no action is taken.
-*/
+ ** to force the writing of data to disk. If the file is opened SFM_READ
+ ** no action is taken.
+ */
 
 void	sf_write_sync	(SNDFILE *sndfile) ;
 
 
 
 /* The function sf_wchar_open() is Windows Only!
-** Open a file passing in a Windows Unicode filename. Otherwise, this is
-** the same as sf_open().
-**
-** In order for this to work, you need to do the following:
-**
-**		#include <windows.h>
-**		#define ENABLE_SNDFILE_WINDOWS_PROTOTYPES 1
-**		#including <sndfile.h>
-*/
+ ** Open a file passing in a Windows Unicode filename. Otherwise, this is
+ ** the same as sf_open().
+ **
+ ** In order for this to work, you need to do the following:
+ **
+ **		#include <windows.h>
+ **		#define ENABLE_SNDFILE_WINDOWS_PROTOTYPES 1
+ **		#including <sndfile.h>
+ */
 
 version (Windows)
 {
-    SNDFILE* sf_wchar_open (wchar* wpath, int mode, SF_INFO *sfinfo) ;
+	SNDFILE* sf_wchar_open (wchar* wpath, int mode, SF_INFO *sfinfo) ;
 }

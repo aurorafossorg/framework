@@ -66,7 +66,7 @@ pure @safe abstract class Renderer {
 
 	final static void /*Renderer*/ Load()
 	{
-		
+
 	}
 
 	void clear(uint buftype = RendererBufferType.Color | RendererBufferType.Depth);

@@ -47,4 +47,3 @@ nothrow:
 
 void android_set_abort_message (const(char)* __msg);
 /* __ANDROID_API__ >= 21 */
-

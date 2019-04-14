@@ -107,24 +107,24 @@ nothrow:
  */
 enum android_LogPriority
 {
-    /** For internal use only.  */
-    ANDROID_LOG_UNKNOWN = 0,
-    /** The default priority, for internal use only.  */
-    ANDROID_LOG_DEFAULT = 1, /* only for SetMinPriority() */
-    /** Verbose logging. Should typically be disabled for a release apk. */
-    ANDROID_LOG_VERBOSE = 2,
-    /** Debug logging. Should typically be disabled for a release apk. */
-    ANDROID_LOG_DEBUG = 3,
-    /** Informational logging. Should typically be disabled for a release apk. */
-    ANDROID_LOG_INFO = 4,
-    /** Warning logging. For use with recoverable failures. */
-    ANDROID_LOG_WARN = 5,
-    /** Error logging. For use with unrecoverable failures. */
-    ANDROID_LOG_ERROR = 6,
-    /** Fatal logging. For use when aborting. */
-    ANDROID_LOG_FATAL = 7,
-    /** For internal use only.  */
-    ANDROID_LOG_SILENT = 8 /* only for SetMinPriority(); must be last */
+	/** For internal use only.  */
+	ANDROID_LOG_UNKNOWN = 0,
+	/** The default priority, for internal use only.  */
+	ANDROID_LOG_DEFAULT = 1, /* only for SetMinPriority() */
+	/** Verbose logging. Should typically be disabled for a release apk. */
+	ANDROID_LOG_VERBOSE = 2,
+	/** Debug logging. Should typically be disabled for a release apk. */
+	ANDROID_LOG_DEBUG = 3,
+	/** Informational logging. Should typically be disabled for a release apk. */
+	ANDROID_LOG_INFO = 4,
+	/** Warning logging. For use with recoverable failures. */
+	ANDROID_LOG_WARN = 5,
+	/** Error logging. For use with unrecoverable failures. */
+	ANDROID_LOG_ERROR = 6,
+	/** Fatal logging. For use when aborting. */
+	ANDROID_LOG_FATAL = 7,
+	/** For internal use only.  */
+	ANDROID_LOG_SILENT = 8 /* only for SetMinPriority(); must be last */
 }
 
 /**
@@ -145,10 +145,10 @@ int __android_log_print (int prio, const(char)* tag, const(char)* fmt, ...);
  * (If `__android_log_print` is like `printf`, this is like `vprintf`.)
  */
 int __android_log_vprint (
-    int prio,
-    const(char)* tag,
-    const(char)* fmt,
-    va_list ap);
+	int prio,
+	const(char)* tag,
+	const(char)* fmt,
+	va_list ap);
 
 /**
  * Writes an assertion failure to the log (as `ANDROID_LOG_FATAL`) and to
@@ -166,25 +166,25 @@ int __android_log_vprint (
  * source filename and line number more conveniently than this function.
  */
 void __android_log_assert (
-    const(char)* cond,
-    const(char)* tag,
-    const(char)* fmt,
-    ...);
+	const(char)* cond,
+	const(char)* tag,
+	const(char)* fmt,
+	...);
 
 enum log_id
 {
-    LOG_ID_MIN = 0,
+	LOG_ID_MIN = 0,
 
-    LOG_ID_MAIN = 0,
-    LOG_ID_RADIO = 1,
-    LOG_ID_EVENTS = 2,
-    LOG_ID_SYSTEM = 3,
-    LOG_ID_CRASH = 4,
-    LOG_ID_STATS = 5,
-    LOG_ID_SECURITY = 6,
-    LOG_ID_KERNEL = 7, /* place last, third-parties can not use it */
+	LOG_ID_MAIN = 0,
+	LOG_ID_RADIO = 1,
+	LOG_ID_EVENTS = 2,
+	LOG_ID_SYSTEM = 3,
+	LOG_ID_CRASH = 4,
+	LOG_ID_STATS = 5,
+	LOG_ID_SECURITY = 6,
+	LOG_ID_KERNEL = 7, /* place last, third-parties can not use it */
 
-    LOG_ID_MAX = 8
+	LOG_ID_MAX = 8
 }
 
 alias log_id_t = log_id;
@@ -193,16 +193,16 @@ alias log_id_t = log_id;
  * Send a simple string to the log.
  */
 int __android_log_buf_write (
-    int bufID,
-    int prio,
-    const(char)* tag,
-    const(char)* text);
+	int bufID,
+	int prio,
+	const(char)* tag,
+	const(char)* text);
 int __android_log_buf_print (
-    int bufID,
-    int prio,
-    const(char)* tag,
-    const(char)* fmt,
-    ...);
+	int bufID,
+	int prio,
+	const(char)* tag,
+	const(char)* fmt,
+	...);
 
 /** @} */
 

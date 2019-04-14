@@ -36,7 +36,7 @@ directly send an email to: contact (at) aurorafoss.org .
 module aurorafw.math.vector;
 
 @nogc pure @safe struct vec(T, size_t N) {
-	private static enum string _elements(string[4] l)
+	private static string _elements(string[4] l)
 	{
 		string ret;
 		foreach (size_t i; 0 .. N)
