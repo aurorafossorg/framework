@@ -17,7 +17,7 @@ matrix:
   include:
     - d: dmd
       env: [COVERAGE=true]
-      script: dub test -b unittest-cov --compiler=${DC}
+      script: ./tools/dub.sh test -b unittest-cov --compiler=${DC}
     - os: linux
       d: gdc
   fast_finish: true
