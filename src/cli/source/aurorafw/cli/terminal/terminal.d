@@ -1,17 +1,26 @@
 module aurorafw.cli.terminal.terminal;
 
-import core.sys.posix.unistd;
-import core.sys.posix.termios;
-import core.sys.posix.sys.ioctl;
+version(Posix)
+{
+	import core.sys.posix.unistd;
+	import core.sys.posix.termios;
+	import core.sys.posix.sys.ioctl;
+} else version(Windows)
+{
+	import core.sys.windows.windows;
+}
 
-import core.stdc.errno;
-import core.stdc.stdio;
-
-import std.string : toStringz;
+import std.process;
+import std.string;
 import std.conv : to;
 import std.exception;
 import std.utf;
 import std.typecons;
+import std.file;
+import std.stdio;
+
+import core.stdc.errno;
+import core.stdc.stdio;
 
 class TerminalDieException : Exception {
 	this(ref Terminal term, string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
@@ -27,6 +36,8 @@ class TerminalDieException : Exception {
 	}
 }
 
+// TODO: Switch special writes to termcap codes
+
 struct Terminal {
 	@disable this();
 	@disable this(this);
@@ -41,6 +52,7 @@ struct Terminal {
 
 		if(outType == OutputType.CELL)
 		{
+			saveTitle();
 			enableRawMode();
 		}
 	}
@@ -49,7 +61,8 @@ struct Terminal {
 	{
 		if(outType == OutputType.CELL)
 		{
-			disableRawMode();
+			disableRawMode(true);
+			restoreTitle(true);
 		}
 	}
 
@@ -105,13 +118,13 @@ struct Terminal {
 			writeBuffer(ret);
 	}
 
-	public void disableRawMode()
+	public void disableRawMode(bool flush = false)
 	{
 		if(rawMode == false)
 			return;
 		rawMode = false;
 
-		alternateScreen(false, true);
+		alternateScreen(false, flush);
 
 		if (tcsetattr(inputDescriptor, TCSAFLUSH, &origTermios) == -1)
 			throw new TerminalDieException(this, "tcsetattr");
@@ -137,6 +150,11 @@ struct Terminal {
 			writeBuffer(ret);
 	}
 
+	public void writeBuffer(char[] buf)
+	{
+		writeBuffer(cast(string)buf);
+	}
+
 	public void writeBuffer(string str)
 	{
 		buffer ~= str;
@@ -158,7 +176,7 @@ struct Terminal {
 
 	public void writeDescriptor(const(char*) cstr, size_t len)
 	{
-		.write(outputDescriptor, cstr, len);
+		core.sys.posix.unistd.write(outputDescriptor, cstr, len);
 	}
 
 	public dchar readCh() {
@@ -187,7 +205,7 @@ struct Terminal {
 		winsize ws;
 
 		if (ioctl(outputDescriptor, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0) {
-			if (.write(outputDescriptor, "\x1b[999C\x1b[999B".toStringz, 12) != 12) return -1;
+			if (core.sys.posix.unistd.write(outputDescriptor, "\x1b[999C\x1b[999B".toStringz, 12) != 12) return -1;
 			return getCursorPosition(rows, cols);
 		} else {
 			rows = ws.ws_col;
@@ -201,7 +219,7 @@ struct Terminal {
 		char[32] buf;
 		uint i = 0;
 
-		if (.write(outputDescriptor, "\x1b[6n".toStringz, 4) != 4) return -1;
+		if (core.sys.posix.unistd.write(outputDescriptor, "\x1b[6n".toStringz, 4) != 4) return -1;
 
 		while (i < buf.sizeof - 1) {
 			if (.read(inputDescriptor, &buf[i], 1) != 1) break;
@@ -222,11 +240,68 @@ struct Terminal {
 		return rawMode;
 	}
 
+	public void setTitle(string title) {
+		version(Windows) {
+			SetConsoleTitleA(toStringz(title));
+		} else {
+			if(terminalInFamily("xterm", "rxvt", "screen"))
+				writeBuffer(format("\033]0;%s\007", title));
+		}
+	}
+
+	private void saveTitle(bool flush = false)
+	{
+		version(Posix)
+		{
+			if(terminalInFamily("xterm", "rxvt", "screen")) {
+				if(flush)
+					writeDescriptor("\033[22;0t");
+				else
+					writeBuffer("\033[22;0t");
+			}
+		}
+	}
+
+	private void restoreTitle(bool flush = false)
+	{
+		version(Posix)
+		{
+			if(terminalInFamily("xterm", "rxvt", "screen"))
+			{
+				if(flush)
+					writeDescriptor("\033[23;0t");
+				else
+					writeBuffer("\033[23;0t");
+			}
+		}
+	}
+
+	version(Posix)
+	{
+		static public bool terminalInFamily(string[] terms...)
+		{
+			auto term = environment.get("TERM");
+			foreach(t; terms)
+				if(indexOf(term, t) != -1)
+					return true;
+			return false;
+		}
+
+		static public bool isMacTerminal() {
+			auto term = environment.get("TERM");
+			return term == "xterm-256color";
+		}
+	}
+
 	private OutputType outType;
 	private int outputDescriptor;
 	private int inputDescriptor;
 	private string buffer;
-	private termios origTermios;
 	private bool rawMode = false;
+	version(Posix) {
+		private termios origTermios;
+	} else version(Windows) {
+		private HANDLE hConsole;
+		private CONSOLE_SCREEN_BUFFER_INFO originalSbi;
+	}
 }
-
