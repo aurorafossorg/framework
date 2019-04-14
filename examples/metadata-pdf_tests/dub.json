@@ -1,7 +1,7 @@
 {
 	"name": "metadata-pdf_tests",
 	"targetType": "executable",
-	"targetPath": ".out/bin",
+	"targetPath": "../.out/bin",
 	"sourcePaths": [ "source" ],
 	"importPaths": [ "source" ],
 	"dependencies": {

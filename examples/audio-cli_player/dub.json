@@ -1,7 +1,7 @@
 {
 	"name": "audio-cli_player",
 	"targetType": "executable",
-	"targetPath": ".out/bin",
+	"targetPath": "../.out/bin",
 	"sourcePaths": [ "source" ],
 	"importPaths": [ "source" ],
 	"dependencies": {
