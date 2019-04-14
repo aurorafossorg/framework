@@ -4,6 +4,7 @@ stages:
   - check
   - build
   - test
+  - production
   - deploy
 
 # Style checker
@@ -59,7 +60,7 @@ x86_64-linux-dub-dmd-debug:
   <<: *linux-dub_definition
   <<: *x86_64-linux-deps_definition
   variables:
-    BUILD_DUB_FLAGS: $CI_JOB_STAGE --arch=x86_64 --compiler=dmd
+    BUILD_DUB_FLAGS: $CI_JOB_STAGE --arch=x86_64 --compiler=dmd --build=debug
 
 x86-linux-dub-dmd-debug:
   stage: build
@@ -67,7 +68,7 @@ x86-linux-dub-dmd-debug:
   <<: *linux-dub_definition
   <<: *x86-linux-deps_definition
   variables:
-    BUILD_DUB_FLAGS: $CI_JOB_STAGE --arch=x86 --compiler=dmd
+    BUILD_DUB_FLAGS: $CI_JOB_STAGE --arch=x86 --compiler=dmd --build=debug
 
 x86_64-linux-dub-ldc-debug:
   <<: *artifacts_definition
@@ -75,7 +76,7 @@ x86_64-linux-dub-ldc-debug:
   <<: *x86_64-linux-deps_definition
   stage: build
   variables:
-    BUILD_DUB_FLAGS: $CI_JOB_STAGE --arch=x86_64 --compiler=ldc
+    BUILD_DUB_FLAGS: $CI_JOB_STAGE --arch=x86_64 --compiler=ldc --build=debug
 
 x86-linux-dub-ldc-debug:
   <<: *artifacts_definition
@@ -83,7 +84,7 @@ x86-linux-dub-ldc-debug:
   <<: *x86-linux-deps_definition
   stage: build
   variables:
-    BUILD_DUB_FLAGS: $CI_JOB_STAGE --arch=x86 --compiler=ldc
+    BUILD_DUB_FLAGS: $CI_JOB_STAGE --arch=x86 --compiler=ldc --build=debug
 
 x86_64-linux-dub-gdcd-debug:
   <<: *artifacts_definition
@@ -91,7 +92,7 @@ x86_64-linux-dub-gdcd-debug:
   <<: *x86_64-linux-deps_definition
   stage: build
   variables:
-    BUILD_DUB_FLAGS: $CI_JOB_STAGE --arch=x86_64 --compiler=gdc
+    BUILD_DUB_FLAGS: $CI_JOB_STAGE --arch=x86_64 --compiler=gdc --build=debug
   allow_failure: true
 
 x86-linux-dub-gdc-debug:
@@ -100,7 +101,7 @@ x86-linux-dub-gdc-debug:
   <<: *x86-linux-deps_definition
   stage: build
   variables:
-    BUILD_DUB_FLAGS: $CI_JOB_STAGE --arch=x86 --compiler=gdc
+    BUILD_DUB_FLAGS: $CI_JOB_STAGE --arch=x86 --compiler=gdc --build=debug
   allow_failure: true
 
 # Build and test all examples
@@ -134,3 +135,35 @@ code_coverage:
     BUILD_DUB_FLAGS: $CI_JOB_STAGE --build=unittest-cov --coverage
   after_script:
     - bash <(curl -s https://codecov.io/bash)
+
+x86_64-linux-dub-ldc-release:
+  <<: *artifacts_definition
+  <<: *linux-dub_definition
+  <<: *x86_64-linux-deps_definition
+  stage: production
+  variables:
+    BUILD_DUB_FLAGS: build --arch=x86_64 --compiler=ldc --build=release
+
+x86-linux-dub-ldc-release:
+  <<: *artifacts_definition
+  <<: *linux-dub_definition
+  <<: *x86-linux-deps_definition
+  stage: production
+  variables:
+    BUILD_DUB_FLAGS: build --arch=x86 --compiler=ldc --build=release
+
+x86_64-linux-dub-dmd-release:
+  <<: *artifacts_definition
+  <<: *linux-dub_definition
+  <<: *x86_64-linux-deps_definition
+  stage: production
+  variables:
+    BUILD_DUB_FLAGS: build --arch=x86_64 --compiler=dmd --build=release
+
+x86-linux-dub-dmd-release:
+  <<: *artifacts_definition
+  <<: *linux-dub_definition
+  <<: *x86-linux-deps_definition
+  stage: production
+  variables:
+    BUILD_DUB_FLAGS: build --arch=x86 --compiler=dmd --build=release
