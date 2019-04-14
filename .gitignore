@@ -31,3 +31,7 @@ docs/.out_*
 
 #ImGui Config
 imgui.ini
+
+#Node.js
+package-lock.json
+node_modules
