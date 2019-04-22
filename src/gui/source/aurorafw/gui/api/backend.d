@@ -47,7 +47,7 @@ version(linux)
 }
 
 pure class Backend {
-	static Backend get()
+	public static Backend get()
 	{
 		if(!_instance)
 		{
@@ -64,13 +64,12 @@ pure class Backend {
 		return _instance;
 	}
 
-	@property BackendType type()
+	public @property BackendType type()
 	{
 		return _type;
 	}
 
 	protected BackendType _type;
 
-private:
-	static Backend _instance;
+	private static Backend instance;
 }
