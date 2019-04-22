@@ -1,5 +1,8 @@
 module aurorafw.cli.terminal.terminal;
 
+import aurorafw.core.input.events;
+import aurorafw.core.input.keys;
+
 version(Posix)
 {
 	import core.sys.posix.unistd;
@@ -12,24 +15,50 @@ version(Posix)
 
 import std.process;
 import std.string;
-import std.conv : to;
 import std.exception;
 import std.utf;
 import std.typecons;
 import std.file;
 import std.stdio;
+import std.ascii : isAlpha;
+import std.conv;
 
 import core.stdc.errno;
 import core.stdc.stdio;
 
+/** Exception for terminal die
+ * This exception is thrown when theres a problem with
+ * terminal related issue.
+ */
 class TerminalDieException : Exception {
-	this(ref Terminal term, string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
+	/** Terminal Die Exception Constructor
+	 * This construct a normal exception and disable
+	 * terminal raw mode.
+	 * @param term Terminal
+	 * @param msg exception message
+	 * @param file code file
+	 * @param line line code on file
+	 * @param next next throwable object
+	 */
+	this(ref Terminal term, string msg,
+		string file = __FILE__, size_t line = __LINE__,
+		Throwable next = null)
 	{
 		term.disableRawMode();
 		super(msg, file, line, next);
 	}
 
-	this(ref Terminal term, string msg, Throwable next, string file = __FILE__, size_t line = __LINE__)
+	/** Terminal Die Exception Constructor
+	 * This construct a normal exception and disable
+	 * terminal raw mode.
+	 * @param term Terminal
+	 * @param msg exception message
+	 * @param next next throwable object
+	 * @param file code file
+	 * @param line line code on file
+	 */
+	this(ref Terminal term, string msg, Throwable next,
+		string file = __FILE__, size_t line = __LINE__)
 	{
 		term.disableRawMode();
 		super(msg, file, line, next);
@@ -38,18 +67,40 @@ class TerminalDieException : Exception {
 
 // TODO: Switch special writes to termcap codes
 
+/** Terminal Struct
+ * This struct represents a terminal buffer and
+ * a set of functions to manipulate it under the
+ * defined i/o descriptors.
+ */
 struct Terminal {
+	// disable empty and copy constructors
 	@disable this();
 	@disable this(this);
 
-	enum OutputType {
+	/** Terminal Output Type
+	 * Enumerates the terminal output type
+	 */
+	public enum OutputType
+	{
 		CELL,
 		MINIMAL,
 		LINEAR
 	}
-	public this(OutputType outType, int outputDescriptor = STDOUT_FILENO, int inputDescriptor = STDIN_FILENO) {
-		this.outType = outType;
 
+	/** Constructor for Terminal
+	 * This construct a terminal buffer with the specified
+	 * output type and i/o descriptors
+	 * @param outType Output Type
+	 * @param outputDescriptor Output descriptor
+	 * @param inputDescriptor Input descriptor
+	 */
+	public this(OutputType outType, int outputDescriptor = STDOUT_FILENO, int inputDescriptor = STDIN_FILENO)
+	{
+		this.outType = outType;
+		this.outputDescriptor = outputDescriptor;
+		this.inputDescriptor = inputDescriptor;
+
+		// for cell based output (grid-style)
 		if(outType == OutputType.CELL)
 		{
 			saveTitle();
@@ -57,6 +108,9 @@ struct Terminal {
 		}
 	}
 
+	/** Destructor for Terminal
+	 * This destruct a terminal buffer after disabling the raw mode
+	 */
 	~this()
 	{
 		if(outType == OutputType.CELL)
@@ -179,7 +233,8 @@ struct Terminal {
 		core.sys.posix.unistd.write(outputDescriptor, cstr, len);
 	}
 
-	public dchar readCh() {
+	public size_t readCh(ref dchar c)
+	{
 		size_t nread;
 		char[1] buf;
 
@@ -187,17 +242,34 @@ struct Terminal {
 		if (nread == -1 && errno != EAGAIN)
 			throw new TerminalDieException(this, "read");
 		if(nread == 0)
-			return 0;
+			c = 0;
 		else
 		{
 			char[] dbuf;
 			foreach (ch; buf[0 .. nread])
 				dbuf ~= ch;
 			if (dbuf.length && dbuf.length >= dbuf.stride())
-				return dbuf.decodeFront!(Yes.useReplacementDchar);
-			return 0;
+				c = dbuf.decodeFront!(Yes.useReplacementDchar);
+			else
+				c = 0;
 		}
 
+		return nread;
+	}
+
+	public string readBuffer()
+	{
+		size_t nread;
+		string buf;
+
+		do {
+			dchar c;
+			nread = readCh(c);
+			buf ~= c;
+		}
+		while (nread != 0);
+
+		return buf;
 	}
 
 	public int getWindowSize(ref size_t rows, ref size_t cols)
@@ -208,8 +280,8 @@ struct Terminal {
 			if (core.sys.posix.unistd.write(outputDescriptor, "\x1b[999C\x1b[999B".toStringz, 12) != 12) return -1;
 			return getCursorPosition(rows, cols);
 		} else {
-			rows = ws.ws_col;
-			cols = ws.ws_row;
+			rows = ws.ws_row;
+			cols = ws.ws_col;
 			return 0;
 		}
 	}
@@ -240,12 +312,13 @@ struct Terminal {
 		return rawMode;
 	}
 
-	public void setTitle(string title) {
+	public void setTitle(string title)
+	{
 		version(Windows) {
 			SetConsoleTitleA(toStringz(title));
 		} else {
 			if(terminalInFamily("xterm", "rxvt", "screen"))
-				writeBuffer(format("\033]0;%s\007", title));
+				writeBuffer(format("\x1b]0;%s\007", title));
 		}
 	}
 
@@ -255,9 +328,9 @@ struct Terminal {
 		{
 			if(terminalInFamily("xterm", "rxvt", "screen")) {
 				if(flush)
-					writeDescriptor("\033[22;0t");
+					writeDescriptor("\x1b[22;0t");
 				else
-					writeBuffer("\033[22;0t");
+					writeBuffer("\x1b[22;0t");
 			}
 		}
 	}
@@ -269,16 +342,37 @@ struct Terminal {
 			if(terminalInFamily("xterm", "rxvt", "screen"))
 			{
 				if(flush)
-					writeDescriptor("\033[23;0t");
+					writeDescriptor("\x1b[23;0t");
 				else
-					writeBuffer("\033[23;0t");
+					writeBuffer("\x1b[23;0t");
 			}
 		}
 	}
 
+	pragma(inline) public KeyboardEvent[] pullEvents()
+	{
+		return translatePosixEvents(readBuffer());
+	}
+
+	public static KeyboardEvent[] translatePosixEvents(string eseq)
+	{
+		KeyboardEvent[] kb_events;
+		for(int i = 0; i < eseq.length; i++)
+		{
+			if(isAlpha(eseq[i]))
+			{
+				auto tmp_str = to!string(toUpper(eseq[0]));
+				kb_events ~= KeyboardEvent(
+					parse!Keycode(tmp_str),
+					InputModifier.None);
+			}
+		}
+		return [KeyboardEvent(Keycode.Unknown, InputModifier.None)];
+	}
+
 	version(Posix)
 	{
-		static public bool terminalInFamily(string[] terms...)
+		public static bool terminalInFamily(string[] terms...)
 		{
 			auto term = environment.get("TERM");
 			foreach(t; terms)
@@ -287,7 +381,8 @@ struct Terminal {
 			return false;
 		}
 
-		static public bool isMacTerminal() {
+		public static bool isMacTerminal()
+		{
 			auto term = environment.get("TERM");
 			return term == "xterm-256color";
 		}
@@ -298,6 +393,7 @@ struct Terminal {
 	private int inputDescriptor;
 	private string buffer;
 	private bool rawMode = false;
+
 	version(Posix) {
 		private termios origTermios;
 	} else version(Windows) {
