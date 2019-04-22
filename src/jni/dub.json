@@ -1,7 +1,0 @@
-{
-	"name": "jni",
-	"targetType": "library",
-	"targetPath": "../../.out/bin",
-	"sourcePaths": [ "source" ],
-	"importPaths": [ "source" ]
-}
