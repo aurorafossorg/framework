@@ -44,12 +44,15 @@ struct KeyboardState {
 
 	bool isKeyPressed(Keycode key) const
 	{
-		return keys[key];
+		if((key in keys) !is null)
+			return keys[key];
+		else
+			return false;
 	}
 
 	void pressKey(Keycode key)
 	{
-		if(keys[key] == false) keys[key] = true;
+		keys[key] = true;
 	}
 
 	void releaseKey(Keycode key)
@@ -69,7 +72,7 @@ struct MouseState {
 
 	void pressButton(InputButton button)
 	{
-		if(buttons[button] == false) buttons[button] = true;
+		buttons[button] = true;
 	}
 
 	void releaseButton(InputButton button)
