@@ -49,7 +49,7 @@ module aurorafw.math.vector;
 	union
 	{
 		T[N] vec;
-		static if (N < 5)
+		static if (N <= 4)
 		{
 			struct { mixin(_elements(["x", "y", "z", "w"])); }
 			struct { mixin(_elements(["r", "g", "b", "a"])); }
@@ -57,6 +57,8 @@ module aurorafw.math.vector;
 		}
 	}
 }
+
+//TODO: Add unittesting
 
 alias vec!(int, 2) Vector2i, ivec2;
 alias vec!(uint, 2) Vector2u, uvec2;
