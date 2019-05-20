@@ -5,6 +5,10 @@
 	"sourcePaths": [ "source" ],
 	"importPaths": [ "source" ],
 	"dependencies": {
-		"aurorafw:core": "*"
+		"aurorafw:core": "*",
+		"riverd-ncurses": "~>1.0.1"
+	},
+	"subConfigurations": {
+		"riverd-ncurses": "static"
 	}
 }
