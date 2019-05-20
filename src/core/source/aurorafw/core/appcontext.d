@@ -48,6 +48,7 @@ public:
 	protected void onStart() {}
 	protected void onClose() {}
 
+	pragma(inline)
 	protected void loop() {
 		stop();
 	}
@@ -55,16 +56,15 @@ public:
 	final public void start()
 	{
 		onStart();
+
 		running = true;
 		while(running)
 			loop();
-	}
 
-	final public void close()
-	{
 		onClose();
 	}
 
+	pragma(inline)
 	final public void stop()
 	{
 		running = false;
