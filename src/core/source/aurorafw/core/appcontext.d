@@ -78,3 +78,27 @@ public:
 	private bool running;
 	// private OptionHandler _opts;
 }
+
+@system
+@("Application: context")
+unittest {
+	class MyApplicationContext : ApplicationContext {
+		this(immutable string packageName, string[] args)
+		{
+			super(packageName, args);
+
+			assert(packageName == "test");
+			assert(args == ["app", "--args"]);
+		}
+
+		override void loop() {
+			assert(this.isRunning);
+			this.stop();
+		}
+	}
+
+	MyApplicationContext app = new MyApplicationContext("test", ["app", "--args"]);
+	app.start(); //loop just stop the app by default
+
+	assert(!app.isRunning);
+}

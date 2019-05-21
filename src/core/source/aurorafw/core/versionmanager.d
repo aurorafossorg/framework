@@ -35,22 +35,85 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.core.versionmanager;
 
+//TODO: Documentation
+
+@safe
 struct Version {
 	uint major;
 	uint minor;
-	uint rev=1;
+	uint rev;
+
+	this(uint major, uint minor, uint rev = 1)
+	{
+		this.major = major;
+		this.minor = minor;
+		this.rev = rev;
+	}
+
+	this(string strVer)
+	{
+		import std.array : split, replace;
+		import std.conv : to;
+
+		auto sstrVer = strVer.split("-");
+		assert(sstrVer.length > 0 && sstrVer.length <= 2);
+		if(sstrVer.length == 2)
+			this.rev = to!uint(sstrVer[1]);
+
+		{
+			auto mver = sstrVer[0].split(".");
+			assert(mver.length == 2);
+
+			this.major = to!uint(mver[0]);
+			this.minor = to!uint(mver[1]);
+		}
+	}
+
+	static auto fromString(string strVer)()
+	{
+		enum sret = Version(strVer);
+		return sret;
+	}
 }
 
 enum VersionFlag : byte {
-	NONE,
-	REVIEW,
-	FORCE = 1<<1
+	NONE = 0,
+	REVIEW = 1,
+	FORCE = 1 << 1
 }
 
 pragma(inline) @property @safe string toString(Version ver, byte flag = VersionFlag.REVIEW)
 {
 	import std.conv : to;
 	string ret = to!string(ver.major) ~ "." ~ to!string(ver.minor);
-	if(((flag >> 0) & 1) && (ver.rev >1 || ((flag >> 1) & 1))) return ret ~ "-" ~ to!string(ver.rev);
-	else return ret;
+	return ((ver.rev > 1 && ((flag & VersionFlag.REVIEW) != 0)) || ((flag & VersionFlag.FORCE) != 0)) ? ret ~ "-" ~ to!string(ver.rev) : ret;
+}
+
+@safe
+@("Versioning: simple")
+unittest {
+	Version ver = Version(1, 0);
+	assert(ver.major == 1);
+	assert(ver.minor == 0);
+	assert(ver.rev == 1); //default
+}
+
+@safe
+@("Versioning: string")
+unittest {
+	assert(Version(1, 1, 2).toString == "1.1-2");
+	assert(Version(1, 1, 2).toString(VersionFlag.NONE) == "1.1");
+	assert(Version(1, 3).toString == "1.3");
+	assert(Version(1, 3).toString(VersionFlag.FORCE) == "1.3-1");
+}
+
+@safe
+@("Versioning: compile-time evaluation")
+unittest {
+	enum Version ver = Version("1.5-2");
+	assert(ver.major == 1);
+	assert(ver.minor == 5);
+	assert(ver.rev == 2);
+
+	assert(Version.fromString!("1.5-2") == ver);
 }

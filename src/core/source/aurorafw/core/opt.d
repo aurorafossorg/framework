@@ -58,7 +58,8 @@ enum OptionType {
 	None
 }
 
-@safe pure @nogc struct OptionHandler {
+@safe pure
+struct OptionHandler {
 
 	this(string[] args, OptionType type = __currentType)
 	{
@@ -66,7 +67,7 @@ enum OptionType {
 		_type = type;
 	}
 
-	bool read(T)(string opts, string help, T* pval = null)
+	bool read(T = void)(string opts, string help, T* pval = null)
 	{
 		OptionElement opte;
 		import std.array : split;
@@ -93,11 +94,39 @@ private:
 	else enum OptionType __currentType = OptionType.Posix;
 }
 
-@system unittest
+@system
+@("Option Handler: check")
+unittest
 {
-	auto args = ["prog", "--foo", "-b"];
-	bool isFoo;
-	OptionHandler optHandler = OptionHandler(args);
-	optHandler.read("foo|f", "Some information about foo.", &isFoo);
-	//assert(isFoo == true);
+	bool isFoo, isFoobar;
+	string str_val;
+	int integer_val;
+	real real_val;
+
+	version(Windows) OptionHandler optHandler = OptionHandler(["prog", "\\foo", "\\f", "\\str=bar", "\\i=100", "\\real=1.3"]);
+	else OptionHandler optHandler = OptionHandler(["prog", "--foo", "-f", "--str=bar", "-i=100", "--real=1.3"]);
+
+	optHandler.read("foo", "information", &isFoo);
+	optHandler.read("foobar|f", "quick", &isFoobar);
+	optHandler.read("str", "string", &str_val);
+	optHandler.read("integer|i", "integer", &integer_val);
+	optHandler.read("real|r", "real option", &real_val);
+
+	assert(isFoo == true);
+	assert(str_val == "foo");
+	assert(integer_val == 100);
+	assert(real_val == 1.3);
+}
+
+@safe
+@("Option Handler: twice")
+unittest
+{
+	OptionHandler optHandler = OptionHandler([]);
+	optHandler.read("dummy", "some");
+
+	try {
+		optHandler.read("dummy", "same");
+		assert(0);
+	} catch (OptionHandlerException) {}
 }
