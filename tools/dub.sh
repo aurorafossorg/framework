@@ -3,7 +3,6 @@
 set -e
 
 dub $@
-dub $@ :android
 dub $@ :audio
 dub $@ :cli
 dub $@ :core
