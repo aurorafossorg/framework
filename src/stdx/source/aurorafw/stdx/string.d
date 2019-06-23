@@ -2,6 +2,7 @@ module aurorafw.stdx.string;
 
 public import std.string;
 
+@safe
 string substr(string s, ptrdiff_t offset, ptrdiff_t length)
 {
 	size_t end = void;
@@ -19,6 +20,7 @@ string substr(string s, ptrdiff_t offset, ptrdiff_t length)
 	return s[offset..end];
 }
 
+@safe
 unittest {
 	string s = "Aurora Framework";
 	assert(s.substr(1,5)=="urora");
