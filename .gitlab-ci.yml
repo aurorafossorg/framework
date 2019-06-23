@@ -45,6 +45,7 @@ codestyle:
   stage: check
   image: aurorafossorg/dlang:latest
   script: dscanner -S .
+  allow_failure: true
 
 # Syntax check before compilation
 syntax_check:
