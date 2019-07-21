@@ -63,6 +63,7 @@ editorconfig:
   script:
     - npm install eclint
     - npx eclint check "src/**/*.d" "*.json" "**/meson.build" "*.yml"
+  allow_failure: true
 
 # Artifacts template
 .artifacts_template: &artifacts_definition
