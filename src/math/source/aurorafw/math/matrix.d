@@ -46,44 +46,43 @@ module aurorafw.math.matrix;
  * N*M array, allows to manipulate it.
  * @since snapshot20180930
  */
-@nogc pure @safe struct mat(T, size_t M, size_t N) {
-	this(T num)
+@nogc pure @safe struct Matrix(T, size_t M, size_t N) {
+	this(T initNumber)
 	in {
 		static assert(M == N, "invalid diagonal matrix");
 	}
 	body {
-		foreach(size_t i; 0..M)
-			matrix[i * M + i] = num;
+		foreach(i; 0 .. M)
+			matrix[i * M + i] = initNumber;
 	}
 
-	this(immutable ref mat!(T, M, N) mat)
+	this(immutable ref Matrix!(T, M, N) mat)
 	{
-		this = mat;
+		this.matrix = mat.matrix.dup;
 	}
 
-	this(T[M*N] arr)
+	this(T[M*N] matrix)
 	{
-		matrix = arr;
+		this.matrix = matrix;
 	}
 
-	this(T[] arr)
+	this(T[] matrix)
 	in {
-		assert(arr.length == M * N, "array doesn't have the same size");
+		assert(matrix.length == M * N, "array doesn't have the same size");
 	}
 	body {
-		matrix = arr;
+		this.matrix = matrix;
 	}
 
-	pragma(inline) static mat!(T, M, N) zero()
+	pragma(inline) static Matrix!(T, M, N) zero()
 	{
-		mat!(T, M, N) ret;
-		ret.matrix[0..N*M] = 0;
+		Matrix!(T, M, N) ret;
 		return ret;
 	}
 
-	pragma(inline) static mat!(T, M, N) identity()
+	pragma(inline) static Matrix!(T, M, N) identity()
 	{
-		mat!(T, M, N) ret;
+		Matrix!(T, M, N) ret;
 		ret.setIdentity();
 		return ret;
 	}
@@ -98,7 +97,42 @@ module aurorafw.math.matrix;
 					matrix[x * M + y] = 0;
 	}
 
-	bool opEquals(mat!(T, M, N) mat) const
+	Matrix!(T, M, N) opBinary(string op)(T val)
+	{
+		Matrix!(T, M, N) ret;
+		foreach(i; 0 .. M)
+			foreach(j; 0 .. N)
+				mixin("ret.matrix[i * M + j] = this.matrix[i * M + j] "~op~" val;");
+		return ret;
+	}
+
+	Matrix!(T, M, N) opBinary(string op)(Matrix!(T, M, N) val) if(op == "+" || op == "-")
+	{
+		Matrix!(T, M, N) ret;
+		foreach(i; 0 .. M)
+			foreach(j; 0 .. N)
+				mixin("ret[i,j] = this[i,j]"~op~"val[i,j];");
+
+		return ret;
+	}
+
+	Matrix!(T, M, N) opBinary(string op : "*")(Matrix!(T, M, N) val)
+	{
+		Matrix!(T, M, N) res;
+
+		foreach (i; 0 .. M)
+			foreach (j; 0 .. N)
+			{
+				T sumProduct = 0;
+				foreach (k; 0 .. N)
+					sumProduct += this[i, k] * val[k, j];
+				res[i, j] = sumProduct;
+			}
+
+		return res;
+	}
+
+	bool opEquals(Matrix!(T, M, N) mat) const
 	{
 		return matrix == mat.matrix;
 	}
@@ -148,81 +182,46 @@ module aurorafw.math.matrix;
 		return (matrix[] = val);
 	}
 
-	mat!(T, M, N) opAdd(mat!(T, M, N) val)
-	{
-		auto res = mat!(T, M, N)();
-		foreach(i; 0 .. M)
-			foreach(j; 0 .. N)
-				res[i, j] = this[i, j] + val[i, j];
-
-		return res;
-	}
-
-	mat!(T, M, N) opSub(mat!(T, M, N) val)
-	{
-		auto res = mat!(T, M, N)();
-		foreach(i; 0 .. M)
-			foreach(j; 0 .. N)
-				res[i, j] = this[i, j] - val[i, j];
-
-		return res;
-	}
-
-	mat!(T, M, N) opMul(mat!(T, M, N) val)
-	{
-		auto res = mat!(T, M, N)();
-
-		foreach (i; 0 .. M)
-			foreach (j; 0 .. N)
-			{
-				T sumProduct = 0;
-				foreach (k; 0 .. N)
-					sumProduct += this[i, k] * val[k, j];
-				res[i, j] = sumProduct;
-			}
-
-		return res;
-	}
-
-	mat!(T, M, N) opAddAssign(mat!(T, M, N) val)
-	{
-		this += val;
-		return this;
-	}
-
-	mat!(T, M, N) opSubAssign(mat!(T, M, N) val)
-	{
-		this -= val;
-		return this;
-	}
-
-	mat!(T, M, N) opMulAssign(mat!(T, M, N) val)
-	{
-		this *= val;
-		return this;
-	}
-
-	mat!(T, M, N) opMul(T val)
-	{
-		auto res = mat!(T, M, N)();
-		foreach(i, v; matrix)
-			res.matrix[i] = v * val;
-		return res;
-	}
-
-	mat!(T, M, N) opMulAssign(T val)
-	{
-		foreach(ref v; matrix)
-			v*= val;
-		return this;
-	}
-
 	T[M*N] matrix;
 }
 
-alias mat!(float, 2, 2) Matrix2x2f, Matrix2f, mat2;
-alias mat!(float, 3, 3) Matrix3x3f, Matrix3f, mat3;
-alias mat!(float, 4, 4) Matrix4x4f, Matrix4f, mat4;
-alias mat!(double, 2, 2) Matrix2x2d, Matrix2d;
-alias mat!(double, 3, 3) Matrix3x3d, Matrix3d;
-alias mat!(double, 4, 4) Matrix4x4d, Matrix4d;
+alias Matrix!(float, 2, 2) Matrix2x2f, Matrix2f, mat2;
+alias Matrix!(float, 3, 3) Matrix3x3f, Matrix3f, mat3;
+alias Matrix!(float, 4, 4) Matrix4x4f, Matrix4f, mat4;
+alias Matrix!(double, 2, 2) Matrix2x2d, Matrix2d;
+alias Matrix!(double, 3, 3) Matrix3x3d, Matrix3d;
+alias Matrix!(double, 4, 4) Matrix4x4d, Matrix4d;
+
+@("Matrix: Identity")
+unittest {
+	Matrix!(int, 3, 3) mat = Matrix!(int, 3, 3).identity;
+	int[3*3] matIdentity =
+		[1, 0, 0,
+		 0, 1, 0,
+		 0, 0, 1];
+
+	assert(matIdentity == mat.matrix);
+}
+
+
+@("Matrix: Add operation")
+unittest {
+	Matrix!(int, 3, 3) mat = Matrix!(int, 3, 3).identity;
+	int[3 * 3] matIdentity =
+		[2, 1, 1,
+		 1, 2, 1,
+		 1, 1, 2];
+
+	assert(matIdentity == (mat + 1).matrix);
+}
+
+@("Matrix: Subtract operation")
+unittest {
+	Matrix!(int, 3, 3) mat = Matrix!(int, 3, 3).identity;
+	int[3 * 3] matIdentity =
+		[0, -1, -1,
+		 -1, 0, -1,
+		 -1, -1, 0];
+
+	assert(matIdentity == (mat - 1).matrix);
+}
