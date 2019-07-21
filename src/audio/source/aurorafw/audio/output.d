@@ -46,8 +46,8 @@ import aurorafw.core.debugmanager;
 import aurorafw.core.logger;
 import aurorafw.audio.backend : AudioDevice, catchSOUNDIOProblem, catchSNDFILEProblem, AudioBackend;
 import aurorafw.audio.utils : AudioInfo;
-import aurorafw.audio.sndfile;
-import aurorafw.audio.soundio;
+import riverd.sndfile;
+import riverd.soundio;
 
 enum AudioPlayMode : byte {
 	Once,

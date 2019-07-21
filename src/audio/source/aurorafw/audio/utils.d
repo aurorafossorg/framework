@@ -39,7 +39,7 @@ import std.string : toStringz;
 import std.conv : to;
 
 import aurorafw.core.debugmanager;
-import aurorafw.audio.sndfile;
+import riverd.sndfile;
 import aurorafw.audio.backend : catchSNDFILEProblem;
 
 class AudioInfo {

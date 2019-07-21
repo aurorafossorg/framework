@@ -37,7 +37,7 @@ module aurorafw.audio.input;
 
 import aurorafw.audio.utils : AudioInfo;
 import aurorafw.core.debugmanager;
-import aurorafw.audio.sndfile;
+import riverd.sndfile;
 
 import std.string : toStringz;
 

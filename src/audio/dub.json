@@ -6,10 +6,8 @@
 	"importPaths": [ "source" ],
 	"dependencies": {
 		"aurorafw:core": "*",
-		"aurorafw:math": "*"
-	},
-	"libs": [
-		"soundio",
-		"sndfile"
-	]
+		"aurorafw:math": "*",
+		"riverd-sndfile": "~>1.0.0",
+		"riverd-soundio": "~>1.0.0"
+	}
 }

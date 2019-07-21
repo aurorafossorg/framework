@@ -35,8 +35,8 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.audio.backend;
 
-import aurorafw.audio.sndfile;
-import aurorafw.audio.soundio;
+import riverd.sndfile;
+import riverd.soundio;
 import aurorafw.core.debugmanager;
 import aurorafw.core.logger;
 
