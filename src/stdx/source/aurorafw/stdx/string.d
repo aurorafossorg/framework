@@ -21,7 +21,27 @@ string substr(string s, ptrdiff_t offset, ptrdiff_t length)
 }
 
 @safe
+bool isAlpha(string str)
+{
+	import std.ascii : isAlpha;
+
+	foreach(c; str)
+		if(!c.isAlpha)
+			return false;
+
+	return true;
+}
+
+@safe
+@("String: substr")
 unittest {
 	string s = "Aurora Framework";
 	assert(s.substr(1,5)=="urora");
+}
+
+@safe
+@("String: isAlpha")
+unittest {
+	assert(isAlpha("tunaisgood"));
+	assert(!isAlpha("tun41s900d"));
 }
