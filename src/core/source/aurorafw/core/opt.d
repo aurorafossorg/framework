@@ -36,97 +36,246 @@ directly send an email to: contact (at) aurorafoss.org .
 module aurorafw.core.opt;
 
 public import aurorafw.stdx.getopt : defaultRuntimeArgs;
+import std.algorithm : startsWith, canFind, sort, any;
+import aurorafw.stdx.string : isAlpha;
+import std.array : split, array;
+import std.exception;
+import std.string : indexOf;
+import std.variant;
+import core.runtime : Runtime;
 
 class OptionHandlerException : Exception
 {
-	import std.exception;
 	mixin basicExceptionCtors;
 }
 
 static assert(is(typeof(new OptionHandlerException("message"))));
 static assert(is(typeof(new OptionHandlerException("message", Exception.init))));
 
-struct OptionElement {
-	string[] opts;
-	string help;
-	bool val;
-}
-
-enum OptionType {
-	Posix,
-	Windows,
-	None
-}
-
 @safe pure
 struct OptionHandler {
-
-	this(string[] args, OptionType type = __currentType)
-	{
-		_args = args;
-		_type = type;
+	struct Option {
+		string[] opts;
+		string help;
 	}
 
-	bool read(T = void)(string opts, string help, T* pval = null)
+	struct Argument {
+		string name;
+		ArgumentSize size;
+		string value = null;
+	}
+
+	enum ArgumentSize {
+		Long,
+		Short
+	}
+
+	public this(string[] args)
 	{
-		OptionElement opte;
-		import std.array : split;
-		import std.algorithm : sort, any;
-		import std.array : array;
-		opte.opts = opts.split("|").sort!((a, b) => a.length < b.length)().array();
-		opte.val = !is(T == bool);
+		foreach(string arg ; args[1 .. $])
+		{
+			if(arg.startsWith("--"))
+			{
+				string splitted = arg.split("--")[1];
+				if(splitted.length == 0)
+					break;
+
+				ptrdiff_t hasValue = splitted.indexOf('=');
+				if(hasValue != -1)
+				{
+					string newSplitted = splitted[0 .. hasValue];
+					if(newSplitted.isAlpha)
+						this.args ~= Argument(newSplitted, ArgumentSize.Long, splitted[hasValue + 1 .. $]);
+				}
+				else if(splitted.isAlpha)
+					this.args ~= Argument(splitted, ArgumentSize.Long);
+			}
+			else if (arg.startsWith("-"))
+			{
+				string splitted = arg.split("-")[1];
+				ptrdiff_t hasValue = splitted.indexOf('=');
+				if(hasValue != -1)
+				{
+					string newSplitted = splitted[0 .. hasValue];
+					if(newSplitted.isAlpha)
+						this.args ~= Argument(newSplitted, ArgumentSize.Short, splitted[hasValue + 1 .. $]);
+				}
+				else if(splitted.isAlpha && splitted.length != 0)
+					this.args ~= Argument(splitted, ArgumentSize.Short);
+			}
+		}
+	}
+
+	public T[] read(T)(string opts, string help, bool required, ref bool value)
+	{
+		Option opte = read(opts, help);
+		T[] ret;
+		value = false;
+		foreach(arg; args) if(opts.canFind(arg.name))
+		{
+			value = true;
+			string retstr = arg.value;
+			if(retstr !is null)
+			{
+				import std.conv : to;
+				ret ~= to!T(retstr);
+			}
+		}
+		if(value == false && required == true)
+			throw new OptionHandlerException("Required option " ~ opts);
+		return ret;
+	}
+
+	public void read(string opts, string help, bool required, ref bool value)
+	{
+		Option opte = read(opts, help);
+		value = false;
+		foreach(opt; opte.opts)
+		{
+			foreach(arg; args) if(arg.name == opt)
+			{
+				value = true;
+				return;
+			}
+		}
+		if(value == false && required == true)
+			throw new OptionHandlerException("Required option " ~ opts);
+	}
+
+	private Option read(string opts, string help)
+	{
+		Option opte;
+		opte.opts = opts.split("|").sort!((a, b) => a.length < b.length).array;
 		opte.help = help;
 
-		if(_opts.any!(o => o.opts == opte.opts)())
+		if(this.opts.any!(o => o.opts == opte.opts))
 			throw new OptionHandlerException("Trying to read the same option name twice");
 
-		_opts ~= opte;
+		this.opts ~= opte;
 
-		return true;
+		return opte;
 	}
 
-private:
-	string[] _args;
-	OptionElement[] _opts;
-	OptionType _type;
+	public bool helpWanted()
+	{
+		foreach(arg; args)
+		{
+			if(arg.name == "help")
+				return true;
+		}
+		return false;
+	}
 
-	version(Windows) enum OptionType __currentType = OptionType.Windows;
-	else enum OptionType __currentType = OptionType.Posix;
+	public string printableHelp()
+	{
+		string ret;
+		foreach(opt; opts)
+		{
+			ret ~= opt.opts[0];
+			if(opt.opts.length == 2)
+			{
+				ret ~= " " ~ opt.opts[1];
+			}
+			ret ~= "\t" ~ opt.help;
+		}
+		return ret;
+	}
+
+	@property
+	public Argument[] arguments()
+	{
+		return this.args.dup;
+	}
+
+	@property
+	public Option[] options()
+	{
+		return this.opts.dup;
+	}
+
+	private Argument[] args;
+	private Option[] opts;
 }
 
-@system
-@("Option Handler: check")
+@safe
+@("Option Handler: check arguments")
+unittest
+{
+	OptionHandler opts = OptionHandler(["prog", "--foo", "-f", "--bar=foobar"]);
+
+	OptionHandler.Argument[] args = [
+		OptionHandler.Argument("foo", OptionHandler.ArgumentSize.Long),
+		OptionHandler.Argument("f", OptionHandler.ArgumentSize.Short),
+		OptionHandler.Argument("bar", OptionHandler.ArgumentSize.Long, "foobar")
+	];
+
+	assert(opts.arguments == args);
+}
+
+
+@safe
+@("Option Handler: check read")
 unittest
 {
 	bool isFoo, isFoobar;
-	string str_val;
-	int integer_val;
-	real real_val;
 
-	version(Windows) OptionHandler optHandler = OptionHandler(["prog", "\\foo", "\\f", "\\str=bar", "\\i=100", "\\real=1.3"]);
-	else OptionHandler optHandler = OptionHandler(["prog", "--foo", "-f", "--str=bar", "-i=100", "--real=1.3"]);
+	{
+		OptionHandler optHandler = OptionHandler(["prog", "--foo", "-f"]);
 
-	optHandler.read("foo", "information", &isFoo);
-	optHandler.read("foobar|f", "quick", &isFoobar);
-	optHandler.read("str", "string", &str_val);
-	optHandler.read("integer|i", "integer", &integer_val);
-	optHandler.read("real|r", "real option", &real_val);
+		optHandler.read("foo", "information", true, isFoo);
+		optHandler.read("foobar|f", "quick", false, isFoobar);
+	}
 
 	assert(isFoo == true);
-	assert(str_val == "foo");
-	assert(integer_val == 100);
-	assert(real_val == 1.3);
+	assert(isFoobar == true);
+}
+
+@safe
+@("Option Handler: check values")
+unittest
+{
+	bool isFoo;
+	int[] foo;
+
+	{
+		OptionHandler optHandler = OptionHandler(["prog", "--foo=4", "-f=7"]);
+
+		foo = optHandler.read!int("foo|f", "information", true, isFoo);
+	}
+
+	assert(isFoo == true);
+	assert(foo[0] == 4);
+	assert(foo[1] == 7);
+}
+
+@safe
+@("Option Handler: required exception")
+unittest
+{
+	bool isFoo, isBar;
+
+	{
+		OptionHandler optHandler = OptionHandler(["prog"]);
+
+		optHandler.read("bar", "information", false, isBar);
+
+		try {
+			optHandler.read("foo", "more information", true, isFoo);
+			assert(0);
+		} catch(OptionHandlerException) {}
+	}
 }
 
 @safe
 @("Option Handler: twice")
 unittest
 {
-	OptionHandler optHandler = OptionHandler([]);
-	optHandler.read("dummy", "some");
+	bool dummy;
+	OptionHandler optHandler = OptionHandler(["prog"]);
+	optHandler.read("dummy", "some", false, dummy);
 
 	try {
-		optHandler.read("dummy", "same");
+		optHandler.read("dummy", "same", false, dummy);
 		assert(0);
 	} catch (OptionHandlerException) {}
 }
