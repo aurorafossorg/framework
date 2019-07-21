@@ -49,7 +49,7 @@ version(linux)
 pure class Backend {
 	public static Backend get()
 	{
-		if(!_instance)
+		if(!instance)
 		{
 			version(linux)
 			import std.process : environment;
@@ -57,11 +57,11 @@ pure class Backend {
 			import aurorafw.gui.api.wayland.backend : WLBackend;
 			immutable auto xdg_session_type = environment.get("XDG_SESSION_TYPE");
 			if(xdg_session_type == "x11")
-				_instance = new X11Backend();
+				instance = new X11Backend();
 			else if(xdg_session_type == "wayland")
-				_instance = new WLBackend();
+				instance = new WLBackend();
 		}
-		return _instance;
+		return instance;
 	}
 
 	public @property BackendType type()
