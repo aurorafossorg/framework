@@ -5,7 +5,6 @@
 	"sourcePaths": [ "source" ],
 	"importPaths": [ "source" ],
 	"dependencies": {
-		"aurorafw:stdx":"*",
-		"silly": "~>0.8.2"
+		"aurorafw:stdx":"*"
 	}
 }

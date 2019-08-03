@@ -23,9 +23,7 @@
 		":gui": "*",
 		":net": "*",
 		":metadata": "*",
-		":stdx": "*",
-
-		"silly": "~>0.8.2"
+		":stdx": "*"
 	},
 	"subPackages": [
 		"src/core",
