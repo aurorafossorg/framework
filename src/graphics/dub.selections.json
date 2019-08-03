@@ -1,0 +1,11 @@
+{
+	"fileVersion": 1,
+	"versions": {
+		"aurorafw": "0.0.1-alpha.2+commit.156.g3ca2580",
+		"riverd-core": "1.0.1",
+		"riverd-x11": "0.1.2",
+		"riverd-xcursor": "1.0.1",
+		"riverd-xxf86vm": "1.0.1",
+		"silly": "0.8.2"
+	}
+}

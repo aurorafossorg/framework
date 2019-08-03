@@ -1,0 +1,7 @@
+{
+	"fileVersion": 1,
+	"versions": {
+		"silly": "0.8.2",
+		"unit-threaded": "0.9.3"
+	}
+}

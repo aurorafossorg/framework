@@ -6,7 +6,8 @@
 	"importPaths": [ "source" ],
 	"dependencies": {
 		"aurorafw:core": "*",
-		"riverd-ncurses": "~>1.0.4"
+		"riverd-ncurses": "~>1.0.4",
+		"silly": "~>0.8.2"
 	},
 	"subConfigurations": {
 		"riverd-ncurses": "static"

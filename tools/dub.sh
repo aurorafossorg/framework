@@ -3,13 +3,9 @@
 set -e
 
 dub $@
-dub $@ :audio
-dub $@ :cli
-dub $@ :core
-dub $@ :graphics
-dub $@ :gui
-dub $@ :image
-dub $@ :math
-dub $@ :metadata
-dub $@ :net
-dub $@ :stdx
+
+for subprojects in $(find src -type f -name dub.json -exec dirname {} +); do
+	pushd $subprojects > /dev/null
+	dub $@
+	popd > /dev/null
+done

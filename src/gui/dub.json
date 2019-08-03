@@ -22,7 +22,7 @@
 	"dependencies": {
 		"aurorafw:core": "*",
 		"aurorafw:math": "*",
-		"riverd-x11": "~>0.1.1",
+		"riverd-x11": "~>0.1.2",
 		"riverd-xxf86vm": "~>1.0.0",
 		"riverd-xcursor": "~>1.0.0"
 	}
