@@ -1,18 +1,26 @@
+# version format
+version: 1.1.{build}
+
 platform: x64
+image:
+- Visual Studio 2019
 environment:
   matrix:
     - DC: dmd
-      DVersion: nightly
+      DVersion: 2.087.0
       arch: x64
     - DC: dmd
-      DVersion: nightly
+      DVersion: 2.087.0
       arch: x86
     - DC: dmd
-      DVersion: beta
+      DVersion: 2.087.0
       arch: x64
     - DC: dmd
-      DVersion: beta
+      DVersion: 2.087.0
       arch: x86
+    - DC: ldc
+      DVersion: 1.16.0
+      arch: x64
     - DC: dmd
       DVersion: stable
       arch: x64
@@ -22,39 +30,13 @@ environment:
     - DC: ldc
       DVersion: stable
       arch: x64
-    - allow_failures:
-      - DC: dmd
-      - DC: ldc
 
 skip_tags: false
 
+cache:
+  - .dub
+
 install:
-  - ps: function ResolveSoundioDependency
-        {
-          pushd c:\\;
-          git clone "https://gitlab.com/aurorafossorg/m/3rd-party/mxe.git";
-          pushd mxe;
-          make MXE_TARGETS='x86_64-w64-mingw32.static i686-w64-mingw32.static' gcc;
-          popd;
-          git clone "https://gitlab.com/aurorafossorg/m/3rd-party/libsoundio.git";
-          pushd libsoundio;
-          if($env:arch -eq "x86"){
-            mkdir build-win32;
-            pushd build-win32;
-            cmake .. -DCMAKE_TOOLCHAIN_FILE=c:\mxe\usr\i686-w64-mingw32.static\share\cmake\mxe-conf.cmake;
-            make;
-            popd;
-          }elseif($env:arch -eq "x64"){
-            mkdir build-win64;
-            pushd build-win64;
-            cmake .. -DCMAKE_TOOLCHAIN_FILE=c:\mxe\usr\x86_64-w64-mingw32.static\share\cmake\mxe-conf.cmake;
-            make;
-            popd;
-          }
-          popd;
-          popd;
-        }
-#  - ps: ResolveSoundioDependency
   - ps: function ResolveLatestDMD
         {
             $version = $env:DVersion;
@@ -117,7 +99,7 @@ install:
         }
   - ps: SetUpDCompiler
 
-build_script:
+before_build:
   - ps: if($env:arch -eq "x86"){
             $env:compilersetupargs = "x86";
             $env:Darch = "x86";
@@ -130,17 +112,8 @@ build_script:
   - ps: $env:compilersetup = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall";
   - '"%compilersetup%" %compilersetupargs%'
 
-test_script:
-  - echo %PLATFORM%
-  - echo %Darch%
-  - echo %DC%
-  - echo %PATH%
-  - '%DC% --version'
+build_script:
   - dub build --arch=%Darch% --compiler=%DC%
 
-on_success:
-  - ps: Invoke-RestMethod https://raw.githubusercontent.com/k3rn31p4nic/appveyor-discord-webhook/master/send.ps1 -o send.ps1
-  - ps: ./send.ps1 success $env:WEBHOOK_URL
-on_failure:
-  - ps: Invoke-RestMethod https://raw.githubusercontent.com/k3rn31p4nic/appveyor-discord-webhook/master/send.ps1 -o send.ps1
-  - ps: ./send.ps1 failure $env:WEBHOOK_URL
+test_script:
+  - dub test --arch=%Darch% --compiler=%DC%
