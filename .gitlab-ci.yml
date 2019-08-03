@@ -79,15 +79,18 @@ editorconfig:
       - .dub/
   image: aurorafossorg/dlang:latest
   script:
+    - dub add-local .
     - ./tools/dub.sh $BUILD_DUB_FLAGS
 
 .x86_64-linux-deps_template: &x86_64-linux-deps_definition
   before_script:
-    - pacman -Sy libsndfile --noconfirm
+    - pacman -Sy libsndfile libx11 libxcursor libxxf86vm --noconfirm
+    - sudo -u user yay -S libsoundio --noconfirm
 
 .x86-linux-deps_template: &x86-linux-deps_definition
   before_script:
-    - pacman -Sy lib32-libsndfile --noconfirm
+    - pacman -Sy lib32-libsndfile lib32-libx11 lib32-libxcursor lib32-libxxf86vm --noconfirm
+    - sudo -u user yay -S libsoundio --noconfirm
 
 x86_64-linux-dub-dmd-debug:
   stage: build
