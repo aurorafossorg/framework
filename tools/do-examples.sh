@@ -4,15 +4,12 @@ set -e
 
 pushd examples
 
-dub build
-dub test
-
 PACKAGES="
-audio-cli_player
 gui-simple_window
 metadata-detect_files
 metadata-pdf_tests
 "
+#audio-cli_player
 
 for files in $PACKAGES; do
 	dub build :$files
