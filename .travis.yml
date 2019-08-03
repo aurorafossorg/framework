@@ -38,62 +38,13 @@ sudo: required
 d:
   - dmd
   - ldc
-  - dmd-nightly
-  - dmd-beta
-  - ldc-beta
 
 os:
-  - linux
   - osx
 
-matrix:
-  include:
-    - d: dmd
-      env: [COVERAGE=true]
-      script: ./tools/dub.sh test -b unittest-cov --compiler=${DC}
-    - os: linux
-      d: gdc
-  fast_finish: true
-  allow_failures:
-    - os: osx
-    - d: gdc
-    - d: dmd-nightly
-    - d: dmd-beta
-    - d: ldc-beta
-
-addons:
-  apt:
-    update: true
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-    - libx11-dev
-    - git
-    - cmake
-    - gcc-7
-    - g++-7
-    - libsndfile1-dev
-    - jack
-
 before_script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CC=gcc-7; export CXX=g++-7; fi;
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install libsndfile; brew upgrade cmake; fi;
-  - mkdir -p .tmp && pushd .tmp
-  - git clone https://github.com/andrewrk/libsoundio && pushd libsoundio
-  - mkdir -p build && pushd build
-  - cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr -D CMAKE_INSTALL_LIBDIR=lib -D BUILD_EXAMPLE_PROGRAMS=OFF -D BUILD_TESTS=OFF -D BUILD_STATIC_LIBS=OFF -D ENABLE_JACK=ON ..
-  - make
-  - sudo make install
-  - popd; popd; popd;
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo ldconfig; fi;
+  - brew install libsndfile libsoundio
 
-after_success:
-  - wget https://raw.githubusercontent.com/k3rn31p4nic/travis-ci-discord-webhook/master/send.sh
-  - chmod +x send.sh
-  - ./send.sh success $WEBHOOK_URL
-  - if [[ "$COVERAGE" == true ]]; then bash <(curl -s https://codecov.io/bash); fi;
-
-after_failure:
-  - wget https://raw.githubusercontent.com/k3rn31p4nic/travis-ci-discord-webhook/master/send.sh
-  - chmod +x send.sh
-  - ./send.sh failure $WEBHOOK_URL
+script:
+  - ./tools/dub.sh build --compiler=${DC}
+  - ./tools/dub.sh test --compiler=${DC}
