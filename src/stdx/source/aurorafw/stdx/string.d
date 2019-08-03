@@ -17,19 +17,16 @@ string substr(string s, ptrdiff_t offset, ptrdiff_t length)
 	if(end > s.length)
 		end = s.length;
 
-	return s[offset..end];
+	return s[offset .. end];
 }
 
 @safe
-bool isAlpha(string str)
+pragma(inline) bool isAlpha(string str)
 {
-	import std.ascii : isAlpha;
+	import std.algorithm : all;
+	import std.uni : isAlpha;
 
-	foreach(c; str)
-		if(!c.isAlpha)
-			return false;
-
-	return true;
+	return str.all!(x => isAlpha(x));
 }
 
 @safe

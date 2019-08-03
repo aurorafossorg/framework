@@ -269,20 +269,20 @@ struct Terminal {
 
 
 	@safe
-	public void writeBuffer(char[] buf)
+	public void writeBuffer(char[] buf) pure
 	{
 		buffer ~= buf;
 	}
 
 
 	@safe
-	public void writeBuffer(dchar ch)
+	public void writeBuffer(dchar ch) pure
 	{
 		buffer ~= ch;
 	}
 
 	@safe
-	public void writeBuffer(string str)
+	public void writeBuffer(string str) pure
 	{
 		buffer ~= str;
 	}

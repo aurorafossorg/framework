@@ -35,6 +35,8 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.math.matrix;
 
+//FIXME: Fix documentation
+
 /** @file aurorafw/math/matrix.d
  * Variable Matrix file. This contains a variable matrix struct that
  * represents a grid with size of M * N.
@@ -77,6 +79,7 @@ module aurorafw.math.matrix;
 	pragma(inline) static Matrix!(T, M, N) zero()
 	{
 		Matrix!(T, M, N) ret;
+
 		return ret;
 	}
 
@@ -103,6 +106,15 @@ module aurorafw.math.matrix;
 		foreach(i; 0 .. M)
 			foreach(j; 0 .. N)
 				mixin("ret.matrix[i * M + j] = this.matrix[i * M + j] "~op~" val;");
+		return ret;
+	}
+
+	Matrix!(T, M, N) opBinaryRight(string op)(T rhs)
+	{
+		Matrix!(T, M, N) ret;
+		foreach(i; 0 .. M)
+			foreach(j; 0 .. N)
+				mixin("ret.matrix[i * M + j] = rhs "~op~" this.matrix[i * M + j];");
 		return ret;
 	}
 
@@ -192,7 +204,21 @@ alias Matrix!(double, 2, 2) Matrix2x2d, Matrix2d;
 alias Matrix!(double, 3, 3) Matrix3x3d, Matrix3d;
 alias Matrix!(double, 4, 4) Matrix4x4d, Matrix4d;
 
+
+@("Matrix: Zeros")
+@safe
+unittest {
+	Matrix!(int, 3, 3) mat = Matrix!(int, 3, 3).zero;
+	int[3*3] matZeros =
+		[0, 0, 0,
+		 0, 0, 0,
+		 0, 0, 0];
+
+	assert(matZeros == mat.matrix);
+}
+
 @("Matrix: Identity")
+@safe
 unittest {
 	Matrix!(int, 3, 3) mat = Matrix!(int, 3, 3).identity;
 	int[3*3] matIdentity =
@@ -205,23 +231,61 @@ unittest {
 
 
 @("Matrix: Add operation")
+@safe
 unittest {
 	Matrix!(int, 3, 3) mat = Matrix!(int, 3, 3).identity;
-	int[3 * 3] matIdentity =
+	int[3 * 3] matAdd =
 		[2, 1, 1,
 		 1, 2, 1,
 		 1, 1, 2];
 
-	assert(matIdentity == (mat + 1).matrix);
+	assert(matAdd == (mat + 1).matrix);
 }
 
+
 @("Matrix: Subtract operation")
+@safe
 unittest {
 	Matrix!(int, 3, 3) mat = Matrix!(int, 3, 3).identity;
-	int[3 * 3] matIdentity =
+	int[3 * 3] matSub =
 		[0, -1, -1,
 		 -1, 0, -1,
 		 -1, -1, 0];
 
-	assert(matIdentity == (mat - 1).matrix);
+	assert(matSub == (mat - 1).matrix);
+}
+
+
+@("Matrix: Multiplication operation")
+@safe
+unittest {
+	Matrix!(int, 3, 3) mat = Matrix!(int, 3, 3).identity;
+	int[3 * 3] matMul =
+		[2, 0, 0,
+		 0, 2, 0,
+		 0, 0, 2];
+
+	assert(matMul == (2 * mat).matrix);
+}
+
+@("Matrix: Change val index")
+@safe
+unittest {
+	Matrix2x2f mat = Matrix2x2f.identity;
+	mat[0, 0] = 2.0f;
+
+	float[2 * 2] matIndex =
+		[2.0f, 0.0f,
+		 0.0f, 1.0f];
+
+	assert(matIndex == mat.matrix);
+}
+
+@("Matrix: Access val index")
+@safe
+unittest {
+	Matrix2x2d mat = Matrix2x2d.identity;
+
+	assert(1.0 == mat[1,1]);
+	assert(0.0 == mat[0,1]);
 }

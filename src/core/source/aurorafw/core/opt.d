@@ -44,6 +44,7 @@ import std.string : indexOf;
 import std.variant;
 import core.runtime : Runtime;
 
+@safe pure
 class OptionHandlerException : Exception
 {
 	mixin basicExceptionCtors;
@@ -230,6 +231,7 @@ unittest
 	assert(isFoobar == true);
 }
 
+
 @safe
 @("Option Handler: check values")
 unittest
@@ -247,6 +249,7 @@ unittest
 	assert(foo[0] == 4);
 	assert(foo[1] == 7);
 }
+
 
 @safe
 @("Option Handler: required exception")
