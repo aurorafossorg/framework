@@ -1,21 +1,34 @@
 <p align="center"><img src="https://avatars1.githubusercontent.com/u/39140288?s=250&v=4"></p>
 
-# Aurora Framework [![Build Status](https://travis-ci.org/aurorafossorg/framework.svg)](https://travis-ci.org/aurorafossorg/framework) [![Windows Build Status](https://ci.appveyor.com/api/projects/status/n138i29hcvx8k0iw?svg=true)](https://ci.appveyor.com/project/aurorafoss/framework) [![Code Coverage](https://codecov.io/gh/aurorafossorg/framework/branch/master/graph/badge.svg)](https://codecov.io/gh/aurorafossorg/framework)
+# Aurora Framework [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c04bfc49c4f443659aee97498a9a9cf3)](https://www.codacy.com/app/aurorafossorg/framework) [![Code Coverage](https://codecov.io/gh/aurorafossorg/framework/branch/master/graph/badge.svg)](https://codecov.io/gh/aurorafossorg/framework)
 
-A Powerful General Purpose Framework
+## About
 
-Aurora is a Software Framework for General Purpose developed by Luís Ferreira 
-that runs in all platforms, like Windows NT and \*NIX Environments such as 
+Aurora is a Software Framework for General Purpose developed by Luís Ferreira
+that runs in all platforms, like Windows NT and \*NIX Environments such as
 Linux and Apple Systems. It includes libraries to make code easier to use.
 
-### Contributors
-- Luís "ljmf00" Ferreira (Project Founder)
-- Ricardo "Ev1lbl0w" Subtil
-- Filipe "FFY00" Laíns
+## Builds
+
+|Linux|Windows|macOS|
+|-----|-------|-----|
+|[![Build Status for Linux][Gitlab CI Badge]][Gitlab CI]|[![Build Status for Windows][Appveyor Badge]][Appveyor]|[![Build Status for macOS][Travis-CI Badge]][Travis-CI]
+
+[Travis-CI Badge]: https://travis-ci.org/aurorafossorg/framework.svg
+[Travis-CI]: https://travis-ci.org/aurorafossorg/framework
+[Appveyor Badge]: https://ci.appveyor.com/api/projects/status/n138i29hcvx8k0iw?svg=true
+[Appveyor]: https://ci.appveyor.com/project/aurorafoss/framework
+[Gitlab CI Badge]: https://gitlab.com/aurorafossorg/p/framework/core/badges/master/pipeline.svg
+[Gitlab CI]: https://gitlab.com/aurorafossorg/p/framework/core/pipelines
+
+## Contributors
+
+Meet our team [here](https://www.aurorafoss.org/team/) .
 
 Want to contribute? Great! Make a pull request on my github repository.
 
-### Donations
+## Donations
+
 1$ is what you need to support the main developer of Aurora Framework. With
 this money you help me to buy 1 coffee per month! More coffee equals more
 code, so, lets [donate](https://www.aurorafoss.org/donate.html)!
