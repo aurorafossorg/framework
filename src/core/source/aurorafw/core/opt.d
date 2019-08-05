@@ -7,6 +7,7 @@
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
 Copyright (C) 2018-2019 Aurora Free Open Source Software.
+Copyright (C) 2018-2019 Luís Ferreira <luis@aurorafoss.org>
 
 This file is part of the Aurora Free Open Source Software. This
 organization promote free and open source software that you can
@@ -39,10 +40,14 @@ public import aurorafw.stdx.getopt : defaultRuntimeArgs;
 import std.algorithm : startsWith, canFind, sort, any;
 import aurorafw.stdx.string : isAlpha;
 import std.array : split, array;
+import std.range.primitives : empty;
 import std.exception;
 import std.string : indexOf;
+import std.format : format;
 import std.variant;
 import core.runtime : Runtime;
+import std.traits : fullyQualifiedName;
+import std.typecons;
 
 @safe pure
 class OptionHandlerException : Exception
@@ -107,11 +112,11 @@ struct OptionHandler {
 		}
 	}
 
-	public T[] read(T)(string opts, string help, bool required, ref bool value)
+	public T[] read(T)(string opts, string help, bool required = false)
 	{
 		Option opte = read(opts, help);
 		T[] ret;
-		value = false;
+		bool value = false;
 		foreach(arg; args) if(opts.canFind(arg.name))
 		{
 			value = true;
@@ -122,12 +127,16 @@ struct OptionHandler {
 				ret ~= to!T(retstr);
 			}
 		}
-		if(value == false && required == true)
-			throw new OptionHandlerException("Required option " ~ opts);
+		if(required)
+		{
+			if(!value || (value && ret.empty))
+				throw new OptionHandlerException("Required option %s with %s type".format(opts, fullyQualifiedName!T));
+		}
+
 		return ret;
 	}
 
-	public void read(string opts, string help, bool required, ref bool value)
+	public Nullable!Argument read(string opts, string help, ref bool value, bool required = false)
 	{
 		Option opte = read(opts, help);
 		value = false;
@@ -136,11 +145,13 @@ struct OptionHandler {
 			foreach(arg; args) if(arg.name == opt)
 			{
 				value = true;
-				return;
+					return arg.nullable;
 			}
 		}
 		if(value == false && required == true)
 			throw new OptionHandlerException("Required option " ~ opts);
+
+		return Nullable!Argument();
 	}
 
 	private Option read(string opts, string help)
@@ -167,9 +178,12 @@ struct OptionHandler {
 		return false;
 	}
 
-	public string printableHelp()
+	public string printableHelp(string programName)
 	{
 		string ret;
+
+		ret ~= "Usage:\n\t%s -- <options>\n\nOptions:\n".format(programName);
+
 		foreach(opt; opts)
 		{
 			ret ~= opt.opts[0];
@@ -177,7 +191,7 @@ struct OptionHandler {
 			{
 				ret ~= " " ~ opt.opts[1];
 			}
-			ret ~= "\t" ~ opt.help;
+			ret ~= "\t" ~ opt.help ~ "\n";
 		}
 		return ret;
 	}
@@ -223,8 +237,8 @@ unittest
 	{
 		OptionHandler optHandler = OptionHandler(["prog", "--foo", "-f"]);
 
-		optHandler.read("foo", "information", true, isFoo);
-		optHandler.read("foobar|f", "quick", false, isFoobar);
+		optHandler.read("foo", "information", isFoo, true);
+		optHandler.read("foobar|f", "quick", isFoobar);
 	}
 
 	assert(isFoo == true);
@@ -236,16 +250,15 @@ unittest
 @("Option Handler: check values")
 unittest
 {
-	bool isFoo;
 	int[] foo;
 
 	{
 		OptionHandler optHandler = OptionHandler(["prog", "--foo=4", "-f=7"]);
 
-		foo = optHandler.read!int("foo|f", "information", true, isFoo);
+		foo = optHandler.read!int("foo|f", "information", true);
 	}
 
-	assert(isFoo == true);
+	assert(!foo.empty);
 	assert(foo[0] == 4);
 	assert(foo[1] == 7);
 }
@@ -260,10 +273,10 @@ unittest
 	{
 		OptionHandler optHandler = OptionHandler(["prog"]);
 
-		optHandler.read("bar", "information", false, isBar);
+		optHandler.read("bar", "information", isBar);
 
 		try {
-			optHandler.read("foo", "more information", true, isFoo);
+			optHandler.read("foo", "more information", isFoo, true);
 			assert(0);
 		} catch(OptionHandlerException) {}
 	}
@@ -275,10 +288,10 @@ unittest
 {
 	bool dummy;
 	OptionHandler optHandler = OptionHandler(["prog"]);
-	optHandler.read("dummy", "some", false, dummy);
+	optHandler.read("dummy", "some", dummy);
 
 	try {
-		optHandler.read("dummy", "same", false, dummy);
+		optHandler.read("dummy", "same", dummy);
 		assert(0);
 	} catch (OptionHandlerException) {}
 }
