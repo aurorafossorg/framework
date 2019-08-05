@@ -4,8 +4,23 @@ set -e
 
 dub $@
 
-for subprojects in $(find src -type f -name dub.json -exec dirname {} +); do
-	pushd $subprojects > /dev/null
-	dub $@
-	popd > /dev/null
+PACKAGES="
+core
+cli
+math
+audio
+image
+graphics
+gui
+net
+metadata
+stdx
+"
+
+for subprojects in $PACKAGES; do
+	dub $@ :$subprojects
 done
+
+if [ "$1" == "test" ]; then
+	dub $@ :unit
+fi

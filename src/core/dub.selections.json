@@ -1,8 +1,0 @@
-{
-	"fileVersion": 1,
-	"versions": {
-		"aurorafw": "0.0.1-alpha.2+commit.156.g3ca2580",
-		"silly": "0.8.2",
-		"unit-threaded": "0.9.3"
-	}
-}
