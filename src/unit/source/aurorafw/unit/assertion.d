@@ -56,6 +56,7 @@ import std.typecons;
 /**
  * Thrown on an assertion failure.
  */
+@safe pure
 class AssertException : Exception
 {
 	@safe pure nothrow this(string msg,
@@ -70,6 +71,7 @@ class AssertException : Exception
 /**
  * Thrown on an assertion failure.
  */
+@safe pure
 class AssertAllException : AssertException
 {
 	private AssertException[] exceptions;
@@ -92,6 +94,18 @@ class AssertAllException : AssertException
 			return "1 assertion failure:";
 		else
 			return text(count, " assertion failures:");
+	}
+}
+
+@safe pure
+unittest
+{
+	try {
+		throw new AssertAllException([new AssertException("simple assert from unittesting")]);
+	} catch(AssertAllException e)
+	{
+		import std.algorithm.searching : startsWith;
+		assert(e.msg.startsWith("1 assertion failure:"));
 	}
 }
 
@@ -136,6 +150,7 @@ string description(string expected, string actual) @safe pure
 /**
  * Returns a pair of strings that highlight the difference between lhs and rhs.
  */
+@safe pure
 Tuple!(string, string) diff(string)(string lhs, string rhs)
 {
 	const MAX_LENGTH = 20;
@@ -180,6 +195,7 @@ Tuple!(string, string) diff(string)(string lhs, string rhs)
  * Asserts that a condition is true.
  * Throws: AssertException otherwise
  */
+@safe pure
 void assertTrue(T)(T condition, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -205,6 +221,7 @@ void assertTrue(T)(T condition, lazy string msg = null,
  * Asserts that a condition is false.
  * Throws: AssertException otherwise
  */
+@safe pure
 void assertFalse(T)(T condition, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -230,6 +247,7 @@ void assertFalse(T)(T condition, lazy string msg = null,
  * Asserts that the string values are equal.
  * Throws: AssertException otherwise
  */
+@safe pure
 void assertEquals(T, U)(T expected, U actual, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -258,6 +276,7 @@ void assertEquals(T, U)(T expected, U actual, lazy string msg = null,
  * Asserts that the floating-point values are approximately equal.
  * Throws: AssertException otherwise
  */
+@safe
 void assertEquals(T, U)(T expected, U actual, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -275,7 +294,8 @@ void assertEquals(T, U)(T expected, U actual, lazy string msg = null,
 }
 
 ///
-@safe /*pure*/ unittest  // format is impure for floating point values
+@safe /*pure*/
+unittest // format is impure for floating point values
 {
 	assertEquals(1, 1.01);
 
@@ -303,7 +323,8 @@ void assertEquals(T, U)(T expected, U actual, lazy string msg = null,
 }
 
 ///
-@safe pure unittest
+@safe pure
+unittest
 {
 	assertEquals(42, 42);
 
@@ -313,6 +334,7 @@ void assertEquals(T, U)(T expected, U actual, lazy string msg = null,
 }
 
 ///
+@system
 unittest  // Object.opEquals is impure
 {
 	Object foo = new Object();
@@ -330,6 +352,7 @@ unittest  // Object.opEquals is impure
  * Asserts that the arrays are equal.
  * Throws: AssertException otherwise
  */
+@safe pure
 void assertArrayEquals(T, U)(in T[] expected, in U[] actual, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -343,6 +366,7 @@ void assertArrayEquals(T, U)(in T[] expected, in U[] actual, lazy string msg = n
  * Asserts that the associative arrays are equal.
  * Throws: AssertException otherwise
  */
+pure
 void assertArrayEquals(T, U, V)(in T[V] expected, in U[V] actual, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -365,7 +389,8 @@ void assertArrayEquals(T, U, V)(in T[V] expected, in U[V] actual, lazy string ms
 }
 
 ///
-pure unittest  // keys, values, byKey, byValue not usable in @safe context
+@system pure
+unittest  // keys, values, byKey, byValue not usable in @safe context
 {
 	int[string] expected = ["foo": 1, "bar": 2];
 
@@ -383,6 +408,7 @@ pure unittest  // keys, values, byKey, byValue not usable in @safe context
  * Asserts that the ranges are equal.
  * Throws: AssertException otherwise
  */
+@safe pure
 void assertRangeEquals(R1, R2)(R1 expected, R2 actual, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -408,7 +434,8 @@ void assertRangeEquals(R1, R2)(R1 expected, R2 actual, lazy string msg = null,
 }
 
 ///
-@safe pure unittest
+@safe pure
+unittest
 {
 	int[] expected = [0, 1];
 
@@ -428,6 +455,7 @@ void assertRangeEquals(R1, R2)(R1 expected, R2 actual, lazy string msg = null,
  * Asserts that the value is empty.
  * Throws: AssertException otherwise
  */
+@safe pure
 void assertEmpty(T)(T actual, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -439,7 +467,8 @@ void assertEmpty(T)(T actual, lazy string msg = null,
 }
 
 ///
-@safe pure unittest
+@safe pure
+unittest
 {
 	assertEmpty([]);
 
@@ -452,6 +481,7 @@ void assertEmpty(T)(T actual, lazy string msg = null,
  * Asserts that the value is not empty.
  * Throws: AssertException otherwise
  */
+@safe pure
 void assertNotEmpty(T)(T actual, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -463,7 +493,8 @@ void assertNotEmpty(T)(T actual, lazy string msg = null,
 }
 
 ///
-@safe pure unittest
+@safe pure
+unittest
 {
 	assertNotEmpty([1, 2, 3]);
 
@@ -476,6 +507,7 @@ void assertNotEmpty(T)(T actual, lazy string msg = null,
  * Asserts that the value is null.
  * Throws: AssertException otherwise
  */
+@safe pure
 void assertNull(T)(T actual, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -487,7 +519,8 @@ void assertNull(T)(T actual, lazy string msg = null,
 }
 
 ///
-@safe pure unittest
+@safe pure
+unittest
 {
 	Object foo = new Object();
 
@@ -502,6 +535,7 @@ void assertNull(T)(T actual, lazy string msg = null,
  * Asserts that the value is not null.
  * Throws: AssertException otherwise
  */
+@safe pure
 void assertNotNull(T)(T actual, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -513,7 +547,8 @@ void assertNotNull(T)(T actual, lazy string msg = null,
 }
 
 ///
-@safe pure unittest
+@safe pure
+unittest
 {
 	Object foo = new Object();
 
@@ -542,6 +577,7 @@ void assertSame(T, U)(T expected, U actual, lazy string msg = null,
 }
 
 ///
+@system
 unittest  // format is impure and not safe for Object
 {
 	Object foo = new Object();
@@ -558,6 +594,7 @@ unittest  // format is impure and not safe for Object
  * Asserts that the values are not the same.
  * Throws: AssertException otherwise
  */
+@safe pure
 void assertNotSame(T, U)(T expected, U actual, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -572,7 +609,8 @@ void assertNotSame(T, U)(T expected, U actual, lazy string msg = null,
 }
 
 ///
-@safe pure unittest
+@safe pure
+unittest
 {
 	Object foo = new Object();
 	Object bar = new Object();
@@ -588,7 +626,8 @@ void assertNotSame(T, U)(T expected, U actual, lazy string msg = null,
  * Asserts that all assertions pass.
  * Throws: AssertAllException otherwise
  */
-void assertAll(void delegate() @safe [] assertions ...) @safe
+@safe pure
+void assertAll(void delegate() @safe pure [] assertions ...)
 {
 	AssertException[] exceptions = null;
 
@@ -608,7 +647,8 @@ void assertAll(void delegate() @safe [] assertions ...) @safe
 }
 
 ///
-@safe unittest
+@safe pure
+unittest
 {
 	assertAll(
 		assertTrue(true),
@@ -628,6 +668,7 @@ void assertAll(void delegate() @safe [] assertions ...) @safe
  * Throws: AssertException otherwise
  * Returns: the caught throwable
  */
+@safe pure
 T expectThrows(T : Throwable = Exception, E)(lazy E expression, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -645,7 +686,8 @@ T expectThrows(T : Throwable = Exception, E)(lazy E expression, lazy string msg 
 }
 
 ///
-@safe pure unittest
+@safe pure
+unittest
 {
 	import std.exception : enforce;
 
@@ -655,7 +697,8 @@ T expectThrows(T : Throwable = Exception, E)(lazy E expression, lazy string msg 
 }
 
 ///
-@safe pure unittest
+@safe pure
+unittest
 {
 	auto exception = expectThrows!AssertException(expectThrows(42));
 
@@ -666,15 +709,17 @@ T expectThrows(T : Throwable = Exception, E)(lazy E expression, lazy string msg 
  * Fails a test.
  * Throws: AssertException
  */
+@safe pure
 void fail(string msg = null,
 		string file = __FILE__,
-		size_t line = __LINE__) @safe pure
+		size_t line = __LINE__)
 {
 	throw new AssertException(msg, file, line);
 }
 
 ///
-@safe pure unittest
+@safe pure
+unittest
 {
 	auto exception = expectThrows!AssertException(fail());
 
@@ -693,6 +738,7 @@ alias assertNotIn = assertOp!"!in";
  * Throws: AssertException otherwise
  * See_Also: http://d.puremagic.com/issues/show_bug.cgi?id=4653
  */
+@safe pure
 template assertOp(string op)
 {
 	void assertOp(T, U)(T lhs, U rhs, lazy string msg = null,
@@ -710,7 +756,8 @@ template assertOp(string op)
 }
 
 ///
-@safe pure unittest
+@safe pure
+unittest
 {
 	assertLessThan(2, 3);
 
@@ -720,7 +767,8 @@ template assertOp(string op)
 }
 
 ///
-@safe pure unittest
+@safe pure
+unittest
 {
 	assertIn("foo", ["foo": "bar"]);
 
@@ -764,6 +812,7 @@ public static void assertEventually(bool delegate() probe,
 }
 
 ///
+@system
 unittest
 {
 	assertEventually({ static count = 0; return ++count > 23; });
