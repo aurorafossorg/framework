@@ -2,7 +2,7 @@ module aurorafw.stdx.string;
 
 public import std.string;
 
-@safe
+@safe pure
 string substr(string s, ptrdiff_t offset, ptrdiff_t length)
 {
 	size_t end = void;
@@ -20,7 +20,7 @@ string substr(string s, ptrdiff_t offset, ptrdiff_t length)
 	return s[offset .. end];
 }
 
-@safe
+@safe pure
 pragma(inline) bool isAlpha(string str)
 {
 	import std.algorithm : all;
