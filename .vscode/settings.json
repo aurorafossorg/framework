@@ -1,5 +1,4 @@
 {
-
 	"editor.rulers": [
 		120, // soft max line length
 		160 // hard max line length
@@ -7,7 +6,8 @@
 	"files.exclude": {
 		"**/.build": true,
 		"**/.dub": true,
-		"**/.out": true
+		"**/.out": true,
+		"**/*.lst": true
 	},
 	"git.alwaysSignOff": true,
 	"C_Cpp.autoAddFileAssociations": false,
