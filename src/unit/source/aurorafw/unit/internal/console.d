@@ -59,10 +59,10 @@ static struct Console {
 				import core.sys.posix.unistd;
 				noColours = isatty(STDOUT_FILENO) == 0;
 			} else version(Windows) {
-				import core.sys.windows.winbase : GetStdHandle, STD_OUTPUT_HANDLE, INVALID_HANDLE_VALUE;
-				import core.sys.windows.wincon : SetConsoleOutputCP, GetConsoleMode, SetConsoleMode;
-				import core.sys.windows.windef : DWORD;
-				import core.sys.windows.winnls : CP_UTF8;
+				import core.sys.windows.winbase;
+				import core.sys.windows.wincon;
+				import core.sys.windows.windef;
+				import core.sys.windows.winnls;
 
 				SetConsoleOutputCP(CP_UTF8);
 
@@ -76,7 +76,8 @@ static struct Console {
 		}
 	}
 
-	static string colour(T)(T t, Colour c = Colour.none) {
+	static string colour(T)(T t, Colour c = Colour.none)
+	{
 		return noColours
 			? text(t)
 			: text("\033[", cast(int) c, "m", t, "\033[m");
