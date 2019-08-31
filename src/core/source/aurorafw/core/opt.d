@@ -76,6 +76,7 @@ struct OptionHandler {
 		Short
 	}
 
+	@safe pure
 	public this(string[] args)
 	{
 		foreach(string arg ; args[1 .. $])
@@ -112,6 +113,7 @@ struct OptionHandler {
 		}
 	}
 
+	@safe pure
 	public T[] read(T)(string opts, string help, bool required = false)
 	{
 		Option opte = read(opts, help);
@@ -136,6 +138,7 @@ struct OptionHandler {
 		return ret;
 	}
 
+	@safe pure
 	public Nullable!Argument read(string opts, string help, ref bool value, bool required = false)
 	{
 		Option opte = read(opts, help);
@@ -154,6 +157,7 @@ struct OptionHandler {
 		return Nullable!Argument();
 	}
 
+	@safe pure
 	private Option read(string opts, string help)
 	{
 		Option opte;
@@ -196,8 +200,8 @@ struct OptionHandler {
 		return ret;
 	}
 
-	@property
-	public Argument[] arguments()
+	@safe pure
+	@property public Argument[] arguments()
 	{
 		return this.args.dup;
 	}
@@ -212,7 +216,7 @@ struct OptionHandler {
 	private Option[] opts;
 }
 
-@safe
+@safe pure
 @("Option Handler: check arguments")
 unittest
 {
@@ -228,7 +232,7 @@ unittest
 }
 
 
-@safe
+@safe pure
 @("Option Handler: check read")
 unittest
 {
@@ -246,7 +250,7 @@ unittest
 }
 
 
-@safe
+@safe pure
 @("Option Handler: check values")
 unittest
 {
@@ -264,7 +268,7 @@ unittest
 }
 
 
-@safe
+@safe pure
 @("Option Handler: required exception")
 unittest
 {
@@ -282,7 +286,7 @@ unittest
 	}
 }
 
-@safe
+@safe pure
 @("Option Handler: twice")
 unittest
 {
