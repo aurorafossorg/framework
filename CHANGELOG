@@ -1,5 +1,11 @@
 v0.0.1-alpha.1
     - Add initial library in D
-    
+
 v0.0.1-alpha.2
     - Add legacy code
+
+v0.0.1-alpha.3
+    - Add unittesting framework
+    - Add option handler
+    - Add cli implementation
+    - Improve input handler
