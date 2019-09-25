@@ -8,7 +8,8 @@ int main(string[] args)
 	import std.stdio : writeln, File;
 
 	File file = File(args[1], "r");
-	writeln(getPDFVersion(file).toString(false));
+	import std.conv : to;
+	writeln(getPDFVersion(file).to!string);
 
 	return 0;
 }
