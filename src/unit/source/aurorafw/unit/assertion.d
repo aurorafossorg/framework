@@ -663,6 +663,7 @@ unittest
 	assertTrue(exception.msg.canFind("2 assertion failures"), exception.msg);
 }
 
+
 /**
  * Asserts that the expression throws the specified throwable.
  * Throws: AssertException otherwise
@@ -777,6 +778,7 @@ unittest
 	assertEquals(`condition ("foo" !in ["foo":"bar"]) not satisfied`, exception.msg);
 }
 
+
 /**
  * Checks a probe until the timeout expires. The assert error is produced
  * if the probe fails to return 'true' before the timeout.
@@ -792,6 +794,7 @@ unittest
  *
  * Throws: AssertException when the probe fails to become true before timeout
  */
+@trusted
 public static void assertEventually(bool delegate() probe,
 		Duration timeout = 500.msecs, Duration delay = 10.msecs,
 		lazy string msg = null,
@@ -811,8 +814,10 @@ public static void assertEventually(bool delegate() probe,
 	}
 }
 
+
 ///
-@system
+@safe /* pure */
+@("Assertation: assertEventually")
 unittest
 {
 	assertEventually({ static count = 0; return ++count > 23; });
@@ -821,6 +826,7 @@ unittest
 
 	assertEquals("timed out", exception.msg);
 }
+
 
 private string repr(T)(T value)
 {
