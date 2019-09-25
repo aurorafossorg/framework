@@ -1,7 +1,6 @@
 module aurorafw.metadata.pdf;
 
-public import aurorafw.core.versionmanager : toString;
-import aurorafw.core.versionmanager : Version;
+import aurorafw.core.semver : Version;
 import std.stdio : File;
 
 enum PDFVersion : Version {
