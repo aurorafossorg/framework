@@ -1,12 +1,15 @@
 module aurorafw.stdx.string;
 
 public import std.string;
+import aurorafw.unit.assertion;
 
 @safe pure
-string substr(string s, ptrdiff_t offset, ptrdiff_t length)
+string substr(string s, ptrdiff_t offset, ptrdiff_t length = -1)
 {
 	size_t end = void;
-	if (offset > s.length)
+	import std.stdio;
+
+	if (offset > 0 && offset > s.length)
 		return "";
 	if (offset < 0)
 		offset = 0;
@@ -21,7 +24,7 @@ string substr(string s, ptrdiff_t offset, ptrdiff_t length)
 }
 
 @safe pure
-pragma(inline) bool isAlpha(string str)
+bool isAlpha(string str)
 {
 	import std.algorithm : all;
 	import std.uni : isAlpha;
@@ -29,14 +32,20 @@ pragma(inline) bool isAlpha(string str)
 	return str.all!(x => isAlpha(x));
 }
 
+
 @safe
 @("String: substr")
 unittest {
 	string s = "Aurora Framework";
-	assert(s.substr(1,5)=="urora");
+	assertEquals("urora", s.substr(1,5));
+	assertEquals("urora Framework", s.substr(1));
+	assertEquals(s, s.substr(-1, -1));
+	assertEquals(s, s.substr(-1));
+	assertEquals(s, s.substr(0, ptrdiff_t.max));
+	assertEquals("", s.substr(ptrdiff_t.max));
 }
 
-@safe
+@safe pure
 @("String: isAlpha")
 unittest {
 	assert(isAlpha("tunaisgood"));
