@@ -52,6 +52,11 @@ version(linux)
 		X11,
 		Quartz
 	}
+} else version(Windows)
+{
+	enum BackendType {
+		DWM
+	}
 }
 
 pure class Backend {
