@@ -165,6 +165,21 @@ struct Version {
 	}
 
 	@safe pure
+	int opCmp(ref const Version v) const // for l-values
+	{
+		return (this.major != v.major) ? this.major - v.major :
+				(this.minor != v.minor) ? this.minor - v.minor :
+				(this.patch != v.patch) ? this.patch - v.patch :
+				0;
+	}
+
+	@safe pure
+	int opCmp(const Version v) const // for r-values
+	{
+		return opCmp(v);
+	}
+
+	@safe pure
 	public string toString()
 	{
 		return major.to!string ~ "." ~ minor.to!string ~ "." ~ patch.to!string;
@@ -278,4 +293,20 @@ unittest {
 
 	ver = Version(1, 3);
 	assertEquals("1.3.0", ver.to!string);
+}
+
+///
+@safe pure
+@("Versioning: boolean operations")
+unittest {
+	assertGreaterThan(Version(2), Version(1));
+	assertGreaterThan(Version(2), Version(1, 2, 3));
+	assertLessThan(Version(2), Version(3));
+
+	assertFalse(Version(1) < Version(1) || Version(1) > Version(1));
+	assertTrue(Version(1) >= Version(1) && Version(1) <= Version(1));
+
+	assertEquals(Version(2), Version(2));
+	assertGreaterThan(Version(1, 0, 1), Version(1, 0, 0));
+	assertLessThan(Version(1, 0, 32), Version(1, 1, 0));
 }
