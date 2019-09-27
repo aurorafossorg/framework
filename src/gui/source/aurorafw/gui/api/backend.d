@@ -35,6 +35,8 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.gui.api.backend;
 
+import aurorafw.stdx.exception;
+
 version(linux)
 {
 	import aurorafw.gui.api.wayland.backend;
@@ -44,6 +46,12 @@ version(linux)
 		X11,
 		Wayland
 	}
+} else version(OSX)
+{
+	enum BackendType {
+		X11,
+		Quartz
+	}
 }
 
 pure class Backend {
@@ -51,15 +59,18 @@ pure class Backend {
 	{
 		if(!instance)
 		{
-			version(linux)
-			import std.process : environment;
-			import aurorafw.gui.api.x11.backend : X11Backend;
-			import aurorafw.gui.api.wayland.backend : WLBackend;
-			immutable auto xdg_session_type = environment.get("XDG_SESSION_TYPE");
-			if(xdg_session_type == "x11")
-				instance = new X11Backend();
-			else if(xdg_session_type == "wayland")
-				instance = new WLBackend();
+			version(linux) {
+				import std.process : environment;
+				import aurorafw.gui.api.x11.backend : X11Backend;
+				import aurorafw.gui.api.wayland.backend : WLBackend;
+				immutable auto xdg_session_type = environment.get("XDG_SESSION_TYPE");
+				if(xdg_session_type == "x11")
+					instance = new X11Backend();
+				else if(xdg_session_type == "wayland")
+					instance = new WLBackend();
+			} else {
+				throw new NotImplementedException("Not yet implemented on this platform!");
+			}
 		}
 		return instance;
 	}
