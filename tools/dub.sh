@@ -4,7 +4,7 @@ set -e
 
 dub "$@"
 
-PACKAGES="$(find src -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | grep -v -E "unit|source")"
+PACKAGES="$(find src -mindepth 1 -maxdepth 1 -type d | grep -v -E "unit$|source$")"
 
 
 coverage_tmp_folder=".dub-coverage"
@@ -35,10 +35,10 @@ exit_trap() {
 trap exit_trap EXIT
 
 for subprojects in $PACKAGES; do
-	dub "$@" ":$subprojects"
+	dub "$@" ":$(basename "$subprojects")"
 	if [[ "$DUB_COVERAGE" == "1" ]]
 	then
-		mv "src-$subprojects-"*.lst "$coverage_tmp_folder"
+		mv "$(echo "$subprojects" | tr '/' '-')-"*.lst "$coverage_tmp_folder"
 	fi
 done
 
