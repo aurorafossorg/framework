@@ -48,6 +48,7 @@ import std.variant;
 import core.runtime : Runtime;
 import std.traits : fullyQualifiedName;
 import std.typecons;
+import aurorafw.unit.assertion;
 
 @safe pure
 class OptionHandlerException : Exception
@@ -116,7 +117,8 @@ struct OptionHandler {
 	@safe pure
 	public T[] read(T)(string opts, string help, bool required = false)
 	{
-		Option opte = read(opts, help);
+		read(opts, help);
+
 		T[] ret;
 		bool value = false;
 		foreach(arg; args) if(opts.canFind(arg.name))
@@ -129,11 +131,9 @@ struct OptionHandler {
 				ret ~= to!T(retstr);
 			}
 		}
-		if(required)
-		{
-			if(!value || (value && ret.empty))
-				throw new OptionHandlerException("Required option %s with %s type".format(opts, fullyQualifiedName!T));
-		}
+
+		if(required && (!value || (value && ret.empty)))
+			throw new OptionHandlerException("Required option %s with %s type".format(opts, fullyQualifiedName!T));
 
 		return ret;
 	}
@@ -172,6 +172,7 @@ struct OptionHandler {
 		return opte;
 	}
 
+	@safe pure nothrow
 	public bool helpWanted()
 	{
 		foreach(arg; args)
@@ -182,6 +183,7 @@ struct OptionHandler {
 		return false;
 	}
 
+	@safe pure
 	public string printableHelp(string programName)
 	{
 		string ret;
@@ -206,7 +208,7 @@ struct OptionHandler {
 		return this.args.dup;
 	}
 
-	@property
+	@property @safe pure
 	public Option[] options()
 	{
 		return this.opts.dup;
@@ -217,10 +219,33 @@ struct OptionHandler {
 }
 
 @safe pure
-@("Option Handler: check arguments")
+@("Option Handler: help")
 unittest
 {
-	OptionHandler opts = OptionHandler(["prog", "--foo", "-f", "--bar=foobar"]);
+	bool dummy;
+
+	{
+		OptionHandler optHandler = OptionHandler(["prog", "--help"]);
+		optHandler.read("dummy", "some", dummy);
+		optHandler.read("duuu|d", "none", dummy);
+
+		auto pHelp = "Usage:\n\tprogram -- <options>\n\nOptions:\n";
+		pHelp ~= "dummy\tsome\n";
+		pHelp ~= "d duuu\tnone\n";
+
+		assertEquals(optHandler.printableHelp("program"), pHelp);
+		assertTrue(optHandler.helpWanted);
+
+		optHandler = OptionHandler(["prog"]);
+		assertFalse(optHandler.helpWanted);
+	}
+}
+
+@safe pure
+@("Option Handler: check arguments and options")
+unittest
+{
+	OptionHandler opts = OptionHandler(["prog", "--foo", "-f", "--bar=foobar", "--", "tunaisgood"]);
 
 	OptionHandler.Argument[] args = [
 		OptionHandler.Argument("foo", OptionHandler.ArgumentSize.Long),
@@ -228,7 +253,8 @@ unittest
 		OptionHandler.Argument("bar", OptionHandler.ArgumentSize.Long, "foobar")
 	];
 
-	assert(opts.arguments == args);
+	assertEquals(args, opts.arguments);
+	assertEquals([], opts.options);
 }
 
 
@@ -243,10 +269,19 @@ unittest
 
 		optHandler.read("foo", "information", isFoo, true);
 		optHandler.read("foobar|f", "quick", isFoobar);
+
+		auto opts = [
+			OptionHandler.Option(["foo"], "information"),
+			OptionHandler.Option(["f", "foobar"], "quick")
+		];
+
+		assertEquals(opts, optHandler.options);
+
+		assertThrown(optHandler.read!int("tuna", "tunaisgood", true));
 	}
 
-	assert(isFoo == true);
-	assert(isFoobar == true);
+	assertTrue(isFoo);
+	assertTrue(isFoobar);
 }
 
 
@@ -262,9 +297,9 @@ unittest
 		foo = optHandler.read!int("foo|f", "information", true);
 	}
 
-	assert(!foo.empty);
-	assert(foo[0] == 4);
-	assert(foo[1] == 7);
+	assertFalse(foo.empty);
+	assertEquals(4, foo[0]);
+	assertEquals(7, foo[1]);
 }
 
 
@@ -276,13 +311,9 @@ unittest
 
 	{
 		OptionHandler optHandler = OptionHandler(["prog"]);
-
 		optHandler.read("bar", "information", isBar);
 
-		try {
-			optHandler.read("foo", "more information", isFoo, true);
-			assert(0);
-		} catch(OptionHandlerException) {}
+		assertThrown!OptionHandlerException(optHandler.read("foo", "more information", isFoo, true));
 	}
 }
 
@@ -291,11 +322,11 @@ unittest
 unittest
 {
 	bool dummy;
-	OptionHandler optHandler = OptionHandler(["prog"]);
-	optHandler.read("dummy", "some", dummy);
 
-	try {
-		optHandler.read("dummy", "same", dummy);
-		assert(0);
-	} catch (OptionHandlerException) {}
+	{
+		OptionHandler optHandler = OptionHandler(["prog"]);
+		optHandler.read("dummy", "some", dummy);
+
+		assertThrown!OptionHandlerException(optHandler.read("dummy", "same", dummy));
+	}
 }

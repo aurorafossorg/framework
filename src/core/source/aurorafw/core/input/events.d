@@ -35,28 +35,87 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.core.input.events;
 
-///TODO: Need documentation
-
 import aurorafw.core.input.keys;
 
+
+/**
+ * Keyboard Event
+ *
+ * This represents a keyboard event with keycode
+ * and input modifiers
+ *
+ * Examples:
+ * --------------------
+ * auto ke = KeyboardEvent(Keycode.A, InputModifier.Control | InputModifier.Alt);
+ * --------------------
+ */
 struct KeyboardEvent {
 	Keycode key;
 	InputModifier mods;
 }
 
+
+/**
+ * Mouse Button Event
+ *
+ * This represents a mouse button event with
+ * button id and input modifiers
+ *
+ * Examples:
+ * --------------------
+ * auto mbe = MouseButtonEvent(InputButton.B1, InputModifier.None);
+ * --------------------
+ */
 struct MouseButtonEvent {
 	InputButton btn;
 	InputModifier mods;
 }
 
+
+/**
+ * Mouse Motion Event
+ *
+ * This represents a mouse motion event with
+ * x and y position.
+ *
+ * Examples:
+ * --------------------
+ * auto mme = MouseMotionEvent(0.5, -0.4);
+ * --------------------
+ */
 struct MouseMotionEvent {
 	double xpos, ypos;
 }
 
+
+/**
+ * Mouse Scroll Event
+ *
+ * This represents a mouse scroll event with
+ * x and y position offset.
+ *
+ * Examples:
+ * --------------------
+ * auto mse = MouseScrollEvent(-1.0, 0);
+ * --------------------
+ */
 struct MouseScrollEvent {
 	double xoffset, yoffset;
 }
 
+
+/**
+ * Touch Finger Event
+ *
+ * This represents a touch finger event with,
+ * deslocated x and y, x and y position and
+ * finger ID
+ *
+ * Examples:
+ * --------------------
+ * auto tfe = TouchFingerEvent(1.0f, 1.0f, 0.5f, 0.4f, 1);
+ * --------------------
+ */
 struct TouchFingerEvent {
 	float dx, dy;
 	float x, y;
