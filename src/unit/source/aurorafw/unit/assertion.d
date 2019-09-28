@@ -123,6 +123,17 @@ unittest
 	}
 }
 
+///
+@safe pure
+unittest
+{
+	assert(description(new Throwable("foobar"))
+		== "object.Throwable: foobar");
+
+	assert(description(new Throwable("foobar", "foo.d", 42))
+		== "object.Throwable@foo.d(42): foobar");
+}
+
 /**
  * Returns a description of the difference between the strings.
  */
