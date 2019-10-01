@@ -3,7 +3,7 @@
 	"versions": {
 		"riverd-core": "1.0.1",
 		"riverd-loader": "1.0.2",
-		"riverd-ncurses": "1.0.4",
+		"riverd-ncurses": "1.0.5",
 		"riverd-sndfile": "1.0.1",
 		"riverd-soundio": "1.0.1",
 		"riverd-x11": "0.1.2",

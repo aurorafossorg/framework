@@ -44,7 +44,8 @@ import aurorafw.entity.entitymanager;
 import aurorafw.unit.assertion;
 
 import std.exception;
-import std.traits : fullyQualifiedName;
+import std.traits : fullyQualifiedName, Fields, FieldNameTuple;
+import std.meta : AliasSeq;
 
 
 class EntityComponentHandlingException : Exception
@@ -55,14 +56,6 @@ class EntityComponentHandlingException : Exception
 
 class Entity : IEntity
 {
-	public immutable size_t id;
-	public string name;
-	public string description;
-	public bool enabled;
-	private IComponent[string] components;
-	private EntityManager manager;
-
-
 	@safe pure
 	public this(EntityManager manager, size_t id)
 	{
@@ -82,11 +75,13 @@ class Entity : IEntity
 	 * --------------------
 	 * e.AddComponent(new Foo(value1, value2, ...));
 	 * --------------------
+	 *
+	 * See_Also: T add(T : IComponent)()
 	 */
 	@safe pure
-	public T add(T)(T t)
+	public T add(T : IComponent)(T t)
 	{
-		enum id = fullyQualifiedName!T;
+		enum id = ComponentManager.idOf!T;
 
 		if (id in this.components)
 			throw new EntityComponentHandlingException(
@@ -101,7 +96,7 @@ class Entity : IEntity
 	/**
 	 * Add a component
 	 *
-	 * Use this function only if you want to generate the component with init values
+	 * Use this only if you want to generate the component with init values
 	 *
 	 * Examples:
 	 * --------------------
@@ -120,13 +115,16 @@ class Entity : IEntity
 	 *
 	 * It's called by passing the component's id
 	 * Every time you inittialize a new component, an unique id is generated
-	 * If you don't know which id you should pass, use the other variant of this function,
-	 *     which is the recomended one, as it will get the correct id for you
+	 * If you don't know which id you should pass, use the other variant of this
+	 *   function, which is the recomended one, as it will get the correct id
+	 *   for you
 	 *
 	 * Examples:
 	 * --------------------
 	 * e.remove(world.component.idOf!Foo);
 	 * --------------------
+	 *
+	 * See_Also: remove(C : IComponent)()
 	 */
 	@safe pure
 	public void remove(in string id)
@@ -144,7 +142,8 @@ class Entity : IEntity
 	/**
 	 * Removes a component
 	 *
-	 * It's recomended to always use this function, as it will do the 'hard work' for you
+	 * It's recomended to always use this function, as it will do the 'hard
+	 *   work' for you
 	 *
 	 * Examples:
 	 * --------------------
@@ -154,15 +153,57 @@ class Entity : IEntity
 	@safe pure
 	public void remove(C : IComponent)()
 	{
-		remove(fullyQualifiedName!C);
+		remove(ComponentManager.idOf!C);
+	}
+
+
+	@safe pure
+	public C modify(C : IComponent)(AliasSeq!(Fields!C) args)
+	{
+		enum id = ComponentManager.idOf!C;
+		IComponent* p;
+		p = id in components;
+
+		if(p is null)
+			throw new EntityComponentHandlingException(
+				"Cannot modify component. Entity doesn't contain "
+				~ __traits(identifier, C) ~ "."
+			);
+
+		C c = cast(C)components[id];
+		import std.conv : to;
+		static foreach(i, f; [FieldNameTuple!C])
+		{
+			mixin("c."~f~"="~"args["~i.to!string~"];");
+		}
+
+		return c;
+	}
+
+	/**
+	 * Clear
+	 *
+	 * Removes every component from this entity
+	 *
+	 * Examples:
+	 * --------------------
+	 * e.clear();
+	 * --------------------
+	 */
+	@safe pure
+	public void clear()
+	{
+		import std.algorithm.iteration : each;
+		components.byKey.each!(_ => components.remove(_));
 	}
 
 
 	/**
 	 * Get a component
 	 *
-	 * You pass a component type and you'll recive the same type if it exists
-	 * If it doesn't, it'll return null
+	 * Returns:
+	 *     Same type if it exists
+	 *     Null otherwise
 	 *
 	 * Examples:
 	 * --------------------
@@ -172,7 +213,7 @@ class Entity : IEntity
 	@safe pure
 	public C get(C : IComponent)()
 	{
-		enum id = fullyQualifiedName!C;
+		enum id = ComponentManager.idOf!C;
 		IComponent* p;
 		p = id in components;
 
@@ -183,10 +224,13 @@ class Entity : IEntity
 	/**
 	 * Get components
 	 *
-	 * This will return an array of components which are contained in an entity
-	 * However if you want to actualy access any of this, this method isn't recomended
-	 * Use the template 'get' as it will return the type of that component
-	 * Or use 'contains', 'containsAny', 'containsAll' if you want to know which components an entity is holding
+	 * Returns:
+	 *     array of components which are contained in an entity
+	 *     However if you want to actualy access any of this, this method isn't
+	 *       recomended
+	 *     Use the template 'get' as it will return the type of that component
+	 *     Or use 'contains', 'containsAny', 'containsAll' if you want to know
+	 *       which components an entity is holding
 	 */
 	@safe pure
 	public IComponent[] getAll()
@@ -199,17 +243,22 @@ class Entity : IEntity
 	/**
 	 * Contains a component
 	 *
-	 * Returns true if the entity contains the component
-	 *
 	 * You call this function by passing the component's id
 	 * Every time you create a component, it'll generate an unique id
-	 * If you don't know which id you should pass, use the other variant of this function,
-	 *     which is the recomended one, as it will get the correct id for you
+	 * If you don't know which id you should pass, use the other variant of this
+	 *   function, which is the recomended one, as it will get the correct id
+	 *   for you
+	 *
+	 * Returns:
+	 *     True if the entity contains the component
+	 *     False otherwise
 	 *
 	 * Examples:
 	 * --------------------
 	 * e.contains(world.component.idOf!Foo);
 	 * --------------------
+	 *
+	 * See_Also: contains(C : IComponent)()
 	 */
 	@safe pure
 	public bool contains(in string id) const
@@ -221,9 +270,12 @@ class Entity : IEntity
 	/**
 	 * Contains a component
 	 *
-	 * Returns true if the entity contains the component
+	 * It's recomended to always use this function, as it will do the 'hard
+	 *   work' for you
 	 *
-	 * It's recomended to always use this function, as it will do the 'hard work' for you
+	 * Returns:
+	 *     True if the entity contains the component
+	 *     False otherwise
 	 *
 	 * Examples:
 	 * --------------------
@@ -232,24 +284,29 @@ class Entity : IEntity
 	 */
 	public bool contains(C : IComponent)() const
 	{
-		return contains(fullyQualifiedName!C);
+		return contains(ComponentManager.idOf!C);
 	}
 
 
 	/**
 	 * Contains components
 	 *
-	 * Returns true if all the components exist
-	 *
 	 * You call this function by passing an array of the component ids
 	 * Every time you create a component, it'll generate an unique id
-	 * If you don't know which ids you should pass, use the other variant of this function,
-	 *     which is the recomended one, as it will get the correct id for you
+	 * If you don't know which ids you should pass, use the other variant of
+	 *   this function, which is the recomended one, as it will get the correct
+	 *   id for you
+	 *
+	 * Returns:
+	 *     True if all the components exist
+	 *     False otherwise
 	 *
 	 * Examples:
 	 * --------------------
 	 * e.containsAll([world.component.idOf!Foo, world.component.idOf!Bar]);
 	 * --------------------
+	 *
+	 * See_Also: containsAll(C...)()
 	 */
 	@safe pure
 	public bool containsAll(in string[] ids) const
@@ -265,8 +322,12 @@ class Entity : IEntity
 	/**
 	 * Contains components
 	 *
-	 * Returns true if the entity contains all of the components
-	 * It's recomended to always use this function, as it will do the 'hard work' for you
+	 * It's recomended to always use this function, as it will do the 'hard
+	 *   work' for you
+	 *
+	 * Returns:
+	 *     True if the entity contains all of the components
+	 *     False otherwise
 	 *
 	 * Examples:
 	 * --------------------
@@ -276,28 +337,29 @@ class Entity : IEntity
 	@safe pure
 	public bool containsAll(C...)() const
 	{
-		string[] ret;
-		foreach(c; C)
-			ret ~= fullyQualifiedName!c;
-
-		return containsAll(ret);
+		return containsAll(ids!C);
 	}
 
 
 	/**
 	 * Contains any component
 	 *
-	 * Returns true if the entity contains at least one of the components
-	 *
 	 * You call this function by passing an array of the component ids
 	 * Every time you create a component, it'll generate an unique id
-	 * If you don't know which ids you should pass, use the other variant of this function,
-	 *     which is the recomended one, as it will get the correct id for you
+	 * If you don't know which ids you should pass, use the other variant of
+	 *   this function, which is the recomended one, as it will get the correct
+	 *   id for you
+	 *
+	 * Returns:
+	 *     True if the entity contains at least one of the components
+	 *     False otherwise
 	 *
 	 * Examples:
 	 * --------------------
 	 * e.containsAny([world.component.idOf!Foo, world.component.idOf!Bar]);
 	 * --------------------
+	 *
+	 * See_Also: containsAny(C...)()
 	 */
 	@safe pure
 	public bool containsAny(in string[] ids) const
@@ -313,8 +375,12 @@ class Entity : IEntity
 	/**
 	 * Contains any component
 	 *
-	 * Returns true if the entity contains at least one of the components
-	 * It's recomended to always use this function, as it will do the 'hard work' for you
+	 * It's recomended to always use this function, as it will do the 'hard
+	 *   work' for you
+	 *
+	 * Returns:
+	 *     True if the entity contains at least one of the components
+	 *     False otherwise
 	 *
 	 * Examples:
 	 * --------------------
@@ -324,11 +390,21 @@ class Entity : IEntity
 	@safe pure
 	public bool containsAny(C...)() const
 	{
-		string[] ret;
-		foreach(c; C)
-			ret ~= fullyQualifiedName!c;
+		return containsAny(ids!C);
+	}
 
-		return containsAny(ret);
+
+	/**
+	 * Ids
+	 *
+	 * Used internaly only
+	 * Returns: ids of every component contained by this entity
+	 */
+	@safe pure
+	private auto ids(C...)() const
+	{
+		import std.meta : staticMap;
+		return [staticMap!(fullyQualifiedName, C)];
 	}
 
 
@@ -343,49 +419,96 @@ class Entity : IEntity
 	{
 		manager.detach(this);
 	}
+
+
+	public immutable size_t id;
+	public string name;
+	public string description;
+	public bool enabled;
+	private IComponent[string] components;
+	private EntityManager manager;
 }
 
+
+version(unittest)
+{
+	final class unittest_FooComponent : IComponent { int a; }
+	final class unittest_BarComponent : IComponent { int a; }
+}
+
+
+///
 @safe pure
 @("Entity: Adding and removing a component twice")
 unittest
 {
-	final class Foo : IComponent {}
-
 	Entity e = new Entity(null, 0);
 
-	Foo f = new Foo();
-	e.add(f);                                                // First time the component is added, no error
-	assertThrown!EntityComponentHandlingException(e.add(f)); // Second time the same type is added, throws exception
+	unittest_FooComponent f = new unittest_FooComponent();
+	e.add(f); // First time the component is added, no error
+	assertThrown!EntityComponentHandlingException(e.add(f), "Second time the same type is added");
 
-	e.remove!Foo;                                                // First time the component is removed, no error
-	assertThrown!EntityComponentHandlingException(e.remove!Foo); // Second time the type is being accessed, throws exception
+	e.remove!unittest_FooComponent; // First time the component is removed, no error
+	assertThrown!EntityComponentHandlingException(e.remove!unittest_FooComponent,
+				"Second time the type is being accessed");
 }
 
+
+///
 @safe pure
 @("Entity: Getting and contained components")
 unittest
 {
-	final class Foo : IComponent {}
-	final class Bar : IComponent {}
-
 	Entity e = new Entity(null, 0);
-	Foo foo = new Foo();
+	unittest_FooComponent foo = new unittest_FooComponent();
 	e.add(foo); // Entity components == [foo]
 
-	assertTrue(e.contains!Foo);
-	assertTrue(e.containsAll!Foo);
-	assertTrue(e.containsAny!(Foo, Bar));  // returns true, the entity contains a Foo component
+	assertTrue(e.contains!unittest_FooComponent);
+	assertTrue(e.containsAll!unittest_FooComponent);
+	assertTrue(e.containsAny!(unittest_FooComponent, unittest_BarComponent), "Entity contains an unittets_FooComponent");
 
-	assertFalse(e.containsAll!(Foo, Bar)); // returns false, the entity doesn't contain a Bar component
-	assertFalse(e.containsAny!(Bar));
+	assertFalse(e.containsAll!(unittest_FooComponent, unittest_BarComponent),
+				"Entity doesn't contain an unittest_BarComponent");
+	assertFalse(e.containsAny!(unittest_BarComponent));
 
 	import std.range.primitives;
 	auto arr = e.getAll;
 
 	import std.traits : ReturnType;
-	assertTrue(is(ReturnType!(e.get!Foo) == Foo));   // Using 'get' function returns the original type
-	assertTrue(foo is e.get!Foo);
-	assertTrue(e.get!Bar is null);                   // The entity doesn't contain a type Bar component, returns null
-	assertEquals(1, arr.length);                     // The entity contains only 1 component
+	assertTrue(is(ReturnType!(e.get!unittest_FooComponent) == unittest_FooComponent), "Returns the original type");
+	assertTrue(foo is e.get!unittest_FooComponent);
+	assertTrue(e.get!unittest_BarComponent is null, "Entity doesn't contain a type unittest_BarComponent component");
+	assertEquals(1, arr.length, "Entity should contain only 1 component");
 	assertTrue(is(typeof(arr.front) == IComponent));
+}
+
+
+///
+@safe pure
+@("Entity: Entity clear")
+unittest
+{
+	Entity e = new Entity(null, 0);
+
+	e.add(new unittest_FooComponent());
+	e.clear();
+
+	assertEquals(0, e.getAll().length);
+}
+
+
+///
+@safe pure
+@("Entity: Modify component contents")
+unittest
+{
+	Entity e = new Entity(null, 0);
+	e.add!unittest_FooComponent;
+
+	assertEquals(int.init, e.get!unittest_FooComponent.a);
+
+	e.modify!unittest_FooComponent(4);
+
+	assertEquals(4, e.get!unittest_FooComponent.a);
+	assertThrown!EntityComponentHandlingException(e.modify!unittest_BarComponent(5));
 }

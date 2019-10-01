@@ -53,10 +53,6 @@ final class SystemHandlingException : Exception
 
 class SystemManager
 {
-	public EntityManager entity;
-	private System[string] systems;
-
-
 	@safe pure
 	public this(EntityManager entity)
 	{
@@ -64,33 +60,120 @@ class SystemManager
 	}
 
 
+	/**
+	 * Create a new system
+	 *
+	 * Examples:
+	 * --------------------
+	 * world.system.create(new FooSystem());
+	 * --------------------
+	 *
+	 * SeeAlso: create(S : System)()
+	 */
 	@safe pure
 	public void create(S : System)(S s)
 	{
-		if (!(fullyQualifiedName!S in systems))
-		{
-			s._manager = this;
-			systems[fullyQualifiedName!S] = s;
-		}
-		else
+		enum id = fullyQualifiedName!S;
+
+		if (id in this.systems)
 			throw new SystemHandlingException(
 				"Cannot add system. " ~ __traits(identifier, S) ~ " is already created!"
+			);
+
+		s.manager = this;
+		this.systems[id] = s;
+	}
+
+
+	/**
+	 * Create a new System
+	 *
+	 * Examples:
+	 * --------------------
+	 * world.system.create!FooSystem;
+	 * --------------------
+	 */
+	@safe pure
+	public void create(S : System)()
+	{
+		create(new S());
+	}
+
+
+	/**
+	 * Get a system
+	 *
+	 * Returns: the type you're passing
+	 *
+	 * Examples:
+	 * --------------------
+	 * world.system.get!FooSystem
+	 * --------------------
+	 */
+	@safe pure
+	public S get(S : System)()
+	{
+		enum id = fullyQualifiedName!S;
+		System* p;
+		p = id in this.systems;
+
+		return p !is null ? cast(S)(*p) : null;
+	}
+
+
+	/**
+	 * Remove
+	 *
+	 * Deletes a system from the world's scope
+	 *
+	 * Examples:
+	 * --------------------
+	 * world.system.remove!FooSystem
+	 * --------------------
+	 */
+	@safe pure
+	public void remove(S : System)()
+	{
+		enum id = fullyQualifiedName!S;
+
+		if (id in this.systems)
+			this.systems.remove(id);
+
+		else
+			throw new SystemHandlingException(
+				"Cannot remove system. " ~ __traits(identifier, S) ~ " was already removed or it wasn't created!"
 			);
 	}
 
 
+	/**
+	 * Clear
+	 *
+	 * Deletes every system in the world's scope
+	 *
+	 * Examples:
+	 * --------------------
+	 * world.system.clear();
+	 * --------------------
+	 */
 	@safe pure
-	public S get(S : System)()
+	public void clear()
 	{
-		immutable string name = fullyQualifiedName!S;
-		if (name in systems)
-			return cast(S)(systems[name]);
-
-		else
-			return null;
+		foreach(key, value; this.systems)
+			this.systems.remove(key);
 	}
 
 
+	/**
+	 * Update
+	 *
+	 * Updates every component with the Automatic Update Policy
+	 *
+	 * Examples:
+	 * --------------------
+	 * world.system.update();
+	 * --------------------
+	 */
 	@safe pure
 	public void update()
 	{
@@ -100,11 +183,26 @@ class SystemManager
 	}
 
 
+	/**
+	 * Update
+	 *
+	 * Updates any system passed
+	 * It's useful when you only want to update systems manualy
+	 *
+	 * Examples:
+	 * --------------------
+	 * world.system.update!FooSystem;
+	 * --------------------
+	 */
 	@safe pure
 	public void update(S : System)()
 	{
 		this.systems[fullyQualifiedName!S].update();
 	}
+
+
+	public EntityManager entity;
+	private System[string] systems;
 }
 
 
@@ -124,6 +222,8 @@ version(unittest)
 	}
 }
 
+
+///
 @safe pure
 @("System Manager: System creation")
 unittest
@@ -138,6 +238,8 @@ unittest
 	assertThrown!SystemHandlingException(system.create(new unittest_FooSystem())); // System created twice
 }
 
+
+///
 @safe pure
 @("System Manager: Accessing system properties")
 unittest
@@ -152,6 +254,8 @@ unittest
 	assertTrue(system.get!(unittest_BarSystem) is null); // System wasn't created
 }
 
+
+///
 @safe pure
 @("System Manager: System update")
 unittest
@@ -174,4 +278,18 @@ unittest
 	system.update!unittest_BarSystem; // Systems can be updated manualy
 
 	assertEquals(barSys.updatePolicy, barSys.UpdatePolicy.Automatic); // Got updated
+}
+
+
+///
+@safe pure
+@("System Manager: System clear")
+unittest
+{
+	SystemManager system = new SystemManager(null);
+
+	system.create!unittest_FooSystem;
+	system.clear();
+
+	assertEquals(0, system.systems.length);
 }

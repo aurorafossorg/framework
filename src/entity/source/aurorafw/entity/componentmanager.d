@@ -36,7 +36,6 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.entity.componentmanager;
 
-import aurorafw.entity.componentpool;
 import aurorafw.entity.icomponent;
 import aurorafw.entity.world;
 
@@ -54,15 +53,26 @@ final class ComponentHandlingException : Exception
 
 final class ComponentManager
 {
+	/**
+	 * idOf
+	 *
+	 * Returns: the id of a given component
+	 *
+	 * Examples:
+	 * --------------------
+	 * world.component.idOf!Foo;
+	 * --------------------
+	 */
 	@safe pure
-	public const string idOf(C : IComponent)()
+	static public string idOf(C : IComponent)()
 	{
 		return fullyQualifiedName!C;
 	}
 
 
+	/// ditto
 	@safe pure
-	public const string idOf(C : IComponent)(C component)
+	static public string idOf(C : IComponent)(C component)
 	{
 		return fullyQualifiedName!C;
 	}
@@ -72,6 +82,8 @@ final class ComponentManager
 version(unittest)
 	private final class unittest_FooComponent : IComponent { int var; }
 
+
+///
 @safe pure
 @("Component Manager: Component id")
 unittest

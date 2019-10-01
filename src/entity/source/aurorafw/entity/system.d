@@ -43,17 +43,16 @@ import aurorafw.unit.assertion;
 
 abstract class System
 {
+	/**
+	 * Update policy
+	 *
+	 * Decides wether or not a system is updated manualy or automatically
+	 */
 	enum UpdatePolicy
 	{
 		Automatic,
 		Manual
 	}
-
-	public UpdatePolicy updatePolicy;
-	package SystemManager _manager;
-
-
-	@safe pure @property SystemManager manager() { return this._manager; }
 
 
 	@safe pure
@@ -63,6 +62,23 @@ abstract class System
 	}
 
 
+	/**
+	 * Update
+	 *
+	 * Use this method to update each system
+	 *
+	 * Examples:
+	 * --------------------
+	 * final class FooSystem : System
+	 * {
+	 *    override public void update() { *everything you want to update* }
+	 * }
+	 * --------------------
+	 */
 	@safe pure
 	public abstract void update();
+
+
+	public UpdatePolicy updatePolicy;
+	package SystemManager manager;
 }

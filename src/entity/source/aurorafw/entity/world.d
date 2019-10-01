@@ -57,7 +57,7 @@ final class World
 	public this()
 	{
 		component = new ComponentManager();
-		entity = new EntityManager(this, component);
+		entity = new EntityManager(this);
 		system = new SystemManager(entity);
 	}
 
@@ -106,13 +106,14 @@ version(unittest)
 
 			foreach(Entity e; arr)
 			{
-				unittest_FooComponent fc = e.get!unittest_FooComponent;
-				fc.a = 5;
+				e.modify!unittest_FooComponent(5);
 			}
 		}
 	}
 }
 
+
+///
 @safe pure
 @("World: System update")
 unittest
@@ -134,6 +135,8 @@ unittest
 	assertEquals(barSys.updatePolicy, barSys.UpdatePolicy.Automatic); // Got updated
 }
 
+
+///
 @safe pure
 @("World: Main loop")
 unittest

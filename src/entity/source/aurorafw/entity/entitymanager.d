@@ -55,20 +55,10 @@ class EntityManagerHandlingException : Exception
 
 final class EntityManager
 {
-	private size_t nextId = 0;
-	private Entity[size_t] mEntities;
-	private size_t[] delEntities;
-	private World world;
-
-	// used only by the Entity class
-	public const ComponentManager component; // TODO: -remove component manager
-
-
 	@safe pure
-	public this(World world, ComponentManager component)
+	public this(World world)
 	{
 		this.world = world;
-		this.component = component;
 	}
 
 
@@ -278,14 +268,37 @@ final class EntityManager
 				"Cannot detach entity. Entity doesn't exist in the world's scope."
 			);
 	}
+
+
+	/*
+	 * Clear
+	 *
+	 * Removes every entity from the world's scope
+	 */
+	@safe pure
+	public void clear()
+	{
+		foreach(key, value; this.mEntities)
+		{
+			this.delEntities ~= key;
+			this.mEntities.remove(key);
+		}
+	}
+
+
+	private size_t nextId = 0;
+	private Entity[size_t] mEntities;
+	private size_t[] delEntities;
+	private World world;
 }
 
 
+///
 @safe pure
 @("Entity Manager: Entity id counter")
 unittest
 {
-	EntityManager manager = new EntityManager(null, null);
+	EntityManager manager = new EntityManager(null);
 
 	Entity e1 = manager.create();
 	Entity e2 = manager.create();
@@ -307,6 +320,8 @@ unittest
 	assertThrown!EntityManagerHandlingException(manager.detach(e1)); // This entity is no longer in the world's scope
 }
 
+
+///
 @safe pure
 @("Entity Manager: Entities getAllWith and getFirstWith")
 unittest
@@ -315,7 +330,7 @@ unittest
 	final class Bar : IComponent {}
 	final class Foobar : IComponent {}
 
-	EntityManager manager = new EntityManager(null, null);
+	EntityManager manager = new EntityManager(null);
 
 	Entity e1 = manager.create();
 	Entity e2 = manager.create();
@@ -340,13 +355,27 @@ unittest
 }
 
 
+///
 @safe pure
 @("Entity Manager: Entity getter")
 unittest
 {
-	EntityManager manager = new EntityManager(null, null);
+	EntityManager manager = new EntityManager(null);
 
 	Entity e = manager.create();
 
 	assertTrue(e is manager.get(e.id));
+}
+
+
+///
+@safe pure
+@("Entity Manager: Entities clear")
+unittest
+{
+	EntityManager manager = new EntityManager(null);
+	Entity e = manager.create();
+	manager.clear();
+
+	assertEquals(0, manager.mEntities.length);
 }

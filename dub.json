@@ -24,7 +24,8 @@
 		":net": "*",
 		":metadata": "*",
 		":stdx": "*",
-		":unit": "*"
+		":unit": "*",
+		":entity": "*"
 	},
 	"subPackages": [
 		"src/core",
@@ -37,6 +38,7 @@
 		"src/net",
 		"src/metadata",
 		"src/stdx",
-		"src/unit"
+		"src/unit",
+		"src/entity"
 	]
 }
