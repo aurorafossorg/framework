@@ -7,6 +7,7 @@
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
 Copyright (C) 2018-2019 Aurora Free Open Source Software.
+Copyright (C) 2018-2019 Luís Ferreira <luis@aurorafoss.org>
 
 This file is part of the Aurora Free Open Source Software. This
 organization promote free and open source software that you can
@@ -22,7 +23,7 @@ Alternatively, this file may be used under the terms of the GNU General
 Public License version 3 or later as published by the Free Software
 Foundation. Please review the following information to ensure the GNU
 General Public License requirements will be met:
-https://www.gnu.org/licenses/gpl-3.0.html.
+http://www.gnu.org/licenses/gpl-3.0.html.
 
 NOTE: All products, services or anything associated to trademarks and
 service marks used or referenced on this file are the property of their
