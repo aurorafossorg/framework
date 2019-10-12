@@ -62,6 +62,21 @@ string substr(string s, ptrdiff_t offset, ptrdiff_t length = -1)
 }
 
 
+///
+@safe pure
+@("String: substr")
+unittest
+{
+	string s = "Aurora Framework";
+	assertEquals("urora", s.substr(1,5));
+	assertEquals("urora Framework", s.substr(1));
+	assertEquals(s, s.substr(-1, -1));
+	assertEquals(s, s.substr(-1));
+	assertEquals(s, s.substr(0, ptrdiff_t.max));
+	assertEquals("", s.substr(ptrdiff_t.max));
+}
+
+
 @nogc @safe pure nothrow
 bool isAlpha(string str)
 {
@@ -78,24 +93,60 @@ bool isAlpha(string str)
 
 ///
 @safe pure
-@("String: substr")
-unittest
-{
-	string s = "Aurora Framework";
-	assertEquals("urora", s.substr(1,5));
-	assertEquals("urora Framework", s.substr(1));
-	assertEquals(s, s.substr(-1, -1));
-	assertEquals(s, s.substr(-1));
-	assertEquals(s, s.substr(0, ptrdiff_t.max));
-	assertEquals("", s.substr(ptrdiff_t.max));
-}
-
-
-///
-@safe pure
 @("String: isAlpha")
 unittest
 {
 	assertTrue(isAlpha("tunaisgood"));
 	assertFalse(isAlpha("tun41s900d"));
+}
+
+
+@safe pure @nogc nothrow
+bool isNumber(string str)
+{
+	if (str.length < 1) return false;
+	if(str[0] == '-' || str[0] == '+')
+		str = str[1 .. $];
+	foreach (ch; str)
+		if (ch < '0' || ch > '9')
+			return false;
+
+	return true;
+}
+
+
+///
+@safe pure
+@("String: isNumber")
+unittest
+{
+	assertTrue(isNumber("1"));
+	assertTrue(isNumber("-3"));
+	assertTrue(isNumber("+2"));
+	assertTrue(isNumber("043"));
+	assertFalse(isNumber("p3"));
+}
+
+
+@safe pure @nogc nothrow
+ptrdiff_t indexOfAny(string str, in char[] chars)
+{
+	ptrdiff_t ret = -1;
+	foreach (ch; chars) {
+		auto idx = str.indexOf(ch);
+		if (idx >= 0 && (ret < 0 || idx < ret))
+			ret = idx;
+	}
+	return ret;
+}
+
+
+///
+@safe pure
+@("String: indexOfAny")
+unittest
+{
+	assertEquals(0, indexOfAny("-+", ['-', '+']));
+	assertEquals(2, indexOfAny("11a", ['a']));
+	assertEquals(-1, indexOfAny("11", ['a']));
 }
