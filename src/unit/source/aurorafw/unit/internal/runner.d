@@ -80,10 +80,13 @@ void runTest(ref Test testCase, bool isVerbose)
 	auto writer = stdout.lockingTextWriter;
 
 	writer.formattedWrite(" %s %s %s",
+		// status symbol
 		testCase.status
-			? Console.colour("✓", Colour.ok)
-			: Console.colour("✗", Colour.achtung),
+			? Console.colour("✓", Colour.ok)		// Success
+			: Console.colour("✗", Colour.achtung),	// Error
+		// module name
 		Console.emphasis(Console.truncateName(testCase.test.fullName[0..testCase.test.fullName.lastIndexOf('.')], isVerbose)),
+		// test name
 		testCase.test.testName,
 	);
 

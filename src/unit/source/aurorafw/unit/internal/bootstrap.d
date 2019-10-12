@@ -62,6 +62,7 @@ private Test[] getTests()()
 	Test[] tests;
 	static if(__traits(compiles, () {static import dub_test_root;})) {
 		static import dub_test_root;
+
 		foreach(m; dub_test_root.allModules)
 		{
 			import std.traits : fullyQualifiedName, isAggregateType;
