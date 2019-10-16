@@ -36,7 +36,6 @@ directly send an email to: contact (at) aurorafoss.org .
 module aurorafw.core.application;
 
 import core.stdc.stdlib : exit, EXIT_SUCCESS, EXIT_FAILURE;
-import aurorafw.core.debugmanager;
 
 abstract class Application {
 public:

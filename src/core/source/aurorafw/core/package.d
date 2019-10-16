@@ -7,6 +7,7 @@
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
 Copyright (C) 2018-2019 Aurora Free Open Source Software.
+Copyright (C) 2018-2019 Luís Ferreira <luis@aurorafoss.org>
 
 This file is part of the Aurora Free Open Source Software. This
 organization promote free and open source software that you can
@@ -38,7 +39,6 @@ module aurorafw.core;
 public:
 	import aurorafw.core.appcontext;
 	import aurorafw.core.application;
-	import aurorafw.core.debugmanager;
 	import aurorafw.core.input;
 	import aurorafw.core.logger;
 	import aurorafw.core.opt;
