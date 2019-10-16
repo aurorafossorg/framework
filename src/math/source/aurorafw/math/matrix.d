@@ -90,7 +90,11 @@ module aurorafw.math.matrix;
 		return ret;
 	}
 
-	void setIdentity() @property
+	void setIdentity()
+	in {
+		static assert(M == N);
+	}
+	body
 	{
 		foreach(size_t x; 0 .. M)
 			foreach(size_t y; 0 .. N)
