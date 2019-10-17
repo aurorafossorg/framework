@@ -48,18 +48,25 @@ import aurorafw.unit.assertion;
 
 final class World
 {
-	public EntityManager entity;
-	public ComponentManager component;
-	public SystemManager system;
-
-
 	@safe pure
 	public this()
 	{
-		component = new ComponentManager();
-		entity = new EntityManager(this);
-		system = new SystemManager(entity);
+		_component = new ComponentManager();
+		_entity = new EntityManager();
+		_system = new SystemManager(entity);
 	}
+
+
+	@safe pure
+	public EntityManager entity() { return _entity; } @property
+
+
+	@safe pure
+	public ComponentManager component() { return _component; } @property
+
+
+	@safe pure
+	public SystemManager system() { return _system; }
 
 
 	@safe pure
@@ -74,6 +81,11 @@ final class World
 	{
 		system.update!S;
 	}
+
+
+	package EntityManager _entity;
+	package ComponentManager _component;
+	package SystemManager _system;
 }
 
 
@@ -150,4 +162,15 @@ unittest
 	world.update();
 
 	assertEquals(5, e.get!unittest_FooComponent.a); // Component variable modified in the update method
+}
+
+
+///
+@safe pure
+@("World: Component Manager getter")
+unittest
+{
+	World world = new World();
+
+	assertTrue(world._component is world.component);
 }

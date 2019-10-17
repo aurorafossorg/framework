@@ -55,13 +55,6 @@ class EntityManagerHandlingException : Exception
 
 final class EntityManager
 {
-	@safe pure
-	public this(World world)
-	{
-		this.world = world;
-	}
-
-
 	/**
 	 * Create an entity
 	 *
@@ -289,7 +282,6 @@ final class EntityManager
 	private size_t nextId = 0;
 	private Entity[size_t] mEntities;
 	private size_t[] delEntities;
-	private World world;
 }
 
 
@@ -298,7 +290,7 @@ final class EntityManager
 @("Entity Manager: Entity id counter")
 unittest
 {
-	EntityManager manager = new EntityManager(null);
+	EntityManager manager = new EntityManager();
 
 	Entity e1 = manager.create();
 	Entity e2 = manager.create();
@@ -330,7 +322,7 @@ unittest
 	final class Bar : IComponent {}
 	final class Foobar : IComponent {}
 
-	EntityManager manager = new EntityManager(null);
+	EntityManager manager = new EntityManager();
 
 	Entity e1 = manager.create();
 	Entity e2 = manager.create();
@@ -360,7 +352,7 @@ unittest
 @("Entity Manager: Entity getter")
 unittest
 {
-	EntityManager manager = new EntityManager(null);
+	EntityManager manager = new EntityManager();
 
 	Entity e = manager.create();
 
@@ -373,7 +365,7 @@ unittest
 @("Entity Manager: Entities clear")
 unittest
 {
-	EntityManager manager = new EntityManager(null);
+	EntityManager manager = new EntityManager();
 	Entity e = manager.create();
 	manager.clear();
 

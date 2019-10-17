@@ -54,9 +54,9 @@ final class SystemHandlingException : Exception
 class SystemManager
 {
 	@safe pure
-	public this(EntityManager entity)
+	public this(EntityManager _entity)
 	{
-		this.entity = entity;
+		this._entity = _entity;
 	}
 
 
@@ -201,7 +201,11 @@ class SystemManager
 	}
 
 
-	public EntityManager entity;
+	@safe pure
+	public EntityManager entity() { return _entity; } @property
+
+
+	package EntityManager _entity;
 	private System[string] systems;
 }
 
