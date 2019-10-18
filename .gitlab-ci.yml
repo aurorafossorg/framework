@@ -33,6 +33,9 @@
 
 image: aurorafossorg/archlinux:latest
 
+include:
+  - template: License-Management.gitlab-ci.yml
+
 stages:
   - check
   - build
@@ -124,7 +127,7 @@ x86-linux-dub-ldc-debug:
   variables:
     BUILD_DUB_FLAGS: $CI_JOB_STAGE --arch=x86 --compiler=ldc --build=debug
 
-x86_64-linux-dub-gdcd-debug:
+x86_64-linux-dub-gdc-debug:
   <<: *artifacts_definition
   <<: *linux-dub_definition
   <<: *x86_64-linux-deps_definition
