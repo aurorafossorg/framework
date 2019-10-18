@@ -53,10 +53,15 @@ final class SystemHandlingException : Exception
 
 class SystemManager
 {
+	// unittesting only
 	@safe pure
-	public this(EntityManager _entity)
+	private this()
+	{}
+
+	@safe pure
+	public this(EntityManager entity)
 	{
-		this._entity = _entity;
+		_entity = entity;
 	}
 
 
@@ -205,7 +210,7 @@ class SystemManager
 	public EntityManager entity() { return _entity; } @property
 
 
-	package EntityManager _entity;
+	private EntityManager _entity;
 	private System[string] systems;
 }
 
@@ -232,7 +237,7 @@ version(unittest)
 @("System Manager: System creation")
 unittest
 {
-	SystemManager system = new SystemManager(null);
+	SystemManager system = new SystemManager();
 
 	system.create(new unittest_FooSystem());
 
@@ -248,7 +253,7 @@ unittest
 @("System Manager: Accessing system properties")
 unittest
 {
-	SystemManager system = new SystemManager(null);
+	SystemManager system = new SystemManager();
 
 	system.create(new unittest_FooSystem());
 
@@ -264,7 +269,7 @@ unittest
 @("System Manager: System update")
 unittest
 {
-	SystemManager system = new SystemManager(null);
+	SystemManager system = new SystemManager();
 
 	unittest_FooSystem fooSys = new unittest_FooSystem();
 	unittest_BarSystem barSys = new unittest_BarSystem();
@@ -290,7 +295,7 @@ unittest
 @("System Manager: System clear")
 unittest
 {
-	SystemManager system = new SystemManager(null);
+	SystemManager system = new SystemManager();
 
 	system.create!unittest_FooSystem;
 	system.clear();

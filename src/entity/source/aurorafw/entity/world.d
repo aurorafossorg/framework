@@ -53,7 +53,7 @@ final class World
 	{
 		_component = new ComponentManager();
 		_entity = new EntityManager();
-		_system = new SystemManager(entity);
+		_system = new SystemManager(_entity);
 	}
 
 
@@ -66,26 +66,26 @@ final class World
 
 
 	@safe pure
-	public SystemManager system() { return _system; }
+	public SystemManager system() { return _system; } @property
 
 
 	@safe pure
 	public void update()
 	{
-		system.update;
+		_system.update;
 	}
 
 
 	@safe pure
 	public void update(S : System)()
 	{
-		system.update!S;
+		_system.update!S;
 	}
 
 
-	package EntityManager _entity;
-	package ComponentManager _component;
-	package SystemManager _system;
+	private EntityManager _entity;
+	private ComponentManager _component;
+	private SystemManager _system;
 }
 
 
