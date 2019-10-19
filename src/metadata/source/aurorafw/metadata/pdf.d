@@ -38,7 +38,7 @@ PDFVersion getPDFVersion(File file)
 @("PDF: Versioning")
 unittest {
 	import std.file;
-	import aurorafw.unit.assertion;
+	version(unittest) import aurorafw.unit.assertion;
 	import std.conv : to;
 	import std.traits;
 

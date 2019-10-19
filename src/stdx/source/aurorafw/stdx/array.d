@@ -37,7 +37,7 @@ directly send an email to: contact (at) aurorafoss.org .
 module aurorafw.stdx.array;
 
 public import std.array;
-import aurorafw.unit.assertion;
+version(unittest) import aurorafw.unit.assertion;
 
 @safe pure
 T[] replaceFirst(T)(T[] arr, T from, T to)

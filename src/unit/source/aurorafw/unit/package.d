@@ -36,7 +36,4 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.unit;
 
-version(unittest):
-
-public:
-	import aurorafw.unit.assertion;
+public import aurorafw.unit.assertion;

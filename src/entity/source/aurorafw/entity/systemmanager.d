@@ -39,7 +39,7 @@ module aurorafw.entity.systemmanager;
 import aurorafw.entity.system;
 import aurorafw.entity.entitymanager;
 
-import aurorafw.unit.assertion;
+version(unittest) import aurorafw.unit.assertion;
 
 import std.traits : fullyQualifiedName;
 import std.exception;

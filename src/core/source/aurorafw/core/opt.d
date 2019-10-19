@@ -48,7 +48,7 @@ import std.variant;
 import core.runtime : Runtime;
 import std.traits : fullyQualifiedName;
 import std.typecons;
-import aurorafw.unit.assertion;
+version(unittest) import aurorafw.unit.assertion;
 
 @safe pure
 class OptionHandlerException : Exception

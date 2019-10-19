@@ -41,8 +41,6 @@ More about DUnit: https://github.com/linkrope/dunit
 
 module aurorafw.unit.assertion;
 
-version(unittest):
-
 import core.thread;
 import core.time;
 import std.algorithm;

@@ -41,7 +41,7 @@ import aurorafw.entity.ientity;
 import aurorafw.entity.componentmanager;
 import aurorafw.entity.entitymanager;
 
-import aurorafw.unit.assertion;
+version(unittest) import aurorafw.unit.assertion;
 
 import std.exception;
 import std.traits : fullyQualifiedName, Fields, FieldNameTuple;

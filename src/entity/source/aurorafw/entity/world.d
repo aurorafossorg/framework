@@ -43,7 +43,7 @@ import aurorafw.entity.componentmanager;
 import aurorafw.entity.systemmanager;
 import aurorafw.entity.system;
 
-import aurorafw.unit.assertion;
+version(unittest) import aurorafw.unit.assertion;
 
 
 final class World

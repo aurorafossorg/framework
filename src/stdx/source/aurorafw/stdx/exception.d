@@ -38,7 +38,7 @@ module aurorafw.stx.exception;
 
 public import std.exception;
 
-import aurorafw.unit.assertion;
+version(unittest) import aurorafw.unit.assertion;
 
 static class NotImplementedException : Exception
 {

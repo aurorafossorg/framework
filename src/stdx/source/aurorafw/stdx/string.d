@@ -38,7 +38,7 @@ module aurorafw.stdx.string;
 
 public import std.string;
 
-import aurorafw.unit.assertion;
+version(unittest) import aurorafw.unit.assertion;
 
 
 @nogc @safe pure nothrow

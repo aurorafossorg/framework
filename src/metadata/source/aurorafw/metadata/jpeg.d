@@ -35,7 +35,7 @@ string toString(JPEGVersion ver)
 unittest
 {
 	import std.file;
-	import aurorafw.unit.assertion;
+	version(unittest) import aurorafw.unit.assertion;
 	import std.conv : to;
 
 	scope(exit)

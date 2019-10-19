@@ -1,7 +1,7 @@
 module aurorafw.metadata.mime;
 
 import aurorafw.metadata.signature;
-import aurorafw.unit.assertion;
+version(unittest) import aurorafw.unit.assertion;
 
 @safe pure @nogc nothrow
 string toMIME(FileSignature val)

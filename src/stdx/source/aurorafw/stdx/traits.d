@@ -48,7 +48,7 @@ module aurorafw.stdx.traits;
 
 import std.format;
 
-import aurorafw.unit.assertion;
+version(unittest) import aurorafw.unit.assertion;
 
 
 /**

@@ -41,7 +41,7 @@ import aurorafw.entity.icomponent;
 import aurorafw.entity.componentmanager;
 import aurorafw.entity.world;
 
-import aurorafw.unit.assertion;
+version(unittest) import aurorafw.unit.assertion;
 
 import std.range;
 import std.exception;

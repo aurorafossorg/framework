@@ -38,7 +38,7 @@ module aurorafw.entity.system;
 
 import aurorafw.entity.systemmanager;
 
-import aurorafw.unit.assertion;
+version(unittest) import aurorafw.unit.assertion;
 
 
 abstract class System

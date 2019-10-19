@@ -61,7 +61,7 @@ import std.algorithm;
 import std.exception : enforce;
 import core.exception;
 
-import aurorafw.unit.assertion;
+version(unittest) import aurorafw.unit.assertion;
 import aurorafw.stdx.string : indexOfAny;
 
 /** Version struct
