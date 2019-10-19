@@ -1,7 +1,6 @@
 {
 	"editor.rulers": [
-		120, // soft max line length
-		160 // hard max line length
+		80
 	],
 	"files.exclude": {
 		"**/.build": true,
