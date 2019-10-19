@@ -35,8 +35,6 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.gui.api.backend;
 
-import aurorafw.stdx.exception;
-
 version(linux)
 {
 	import aurorafw.gui.api.wayland.backend;

@@ -66,7 +66,7 @@ pure class X11Backend : Backend {
 			else
 				error("X11: DISPLAY variable is missing");
 
-			exit(1); //TODO: add error to Error Database
+			exit(1);
 		}
 
 		_screen = X.XDefaultScreen(_display);
@@ -198,15 +198,14 @@ pure class X11Backend : Backend {
 	{
 		//TODO: Remove/improve logger
 		import std.experimental.logger;
-		import aurorafw.core.debugmanager;
-		try _xf86vmode.handle = X.dylib_load_xxf86vm(); catch(Exception e) debug trace(afwDebugFlag, e.msg);
+		try _xf86vmode.handle = X.dylib_load_xxf86vm(); catch(Exception e) debug trace(e.msg);
 
 		if(X.dylib_is_loaded(_xf86vmode.handle))
 		{
 			_xf86vmode.available = cast(bool)X.XF86VidModeQueryExtension(_display, &_xf86vmode.eventBase, &_xf86vmode.errorBase);
 		}
 
-		try _xcursor.handle = X.dylib_load_xcursor(); catch(Exception e) debug trace(afwDebugFlag, e.msg);
+		try _xcursor.handle = X.dylib_load_xcursor(); catch(Exception e) debug trace(e.msg);
 	}
 
 private:
