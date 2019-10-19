@@ -36,14 +36,14 @@ directly send an email to: contact (at) aurorafoss.org .
 module aurorafw.audio.input;
 
 import aurorafw.audio.utils : AudioInfo;
-import aurorafw.core.debugmanager;
 import riverd.sndfile;
 
-import std.string : toStringz;
+import aurorafw.stdx.string : toStringz;
+import aurorafw.stdx.exception;
 
 protected int audioInputCallback() {
-	pragma(msg, debugMsgPrefix, "TODO: Implement audioInputCallback()");
-	return 0;
+	//TODO: Need implementation
+	throw new NotImplementedException("Not yet implemented!");
 }
 
 class AudioIStream {
@@ -57,54 +57,60 @@ class AudioIStream {
 		audioInfo._sndFile = sf_open(path.toStringz, SFM_WRITE, audioInfo._sndInfo);
 
 		// soundio_write_stream(...);
-		pragma(msg, debugMsgPrefix, "TODO: Implement AudioIStream ctor()");
+		//TODO: Need implementation
+		throw new NotImplementedException("Not yet implemented!");
 	}
 
 	void record() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement record()");
+		//TODO: Need implementation
+		throw new NotImplementedException("Not yet implemented!");
 		//soundio_start_stream(...);
 	}
 
 	void pause() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement pause()");
+		//TODO: Need implementation
+		throw new NotImplementedException("Not yet implemented!");
 		//soundio_stop_stream(...);
 	}
 
 	void stop() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement stop()");
-		_streamPosFrame = 0;
+		//TODO: Need implementation
+		throw new NotImplementedException("Not yet implemented!");
+		//_streamPosFrame = 0;
 
 		//soundio_stop_stream(...);
 	}
 
 	bool isRecording() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement isRecording()");
+		//TODO: Need implementation
+		throw new NotImplementedException("Not yet implemented!");
 		//return soundio_is_stream_active(...);
-		return 0;
 	}
 
 	bool isPaused() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement isPaused()");
+		//TODO: Need implementation
+		throw new NotImplementedException("Not yet implemented!");
 		//return !soundio_is_stream_active(...) && _streamPosFrame != 0;
-		return 0;
 	}
 
 	bool isStopped() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement isStopped()");
+		//TODO: Need implementation
+		throw new NotImplementedException("Not yet implemented!");
 		//return !soundio_is_stream_active(...)
-		return 0;
 	}
 
 	bool isBufferFull() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement isBufferFull()");
-		return 0;
+		//TODO: Need implementation
+		throw new NotImplementedException("Not yet implemented!");
 	}
 	void clearBuffer() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement clearBuffer()");
+		//TODO: Need implementation
+		throw new NotImplementedException("Not yet implemented!");
 	}
 
 	void clearBuffer(uint start, uint finish) {
-		pragma(msg, debugMsgPrefix, "TODO: Implement clearBuffer(uint start, uint finish)");
+		//TODO: Need implementation
+		throw new NotImplementedException("Not yet implemented!");
 	}
 
 	bool save() {
@@ -115,7 +121,7 @@ class AudioIStream {
 
 	immutable string path;
 	AudioInfo audioInfo;
-	pragma(msg, debugMsgPrefix, "TODO: Define wether the buffer should be public or private");
+	//TODO: Define wether the buffer should be public or private
 	float[] buffer;
 	immutable uint bufferSize;
 

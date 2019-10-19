@@ -38,9 +38,9 @@ module aurorafw.audio.utils;
 import std.string : toStringz;
 import std.conv : to;
 
-import aurorafw.core.debugmanager;
 import riverd.sndfile;
 import aurorafw.audio.backend : catchSNDFILEProblem;
+import aurorafw.stdx.exception;
 
 class AudioInfo {
 	this(SF_INFO* sndInfo = new SF_INFO, SNDFILE* sndFile = null) {

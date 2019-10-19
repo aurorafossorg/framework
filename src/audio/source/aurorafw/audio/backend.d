@@ -37,8 +37,8 @@ module aurorafw.audio.backend;
 
 import riverd.sndfile;
 import riverd.soundio;
-import aurorafw.core.debugmanager;
 import aurorafw.core.logger;
+import aurorafw.stdx.exception;
 
 import std.conv : text, to;
 
@@ -185,11 +185,13 @@ public:
 	}
 
 	void setInputDevice(AudioDevice inputDevice) {
-		pragma(msg, debugMsgPrefix, "TODO: Implement setInputDevice()");
+		//TODO: Need implementation
+		throw new NotImplementedException("Not yet implemented!");
 	}
 
 	void setOutputDevice(AudioDevice outputDevice) {
-		pragma(msg, debugMsgPrefix, "TODO: Implement setOutputDevice()");
+		//TODO: Need implementation
+		throw new NotImplementedException("Not yet implemented!");
 	}
 
 	void flushEvents() {

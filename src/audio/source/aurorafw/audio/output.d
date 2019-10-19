@@ -42,7 +42,7 @@ import std.algorithm : max;
 import core.thread : Thread;
 import core.time: Duration, dur;
 
-import aurorafw.core.debugmanager;
+import aurorafw.stdx.exception;
 import aurorafw.core.logger;
 import aurorafw.audio.backend : AudioDevice, catchSOUNDIOProblem, catchSNDFILEProblem, AudioBackend;
 import aurorafw.audio.utils : AudioInfo;
@@ -61,7 +61,8 @@ class AudioFileNotFoundException : Throwable {
 }
 
 extern(C) void audioOutputCallback(SoundIoOutStream* stream, int minFrames, int maxFrames) {
-	pragma(msg, "TODO: Cleanup this method as much as possible");
+	//TODO: Need implementation
+
 	// Gets the output buffer (it's of type float32NE), and
 	// the audioStream and audioInfo
 	// DEBUG
@@ -287,16 +288,16 @@ class AudioOStream {
 	}
 
 	float getCpuLoad() {
-		pragma(msg, debugMsgPrefix, "TODO: Implement getCpuLoad()");
+		//TODO: Need implementation
+		throw new NotImplementedException("Not yet implemented!");
 		// return soundio_get_cpu_load(...);
-		return 0;
 	}
 
 	AudioPlayMode audioPlayMode;
 	AudioInfo audioInfo;
 
 	float volume = 1;
-	pragma(msg, debugMsgPrefix, "TODO: Implement pitch");
+	//TODO: Implement pitch
 	float pitch = 1;
 
 private:

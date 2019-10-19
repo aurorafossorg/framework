@@ -35,7 +35,8 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.audio.effect;
 
-import aurorafw.core.debugmanager;
+import aurorafw.stdx.exception;
+import std.traits : fullyQualifiedName;
 
 interface AudioEffect {
 	void process(ref float[] , ref size_t );
@@ -43,30 +44,35 @@ interface AudioEffect {
 
 class Basic3DEffect : AudioEffect {
 	void process(ref float[] buffer, ref size_t numFrames) {
-		pragma(msg, debugMsgPrefix, "TODO: Implement basic 3D effect");
+		//TODO: Need implementation
+		throw new NotImplementedException(fullyQualifiedName!(typeof(this)) ~ " not yet implemented!");
 	}
 }
 
 class Advanced3DEffect : AudioEffect {
 	void process(ref float[] buffer, ref size_t numFrames) {
-		pragma(msg, debugMsgPrefix, "TODO: Implement advanced (HRTF) 3D effect");
+		//TODO: Need implementation
+		throw new NotImplementedException(fullyQualifiedName!(typeof(this)) ~ " not yet implemented!");
 	}
 }
 
 class ReverbEffect : AudioEffect {
 	void process(ref float[] buffer, ref size_t numFrames) {
-		pragma(msg, debugMsgPrefix, "TODO: Implement reverb effect");
+		//TODO: Need implementation
+		throw new NotImplementedException(fullyQualifiedName!(typeof(this)) ~ " not yet implemented!");
 	}
 }
 
 class LowPassEffect : AudioEffect {
 	void process(ref float[] buffer, ref size_t numFrames) {
-		pragma(msg, debugMsgPrefix, "TODO: Implement low pass filter effect");
+		//TODO: Need implementation
+		throw new NotImplementedException(fullyQualifiedName!(typeof(this)) ~ " not yet implemented!");
 	}
 }
 
 class HighPassEffect : AudioEffect {
 	void process(ref float[] buffer, ref size_t numFrames) {
-		pragma(msg, debugMsgPrefix, "TODO: Implement high pass filter effect");
+		//TODO: Need implementation
+		throw new NotImplementedException(fullyQualifiedName!(typeof(this)) ~ " not yet implemented!");
 	}
 }
