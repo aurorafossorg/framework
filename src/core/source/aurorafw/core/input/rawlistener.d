@@ -55,7 +55,7 @@ pure @safe abstract class RawInputListener {
 }
 
 
-@safe
+@safe pure
 @("Input: raw listener")
 unittest {
 	class MyInputListener : RawInputListener {
