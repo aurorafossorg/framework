@@ -42,7 +42,7 @@ version(unittest) import aurorafw.unit.assertion;
 
 static class NotImplementedException : Exception
 {
-    mixin basicExceptionCtors;
+	mixin basicExceptionCtors;
 }
 
 @safe pure

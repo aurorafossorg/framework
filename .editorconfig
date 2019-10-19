@@ -47,9 +47,6 @@ indent_style = space
 indent_size = 2
 tab_width = 2
 
-[*.json]
-insert_final_newline = false
-
 [package-lock.json]
 indent_style = space
 indent_size = 2
