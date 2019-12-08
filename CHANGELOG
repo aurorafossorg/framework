@@ -9,3 +9,9 @@ v0.0.1-alpha.3
     - Add option handler
     - Add cli implementation
     - Improve input handler
+
+v0.0.1-alpha.4
+    - Improve unittesting framework
+    - Improve semantic version from core module
+    - Add more documentation and increase coverage
+    - Add Entity Component System (ECS) module
