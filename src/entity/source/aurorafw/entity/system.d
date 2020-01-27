@@ -44,9 +44,11 @@ version(unittest) import aurorafw.unit.assertion;
 abstract class System
 {
 	/**
-	 * Update policy
+	 * Update Policy
 	 *
-	 * Decides wether or not a system is updated manualy or automatically
+	 * Changes the way world handles system updates
+	 *     Automatic: it's called everytime on the word loop update
+	 *     Manual: the user decides when he wants the system to be updated
 	 */
 	enum UpdatePolicy
 	{
@@ -63,6 +65,42 @@ abstract class System
 
 
 	/**
+	 * Manager
+	 *
+	 * Returns the Entity Manager
+	 *
+	 * Examples:
+	 * --------------------
+	 * auto entityManager = this.manager;
+	 * --------------------
+	 */
+	@safe pure
+	public SystemManager manager()
+	{
+		return _manager;
+	}
+
+
+	/**
+	 * Manager
+	 *
+	 * Sets the Entity Manager for the current system
+	 * This function is used internaly only
+	 *
+	 * Examples:
+	 * --------------------
+	 * System foo = new System();
+	 * foo.manager = anEntityManager;
+	 * --------------------
+	 */
+	@safe pure
+	package SystemManager manager(SystemManager manager)
+	{
+		return _manager = manager;
+	}
+
+
+	/**
 	 * Update
 	 *
 	 * Use this method to update each system
@@ -75,10 +113,9 @@ abstract class System
 	 * }
 	 * --------------------
 	 */
-	@safe pure
 	public abstract void update();
 
 
 	public UpdatePolicy updatePolicy;
-	package SystemManager manager;
+	private SystemManager _manager;
 }

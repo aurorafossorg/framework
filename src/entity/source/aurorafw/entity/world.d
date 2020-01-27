@@ -57,26 +57,74 @@ final class World
 	}
 
 
+	/**
+	 * Entity
+	 *
+	 * Returns the Entity Manager
+	 *
+	 * Examples:
+	 * --------------------
+	 * EntityManger manager = world.entity;
+	 * --------------------
+	 */
 	@safe pure
 	public EntityManager entity() { return _entity; } @property
 
 
+	/**
+	 * Component
+	 *
+	 * Returns the Component Manager
+	 *
+	 * Examples:
+	 * --------------------
+	 * ComponentManager maneger = world.component;
+	 * --------------------
+	 */
 	@safe pure
 	public ComponentManager component() { return _component; } @property
 
 
+	/**
+	 * System
+	 *
+	 * Returns the System Manager
+	 *
+	 * Examples:
+	 * --------------------
+	 * SystemManager manager = world.system;
+	 * --------------------
+	 */
 	@safe pure
 	public SystemManager system() { return _system; } @property
 
 
-	@safe pure
+	/**
+	 * Update
+	 *
+	 * Updates every system with the UpdatePolicy set to Automatic
+	 *
+	 * Examples:
+	 * --------------------
+	 * world.update();
+	 * --------------------
+	 */
 	public void update()
 	{
 		_system.update;
 	}
 
 
-	@safe pure
+	/**
+	 * Update
+	 *
+	 * Updates a single system passed by the user
+	 *
+	 * Examples:
+	 * --------------------
+	 * world.update!fooSystem;
+	 * --------------------
+	 */
 	public void update(S : System)()
 	{
 		_system.update!S;
@@ -126,7 +174,6 @@ version(unittest)
 
 
 ///
-@safe pure
 @("World: System update")
 unittest
 {
@@ -149,7 +196,6 @@ unittest
 
 
 ///
-@safe pure
 @("World: Main loop")
 unittest
 {

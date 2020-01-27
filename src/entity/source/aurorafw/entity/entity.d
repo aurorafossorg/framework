@@ -157,6 +157,19 @@ class Entity : IEntity
 	}
 
 
+	/**
+	 * Modify
+	 *
+	 * Updates the data of a component
+	 *
+	 * Examples:
+	 * --------------------
+	 * e.moodify!Foo(ctor values...);
+	 * --------------------
+	 * e.add(new Foo(3));
+	 * e.modify!Foo(5);
+	 * --------------------
+	 */
 	@safe pure
 	public C modify(C : IComponent)(AliasSeq!(Fields!C) args)
 	{

@@ -75,8 +75,7 @@ class SystemManager
 	 *
 	 * SeeAlso: create(S : System)()
 	 */
-	@safe pure
-	public void create(S : System)(S s)
+	public void create(S : System)(S system)
 	{
 		enum id = fullyQualifiedName!S;
 
@@ -85,8 +84,8 @@ class SystemManager
 				"Cannot add system. " ~ __traits(identifier, S) ~ " is already created!"
 			);
 
-		s.manager = this;
-		this.systems[id] = s;
+		system.manager = this;
+		this.systems[id] = system;
 	}
 
 
@@ -98,7 +97,6 @@ class SystemManager
 	 * world.system.create!FooSystem;
 	 * --------------------
 	 */
-	@safe pure
 	public void create(S : System)()
 	{
 		create(new S());
@@ -136,7 +134,7 @@ class SystemManager
 	 * world.system.remove!FooSystem
 	 * --------------------
 	 */
-	@safe pure
+	@safe
 	public void remove(S : System)()
 	{
 		enum id = fullyQualifiedName!S;
@@ -179,7 +177,6 @@ class SystemManager
 	 * world.system.update();
 	 * --------------------
 	 */
-	@safe pure
 	public void update()
 	{
 		foreach(System s; this.systems)
@@ -199,13 +196,22 @@ class SystemManager
 	 * world.system.update!FooSystem;
 	 * --------------------
 	 */
-	@safe pure
 	public void update(S : System)()
 	{
 		this.systems[fullyQualifiedName!S].update();
 	}
 
 
+	/**
+	 * Entity
+	 *
+	 * Returns the entity manager
+	 *
+	 * Examples:
+	 * --------------------
+	 * auto entity = entity;
+	 * --------------------
+	 */
 	@safe pure
 	public EntityManager entity() { return _entity; } @property
 
@@ -219,6 +225,7 @@ version(unittest)
 {
 	private class unittest_FooSystem : System
 	{
+		@safe
 		override public void update() { this.updatePolicy = UpdatePolicy.Manual; }
 	}
 
@@ -227,6 +234,7 @@ version(unittest)
 		@safe pure
 		public this () { super(UpdatePolicy.Manual); }
 
+		@safe
 		override public void update() { this.updatePolicy = UpdatePolicy.Automatic; }
 	}
 }
@@ -265,7 +273,6 @@ unittest
 
 
 ///
-@safe pure
 @("System Manager: System update")
 unittest
 {
