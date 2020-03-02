@@ -2,6 +2,6 @@
 	"fileVersion": 1,
 	"versions": {
 		"riverd-loader": "1.0.2",
-		"riverd-ncurses": "1.0.4"
+		"riverd-ncurses": "1.0.5"
 	}
 }

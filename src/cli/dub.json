@@ -7,7 +7,7 @@
 	"dependencies": {
 		"aurorafw:core": {"path": "../core"},
 		"aurorafw:unit": {"path": "../unit"},
-		"riverd-ncurses": "~>1.0.4"
+		"riverd-ncurses": "~>1.0.5"
 	},
 	"subConfigurations": {
 		"riverd-ncurses": "static"
