@@ -37,7 +37,6 @@ directly send an email to: contact (at) aurorafoss.org .
 module aurorafw.entity.entity;
 
 import aurorafw.entity.icomponent;
-import aurorafw.entity.ientity;
 import aurorafw.entity.componentmanager;
 import aurorafw.entity.entitymanager;
 
@@ -54,7 +53,7 @@ class EntityComponentHandlingException : Exception
 }
 
 
-class Entity : IEntity
+class Entity
 {
 	@safe pure
 	public this(EntityManager manager, size_t id)
