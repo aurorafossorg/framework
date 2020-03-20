@@ -33,25 +33,39 @@
 
 language: d
 
+# More about OSX Environment here: https://docs.travis-ci.com/user/reference/osx
 os: osx
+
+# Test on different macOS versions
+osx_image:
+  - xcode11.3 # Latest macOS 10.14
+  - xcode10.3 # macOS 10.14.4
+  - xcode10.1 # Latest macOS 10.13
+  - xcode9.4 # Default, macOS 10.13
+  - xcode9.2 # Latest macOS 10.12
+# Not supported versions
+#  - xcode8 # Latest macOS 10.11
+#  - xcode6.4 # Latest macOS 10.10
 
 d:
   - dmd
   - ldc
-  - gdc
   - dmd-nightly
   - ldc-latest-ci
   - dmd-beta
   - ldc-beta
+# Not supported by macOS
+#  - gdc
 
 jobs:
   fast_finish: true
   allow_failures:
-  - d: gdc
   - d: dmd-nightly
   - d: ldc-latest-ci
   - d: dmd-beta
   - d: ldc-beta
+# Not supported by macOS
+#  - d: gdc
 
 before_script:
   - brew install libsndfile libsoundio
@@ -59,3 +73,4 @@ before_script:
 script:
   - ./tools/dub.sh build --compiler=${DC}
   - ./tools/dub.sh test --compiler=${DC}
+  - ./tools/do-examples.sh --compiler=${DC}
