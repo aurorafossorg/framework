@@ -35,6 +35,7 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.gui.api.x11.window;
 
+version(linux):
 import aurorafw.gui.window : Window;
 import X = aurorafw.gui.platform.x;
 

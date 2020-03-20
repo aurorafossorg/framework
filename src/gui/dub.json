@@ -11,21 +11,33 @@
 		"source/aurorafw/gui/api/x11/window.d",
 		"source/aurorafw/gui/api/x11/backend.d",
 		"source/aurorafw/gui/api/wayland/window.d",
-		"source/aurorafw/gui/api/wayland/backend.d"
+		"source/aurorafw/gui/api/wayland/backend.d",
+		"source/aurorafw/gui/platform/x.d"
 	],
 	"importPaths": [ "source" ],
-	"subConfigurations": {
-		"riverd-x11": "static",
-		"riverd-xcursor": "dynamic",
-		"riverd-xxf86vm": "dynamic"
-	},
 	"dependencies": {
 		"aurorafw:core": {"path": "../core"},
 		"aurorafw:stdx": {"path": "../stdx"},
 		"aurorafw:math": {"path": "../math"},
-		"aurorafw:unit": {"path": "../unit"},
-		"riverd-x11": "~>0.1.2",
-		"riverd-xxf86vm": "~>1.0.0",
-		"riverd-xcursor": "~>1.0.0"
-	}
+		"aurorafw:unit": {"path": "../unit"}
+	},
+	"configurations": [
+		{
+			"name": "default-linux",
+			"platforms": ["linux"],
+			"dependencies": {
+				"riverd-xxf86vm": "~>1.0.0",
+				"riverd-xcursor": "~>1.0.0",
+				"riverd-x11": "~>0.1.2"
+			},
+			"subConfigurations": {
+				"riverd-x11": "static",
+				"riverd-xcursor": "dynamic",
+				"riverd-xxf86vm": "dynamic"
+			}
+		},
+		{
+			"name": "fallback"
+		}
+	]
 }
