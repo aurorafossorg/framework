@@ -21,6 +21,7 @@
 	},
 	"dependencies": {
 		"aurorafw:core": {"path": "../core"},
+		"aurorafw:stdx": {"path": "../stdx"},
 		"aurorafw:math": {"path": "../math"},
 		"aurorafw:unit": {"path": "../unit"},
 		"riverd-x11": "~>0.1.2",
