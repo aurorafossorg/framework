@@ -12,8 +12,8 @@ metadata-pdf_tests
 #audio-cli_player
 
 for files in $PACKAGES; do
-	dub build :$files
-	dub test :$files
+	dub build :$files $@
+	dub test :$files $@
 done
 
 popd
