@@ -829,8 +829,19 @@ public static void assertEventually(bool delegate() probe,
 @("Assertation: assertEventually")
 unittest
 {
-	assertEventually({ static count = 0; return ++count > 23; });
+	// this should complete right after the first probe
+	assertEventually({ return true; });
 
+	assertEventually(
+		{ static count = 0; return ++count > 23; },
+		// make sure every slow/heavy-loaded computers/CI do this unittest
+		// e.g.: Travis-CI due to high number of parallel jobs, can't do it in
+		// time.
+		1000.msecs,
+		1.msecs
+	);
+
+	// this should never complete and eventually timeout.
 	auto exception = expectThrows!AssertException(assertEventually({ return false; }));
 
 	assertEquals("timed out", exception.msg);
