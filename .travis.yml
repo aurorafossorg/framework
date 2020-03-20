@@ -33,8 +33,6 @@
 
 language: d
 
-sudo: required
-
 os: osx
 
 d:
