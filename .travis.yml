@@ -35,12 +35,25 @@ language: d
 
 sudo: required
 
+os: osx
+
 d:
   - dmd
   - ldc
+  - gdc
+  - dmd-nightly
+  - ldc-latest-ci
+  - dmd-beta
+  - ldc-beta
 
-os:
-  - osx
+jobs:
+  fast_finish: true
+  allow_failures:
+  - d: gdc
+  - d: dmd-nightly
+  - d: ldc-latest-ci
+  - d: dmd-beta
+  - d: ldc-beta
 
 before_script:
   - brew install libsndfile libsoundio
