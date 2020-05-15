@@ -34,7 +34,7 @@
 image: aurorafossorg/archlinux:latest
 
 include:
-  - template: License-Management.gitlab-ci.yml
+  - template: License-Scanning.gitlab-ci.yml
 
 stages:
   - check
