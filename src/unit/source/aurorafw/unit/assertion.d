@@ -51,6 +51,9 @@ import std.string;
 import std.traits;
 import std.typecons;
 
+public import std.exception;
+public import core.exception;
+
 /**
  * Thrown on an assertion failure.
  */
