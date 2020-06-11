@@ -32,6 +32,10 @@ may be claimed as the property of others.
 
 For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
+
+This file has code provided on dlang forum and on bolts package check them out
+here: https://forum.dlang.org/post/gdipbdsoqdywuabnpzpe@forum.dlang.org and at
+code.dlang.org or even https://github.com/aliak00/bolts/ .
 */
 
 /++
@@ -99,9 +103,54 @@ private version(unittest)
 	// dfmt on
 }
 
-//TODO: add from
-// Reference: https://github.com/aliak00/bolts/blob/master/source/bolts/from.d
+public enum from = FromImpl!()();
 
+public template _from(string moduleName = null)
+{
+	enum _from = FromImpl!(moduleName)();
+}
+
+
+private struct FromImpl(string moduleName = null) {
+    template opDispatch(string symbolName) {
+        static if (ModuleContainsSymbol!(moduleName, symbolName)) {
+            mixin("import ", moduleName,";");
+            mixin("alias opDispatch = ", symbolName, ";");
+        } else {
+            static if (moduleName.length == 0) {
+                enum opDispatch = FromImpl!(symbolName)();
+            } else {
+                enum importString = moduleName ~ "." ~ symbolName;
+                static assert(
+                    CanImport!importString,
+                    "Symbol \"" ~ symbolName ~ "\" not found in " ~ moduleName
+                );
+                enum opDispatch = FromImpl!importString();
+            }
+        }
+    }
+}
+
+///
+@safe pure
+@("Object: from opDispatch sugar")
+unittest {
+	assertTrue(__traits(compiles, { _from!"std.math".abs(-1); }));
+	assertTrue(__traits(compiles, { _from!().std.math.abs(-1); }));
+	assertTrue(__traits(compiles, { from.std.math.abs(-1); }));
+	assertTrue(__traits(compiles, { _from!"std.math".abs(-1); }));
+	assertFalse(__traits(compiles, { from.std.math.thisFunctionDoesNotExist(42); }));
+	assertFalse(__traits(compiles, { _from!"std.math".thisFunctionDoesNotExist(42); }));
+
+	// check for static eval
+	static assert(__traits(compiles, { _from!"std.math".abs(-1); }));
+	static assert(__traits(compiles, { from.std.math.abs(-1); }));
+
+	// test if it actually imports the right symbol
+	assertEquals(1, from.std.math.abs(-1));
+}
+
+///
 @system
 @("Object: Type pattern matching")
 unittest
