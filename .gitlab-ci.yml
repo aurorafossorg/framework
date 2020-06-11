@@ -35,6 +35,15 @@ image: aurorafossorg/archlinux:latest
 
 include:
   - template: License-Scanning.gitlab-ci.yml
+  - template: Jobs/Code-Quality.gitlab-ci.yml
+  - template: Dependency-Scanning.gitlab-ci.yml
+  - project: 'aurorafossorg/core/ci-templates'
+    ref: master
+    file: 'dlang.yml'
+  - project: 'aurorafossorg/core/ci-templates'
+    ref: master
+    file: 'jobs/editorconfig.yml'
+
 
 stages:
   - check
@@ -43,30 +52,6 @@ stages:
   - production
   - deploy
 
-# Style checker
-codestyle:
-  stage: check
-  image: aurorafossorg/dlang:latest
-  script: dscanner -S .
-  allow_failure: true
-
-# Syntax check before compilation
-syntax_check:
-  stage: check
-  image: aurorafossorg/dlang:latest
-  script: dscanner -s .
-
-# Indentation check according to editorconfig file
-editorconfig:
-  stage: check
-  image: node:latest
-  cache:
-    paths:
-      - node_modules/
-  script:
-    - npm install eclint
-    - npx eclint check {,src/**/}{meson.build,*.{d,json,yml}}
-  allow_failure: true
 
 # Artifacts template
 .artifacts_template: &artifacts_definition
