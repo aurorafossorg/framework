@@ -1,6 +1,6 @@
 <p align="center"><img src="https://avatars1.githubusercontent.com/u/39140288?s=250&v=4"></p>
 
-# Aurora Framework [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c04bfc49c4f443659aee97498a9a9cf3)](https://www.codacy.com/app/aurorafossorg/framework) [![Code Coverage](https://codecov.io/gh/aurorafossorg/framework/branch/master/graph/badge.svg)](https://codecov.io/gh/aurorafossorg/framework)
+# Aurora Framework [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c04bfc49c4f443659aee97498a9a9cf3)](https://www.codacy.com/app/aurorafossorg/framework) [![Code Coverage](https://codecov.io/gl/aurorafossorg:p:framework/core/branch/master/graph/badge.svg)](https://codecov.io/gl/aurorafossorg:p:framework/core)
 
 ## About
 
@@ -41,7 +41,7 @@ GNU Lesser General Public License (Version 3, 29 June 2007)
 [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Open-source-hardware-logo.svg/512px-Open-source-hardware-logo.svg.png" alt="Open Source Hardware Association" width="120">](http://www.oshwa.org/ "Open Source Hardware Association")
 
 More details coming soon. **It's freedom, it's [opensource](https://opensource.org/)!**
-This document was written with [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/) 
+This document was written with [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/)
 and [Emoji](http://www.emoji-cheat-sheet.com/)
 
 ---
