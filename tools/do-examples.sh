@@ -5,7 +5,6 @@ set -e
 pushd examples
 
 PACKAGES="
-gui-simple_window
 metadata-detect_files
 metadata-pdf_tests
 "

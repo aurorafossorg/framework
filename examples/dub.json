@@ -7,14 +7,10 @@
 	],
 	"targetType": "none",
 	"dependencies": {
-		":gui-simple_window": "*",
-		":audio-cli_player": "*",
 		":metadata-pdf_tests": "*",
 		":metadata-detect_files": "*"
 	},
 	"subPackages": [
-		"gui-simple_window",
-		"audio-cli_player",
 		"metadata-pdf_tests",
 		"metadata-detect_files"
 	]

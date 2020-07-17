@@ -1,8 +1,0 @@
-{
-	"fileVersion": 1,
-	"versions": {
-		"riverd-loader": "1.0.2",
-		"riverd-sndfile": "1.0.1",
-		"riverd-soundio": "1.0.1"
-	}
-}
