@@ -79,11 +79,23 @@ void runTest(ref Test testCase, bool isVerbose)
 
 	auto writer = stdout.lockingTextWriter;
 
+	// windows cmd doesn't support unicode
+	version(Windows)
+	{
+		immutable successText = "success";
+		immutable failText = "fail";
+	}
+	else
+	{
+		immutable successText = "✓";
+		immutable failText = "✗";
+	}
+
 	writer.formattedWrite(" %s %s %s",
 		// status symbol
 		testCase.status
-			? Console.colour("✓", Colour.ok)		// Success
-			: Console.colour("✗", Colour.achtung),	// Error
+			? Console.colour(successText, Colour.ok)	// Success
+			: Console.colour(failText, Colour.fail),	// Error
 		// module name
 		Console.emphasis(Console.truncateName(testCase.test.fullName[0..testCase.test.fullName.lastIndexOf('.')], isVerbose)),
 		// test name

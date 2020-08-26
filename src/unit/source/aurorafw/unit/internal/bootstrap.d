@@ -136,7 +136,7 @@ shared static this() {
 		stdout.writefln("%s: %s passed, %s failed in %d ms",
 			Console.emphasis("Summary"),
 			Console.colour(passed, Colour.ok),
-			Console.colour(failed, failed ? Colour.achtung : Colour.none),
+			Console.colour(failed, failed ? Colour.fail : Colour.none),
 			(MonoTime.currTime - started).total!"msecs",
 		);
 

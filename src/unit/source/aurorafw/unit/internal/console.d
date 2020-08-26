@@ -45,7 +45,7 @@ __gshared bool noColours;
 enum Colour {
 	none,
 	ok = 32,
-	achtung = 31,
+	fail = 31,
 }
 
 static struct Console {
