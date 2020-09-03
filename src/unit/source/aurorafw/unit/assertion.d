@@ -96,6 +96,7 @@ class AssertAllException : AssertException
 }
 
 @safe pure
+@("Assertion: Assert Exceptions")
 unittest
 {
 	try {
@@ -123,6 +124,7 @@ unittest
 
 ///
 @safe pure
+@("Assertion: Throwable description")
 unittest
 {
 	assert(description(new Throwable("foobar"))
@@ -150,7 +152,9 @@ string description(string expected, string actual) @safe pure
 }
 
 ///
-@safe pure unittest
+@safe pure
+@("Assertion: diff description")
+unittest
 {
 	assert(description("ab", "Ab") == "expected: <<a>b> but was: <<A>b>");
 	assert(description("a\nb", "A\nb") == "expected:\n<a>\nb\nbut was:\n<A>\nb");
@@ -184,7 +188,9 @@ Tuple!(string, string) diff(string)(string lhs, string rhs)
 }
 
 ///
-@safe pure unittest
+@safe pure
+@("Assertion: diff highlighter")
+unittest
 {
 	assert(diff("abc", "abc") == tuple("abc", "abc"));
 	// highlight difference
@@ -216,7 +222,9 @@ void assertTrue(T)(T condition, lazy string msg = null,
 }
 
 ///
-@safe pure unittest
+@safe pure
+@("Assertion: assertTrue")
+unittest
 {
 	assertTrue(true);
 	assertTrue("foo" in ["foo": "bar"]);
@@ -242,7 +250,9 @@ void assertFalse(T)(T condition, lazy string msg = null,
 }
 
 ///
-@safe pure unittest
+@safe pure
+@("Assertion: assertFalse")
+unittest
 {
 	assertFalse(false);
 	assertFalse("foo" in ["bar": "foo"]);
@@ -272,7 +282,9 @@ void assertEquals(T, U)(T expected, U actual, lazy string msg = null,
 }
 
 ///
-@safe pure unittest
+@safe pure
+@("Assertion: assertEquals for strings")
+unittest
 {
 	assertEquals("foo", "foo");
 
@@ -304,6 +316,7 @@ void assertEquals(T, U)(T expected, U actual, lazy string msg = null,
 
 ///
 @safe /*pure*/
+@("Assertion: assertEquals for floating-points")
 unittest // format is impure for floating point values
 {
 	assertEquals(1, 1.01);
@@ -333,6 +346,7 @@ void assertEquals(T, U)(T expected, U actual, lazy string msg = null,
 
 ///
 @safe pure
+@("Assertion: generalized assertEquals")
 unittest
 {
 	assertEquals(42, 42);
@@ -344,7 +358,8 @@ unittest
 
 ///
 @system
-unittest  // Object.opEquals is impure
+@("Assertion: assertEquals with Object")
+unittest // Object.opEquals is impure
 {
 	Object foo = new Object();
 	Object bar = null;
@@ -448,6 +463,7 @@ void assertAssocArrayEquals(T, U, V)(in T[V] expected, in U[V] actual, lazy stri
 
 ///
 @system pure
+@("Assertion: Associative Arrays comparison")
 unittest  // keys, values, byKey, byValue not usable in @safe context
 {
 	int[string] expected = ["foo": 1, "bar": 2];
@@ -551,6 +567,7 @@ void assertEmpty(T)(T actual, lazy string msg = null,
 
 ///
 @safe pure
+@("Assertion: assertEmpty")
 unittest
 {
 	assertEmpty([]);
@@ -577,6 +594,7 @@ void assertNotEmpty(T)(T actual, lazy string msg = null,
 
 ///
 @safe pure
+@("Assertion: assertNotEmpty")
 unittest
 {
 	assertNotEmpty([1, 2, 3]);
@@ -603,6 +621,7 @@ void assertNull(T)(T actual, lazy string msg = null,
 
 ///
 @safe pure
+@("Assertion: assertNull")
 unittest
 {
 	Object foo = new Object();
@@ -631,6 +650,7 @@ void assertNotNull(T)(T actual, lazy string msg = null,
 
 ///
 @safe pure
+@("Assertion: assertNotNull")
 unittest
 {
 	Object foo = new Object();
@@ -661,7 +681,8 @@ void assertSame(T, U)(T expected, U actual, lazy string msg = null,
 
 ///
 @system
-unittest  // format is impure and not safe for Object
+@("Assertion: assertSame")
+unittest // format is impure and not safe for Object
 {
 	Object foo = new Object();
 	Object bar = new Object();
@@ -693,6 +714,7 @@ void assertNotSame(T, U)(T expected, U actual, lazy string msg = null,
 
 ///
 @safe pure
+@("Assertion: assertNotSame")
 unittest
 {
 	Object foo = new Object();
@@ -731,6 +753,7 @@ void assertAll(void delegate() @safe pure [] assertions ...)
 
 ///
 @safe pure
+@("Assertion: assertAll")
 unittest
 {
 	assertAll(
@@ -771,6 +794,7 @@ T expectThrows(T : Throwable = Exception, E)(lazy E expression, lazy string msg 
 
 ///
 @safe pure
+@("Assertion: expectThrows")
 unittest
 {
 	import std.exception : enforce;
@@ -782,6 +806,7 @@ unittest
 
 ///
 @safe pure
+@("Assertion: Specific exception expectThrows")
 unittest
 {
 	auto exception = expectThrows!AssertException(expectThrows(42));
@@ -803,6 +828,7 @@ void fail(string msg = null,
 
 ///
 @safe pure
+@("Assertion: fail function")
 unittest
 {
 	auto exception = expectThrows!AssertException(fail());
@@ -841,6 +867,7 @@ template assertOp(string op)
 
 ///
 @safe pure
+@("Assertion: assertOp's")
 unittest
 {
 	assertLessThan(2, 3);
@@ -852,6 +879,7 @@ unittest
 
 ///
 @safe pure
+@("Assertion: assertIn & assertNotIn")
 unittest
 {
 	assertIn("foo", ["foo": "bar"]);
