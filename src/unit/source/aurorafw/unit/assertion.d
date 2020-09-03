@@ -372,6 +372,45 @@ void assertArrayEquals(T, U)(in T[] expected, in U[] actual, lazy string msg = n
 }
 
 /**
+ * Asserts that the static arrays are equal.
+ * Throws: AssertException otherwise
+ */
+@safe pure
+void assertArrayEquals(T, U, size_t l1, size_t l2)(
+		auto ref const T[l1] expected, auto ref const U[l2] actual, lazy string msg = null,
+		string file = __FILE__,
+		size_t line = __LINE__)
+{
+	string header = (msg.empty) ? null : msg ~ "; ";
+
+	assertEquals(expected.length, actual.length,
+			header ~ "length mismatch",
+			file, line);
+
+	foreach(idx, val; expected)
+		assertEquals(val, actual[idx],
+			header ~ format("mismatch at index %s", idx),
+			file, line);
+}
+
+///
+@safe pure
+@("Assertion: Static arrays")
+unittest
+{
+	int[4] expected = [1,2,3,4];
+
+	assertArrayEquals(expected, [1,2,3,4]);
+
+	AssertException exception;
+
+	exception = expectThrows!AssertException(assertArrayEquals(expected, [1,2]));
+	assertEquals(`length mismatch; expected: <4> but was: <2>`, exception.msg);
+	exception = expectThrows!AssertException(assertArrayEquals(expected, [1,2,5,4]));
+	assertEquals(`mismatch at index 2; expected: <3> but was: <5>`, exception.msg);
+}
+
+/**
  * Asserts that the associative arrays are equal.
  * Throws: AssertException otherwise
  */
