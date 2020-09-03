@@ -498,6 +498,26 @@ void assertRangeEquals(R1, R2)(R1 expected, R2 actual, lazy string msg = null,
 
 ///
 @safe pure
+@("Assertion: Array comparison")
+unittest
+{
+	string expected = "atum";
+
+	assertArrayEquals(expected, "atum");
+
+	AssertException exception;
+
+	exception = expectThrows!AssertException(assertRangeEquals(expected, "atu"));
+	assertEquals("length mismatch at index 3; expected: <m> but was: empty", exception.msg);
+	exception = expectThrows!AssertException(assertRangeEquals(expected, "atumm"));
+	assertEquals("length mismatch at index 4; expected: empty but was: <m>", exception.msg);
+	exception = expectThrows!AssertException(assertArrayEquals(expected, "arum"));
+	assertEquals("mismatch at index 1; expected: <t> but was: <r>", exception.msg);
+}
+
+///
+@safe pure
+@("Assertion: Range comparison")
 unittest
 {
 	int[] expected = [0, 1];
@@ -510,8 +530,8 @@ unittest
 	assertEquals("length mismatch at index 1; expected: <1> but was: empty", exception.msg);
 	exception = expectThrows!AssertException(assertRangeEquals(expected, [0, 1, 2]));
 	assertEquals("length mismatch at index 2; expected: empty but was: <2>", exception.msg);
-	exception = expectThrows!AssertException(assertArrayEquals("bar", "baz"));
-	assertEquals("mismatch at index 2; expected: <r> but was: <z>", exception.msg);
+	exception = expectThrows!AssertException(assertArrayEquals(expected, [0, 2]));
+	assertEquals("mismatch at index 1; expected: <1> but was: <2>", exception.msg);
 }
 
 /**
