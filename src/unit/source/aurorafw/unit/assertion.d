@@ -921,6 +921,148 @@ unittest
 	assertEquals("timed out", exception.msg);
 }
 
+/**
+ * Asserts that the item exists inside the given array
+ * Throws: AssertException otherwise
+ */
+@safe pure
+void assertExistsInArray(T, U)(T haystack, U needle, lazy string msg = null,
+		string file = __FILE__,
+		size_t line = __LINE__)
+	if(isArray!T && is(typeof(haystack.front == needle || is(T == void[]))))
+{
+	string header = (msg.empty) ? null : msg ~ "; ";
+
+	if (haystack.empty)
+		fail(header ~ format("expected <%s> inside of the array but it was empty", needle),
+			file, line);
+
+	foreach(value; haystack)
+		if(value == needle) return;
+
+	fail(header ~ format("expected <%s> inside of the array but not found", needle),
+			file, line);
+}
+
+/// ditto
+@safe pure
+void assertExists(T)(in T[] haystack, T needle, lazy string msg = null,
+		string file = __FILE__,
+		size_t line = __LINE__)
+{
+	assertExistsInArray(haystack, needle, msg,
+		file, line);
+}
+
+/**
+ * Asserts that a item exists inside the given static array
+ * Throws: AssertException otherwise
+ */
+@safe pure
+void assertExists(T, size_t len)(auto ref const T[len] haystack, T needle, lazy string msg = null,
+		string file = __FILE__,
+		size_t line = __LINE__)
+{
+	assertExistsInArray(haystack, needle, msg,
+		file, line);
+}
+
+/**
+ * Asserts that a item exists inside a range.
+ * Throws: AssertException otherwise
+ */
+@safe pure
+void assertExists(R, T)(R haystack, T needle, lazy string msg = null,
+		string file = __FILE__,
+		size_t line = __LINE__)
+	if (isInputRange!R && is(typeof(haystack.front == needle)))
+{
+	string header = (msg.empty) ? null : msg ~ "; ";
+	size_t index = 0;
+
+	if (haystack.empty)
+		fail(header ~ format("expected <%s> inside of the range but it was empty", needle),
+			file, line);
+
+	for (; !haystack.empty; ++index, haystack.popFront)
+		if(haystack.front == needle) return;
+
+	fail(header ~ format("expected <%s> inside of the range but not found", needle),
+			file, line);
+}
+
+@safe pure
+@("Assertion: Needle exists in a haystack")
+unittest
+{
+	int[] haystack = [1,2,3,4,5];
+	int[5] staticHaystack = [1,2,3,4,5];
+
+	assertExists(haystack, 5);
+	assertExists(staticHaystack, 5);
+
+	AssertException exception;
+
+	exception = expectThrows!AssertException(assertExists(haystack, 6));
+	assertEquals(`expected <6> inside of the range but not found`, exception.msg);
+	exception = expectThrows!AssertException(assertExists(staticHaystack, 6));
+	assertEquals(`expected <6> inside of the array but not found`, exception.msg);
+
+	int[] emptyHaystack = [];
+	// assuming dynamic array assigned to null, so it uses the range implementation
+	exception = expectThrows!AssertException(assertExists(emptyHaystack, 5));
+	assertEquals(`expected <5> inside of the range but it was empty`, exception.msg);
+	// assumming array on void[] type (useful on mixins and templates)
+	exception = expectThrows!AssertException(assertExists([], 5));
+	assertEquals(`expected <5> inside of the array but it was empty`, exception.msg);
+}
+
+/**
+ * Asserts that the array contains the given slice
+ * Throws: AssertException otherwise
+ */
+@safe pure
+void assertContains(T)(T[] array, T[] slice, lazy string msg = null,
+		string file = __FILE__,
+		size_t line = __LINE__)
+{
+	string header = (msg.empty) ? null : msg ~ "; ";
+
+	if (array.length < slice.length)
+		fail(header ~ format("slice length <%d> should be less or equal than <%d>",
+				slice.length, array.length),
+			file, line);
+
+	if(canFind(array, slice)) return;
+
+	fail(header ~ format("expected array containing the slice <%s>, but not found", slice),
+			file, line);
+}
+
+@safe pure
+@("Assertion: Array contains a slice")
+unittest
+{
+	int[] array = [1,2,3,4,5];
+	int[5] staticArray = [1,2,3,4,5];
+	int[2] staticSlice = [4, 5];
+
+	assertContains(array, [4, 5]);
+	assertContains(staticArray, [4, 5]);
+	assertContains(staticArray, staticSlice);
+	assertContains([1,2,3,4,5], [4, 5]);
+
+	// testing with void[] arrays
+	assertContains([0], []);
+	expectThrows!AssertException(assertContains([], [0]));
+
+	AssertException exception;
+
+	exception = expectThrows!AssertException(assertContains(array, [1,4,5,5,1,7,0,1,2]));
+	assertEquals(`slice length <9> should be less or equal than <5>`, exception.msg);
+	exception = expectThrows!AssertException(assertContains(array, [0]));
+	assertEquals(`expected array containing the slice <[0]>, but not found`, exception.msg);
+}
 
 private string repr(T)(T value)
 {
