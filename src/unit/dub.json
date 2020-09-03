@@ -11,7 +11,7 @@
 		{
 			"name": "unittest",
 			"excludedSourceFiles": [
-				"source/aurorafw/unit/internal/*"
+				"source/aurorafw/unit/internal/bootstrap.d"
 			]
 		}
 	]
