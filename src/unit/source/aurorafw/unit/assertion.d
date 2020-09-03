@@ -436,6 +436,16 @@ void assertArrayEquals(T, U, V)(in T[V] expected, in U[V] actual, lazy string ms
 			file, line);
 }
 
+/// ditto
+void assertAssocArrayEquals(T, U, V)(in T[V] expected, in U[V] actual, lazy string msg = null,
+		string file = __FILE__,
+		size_t line = __LINE__)
+{
+	assertArrayEquals(expected, actual,
+		msg,
+		file, line);
+}
+
 ///
 @system pure
 unittest  // keys, values, byKey, byValue not usable in @safe context
@@ -443,12 +453,17 @@ unittest  // keys, values, byKey, byValue not usable in @safe context
 	int[string] expected = ["foo": 1, "bar": 2];
 
 	assertArrayEquals(expected, ["foo": 1, "bar": 2]);
+	assertAssocArrayEquals(expected, ["foo": 1, "bar": 2]);
 
 	AssertException exception;
 
 	exception = expectThrows!AssertException(assertArrayEquals(expected, ["foo": 2]));
 	assertEquals(`mismatch at key "foo"; expected: <1> but was: <2>`, exception.msg);
 	exception = expectThrows!AssertException(assertArrayEquals(expected, ["foo": 1]));
+	assertEquals(`key mismatch; difference: "bar"`, exception.msg);
+	exception = expectThrows!AssertException(assertAssocArrayEquals(expected, ["foo": 2]));
+	assertEquals(`mismatch at key "foo"; expected: <1> but was: <2>`, exception.msg);
+	exception = expectThrows!AssertException(assertAssocArrayEquals(expected, ["foo": 1]));
 	assertEquals(`key mismatch; difference: "bar"`, exception.msg);
 }
 
