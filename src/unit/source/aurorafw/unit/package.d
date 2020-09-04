@@ -6,8 +6,8 @@
 | (_| | |_| | | | (_) | | | (_| | | || (_) \__ \__ \
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
-Copyright (C) 2019 Aurora Free Open Source Software.
-Copyright (C) 2019 Luís Ferreira <luis@aurorafoss.org>
+Copyright (C) 2019-2020 Aurora Free Open Source Software.
+Copyright (C) 2019-2020 Luís Ferreira <luis@aurorafoss.org>
 
 This file is part of the Aurora Free Open Source Software. This
 organization promote free and open source software that you can
