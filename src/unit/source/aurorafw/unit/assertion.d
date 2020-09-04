@@ -487,7 +487,6 @@ unittest  // keys, values, byKey, byValue not usable in @safe context
  * Asserts that the ranges are equal.
  * Throws: AssertException otherwise
  */
-@safe pure
 void assertRangeEquals(R1, R2)(R1 expected, R2 actual, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -727,12 +726,23 @@ unittest
 	assertEquals("expected not same", exception.msg);
 }
 
+@system pure
+@("Assertion: unsafe assertNotSame")
+unittest
+{
+	int foobar = 1;
+	int* refFoobar = &foobar;
+
+	// use unsafe stuff on @safe function
+	assertNotSame(null, refFoobar);
+}
+
 /**
  * Asserts that all assertions pass.
  * Throws: AssertAllException otherwise
  */
-@safe pure
-void assertAll(void delegate() @safe pure [] assertions ...)
+void assertAll(T)(T[] assertions...)
+	if(isCallable!T)
 {
 	AssertException[] exceptions = null;
 
@@ -751,8 +761,20 @@ void assertAll(void delegate() @safe pure [] assertions ...)
 	}
 }
 
+/// ditto
+void assertAll(void delegate()[] assertions...)
+{
+	assertAll!(void delegate())(assertions);
+}
+
+/// ditto
+void assertAll(void function()[] assertions...)
+{
+	assertAll!(void function())(assertions);
+}
+
 ///
-@safe pure
+@system
 @("Assertion: assertAll")
 unittest
 {
@@ -769,13 +791,33 @@ unittest
 	assertTrue(exception.msg.canFind("2 assertion failures"), exception.msg);
 }
 
+///
+@safe
+@("Assertion: safe assertAll")
+unittest
+{
+	assertAll!(void delegate() @safe)(
+		assertTrue(true),
+		assertFalse(false),
+	);
+}
+
+///
+pure
+@("Assertion: pure assertAll")
+unittest
+{
+	assertAll!(void delegate() pure)(
+		assertTrue(true),
+		assertFalse(false),
+	);
+}
 
 /**
  * Asserts that the expression throws the specified throwable.
  * Throws: AssertException otherwise
  * Returns: the caught throwable
  */
-@safe pure
 T expectThrows(T : Throwable = Exception, E)(lazy E expression, lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
@@ -848,7 +890,6 @@ alias assertNotIn = assertOp!"!in";
  * Throws: AssertException otherwise
  * See_Also: http://d.puremagic.com/issues/show_bug.cgi?id=4653
  */
-@safe pure
 template assertOp(string op)
 {
 	void assertOp(T, U)(T lhs, U rhs, lazy string msg = null,
@@ -905,12 +946,12 @@ unittest
  *
  * Throws: AssertException when the probe fails to become true before timeout
  */
-@trusted
-public static void assertEventually(bool delegate() probe,
+void assertEventually(T)(T probe,
 		Duration timeout = 500.msecs, Duration delay = 10.msecs,
 		lazy string msg = null,
 		string file = __FILE__,
 		size_t line = __LINE__)
+	if(isCallable!T)
 {
 	const startTime = TickDuration.currSystemTick();
 
@@ -925,14 +966,36 @@ public static void assertEventually(bool delegate() probe,
 	}
 }
 
+/// ditto
+void assertEventually(bool delegate() probe,
+		Duration timeout = 500.msecs, Duration delay = 10.msecs,
+		lazy string msg = null,
+		string file = __FILE__,
+		size_t line = __LINE__)
+{
+	assertEventually!(bool delegate())(probe, timeout, delay, msg,
+		file, line);
+}
+
+/// ditto
+void assertEventually(bool function() probe,
+		Duration timeout = 500.msecs, Duration delay = 10.msecs,
+		lazy string msg = null,
+		string file = __FILE__,
+		size_t line = __LINE__)
+{
+	assertEventually!(bool function())(probe, timeout, delay, msg,
+		file, line);
+}
 
 ///
-@safe /* pure */
 @("Assertation: assertEventually")
 unittest
 {
 	// this should complete right after the first probe
 	assertEventually({ return true; });
+	// test using delegate implementation
+	assertEventually(delegate (){ return true; });
 
 	assertEventually(
 		{ static count = 0; return ++count > 23; },
@@ -1045,6 +1108,21 @@ unittest
 	assertEquals(`expected <5> inside of the array but it was empty`, exception.msg);
 }
 
+pure
+@("Assertion: unsafe assertExists")
+unittest
+{
+	int a;
+	int b = 2;
+	int c = -5;
+	void*[] unsafeHaystack = [&a, &b, null];
+
+	assertExists(unsafeHaystack, &b);
+	// test with void*[] and typeof(null)
+	assertExists(unsafeHaystack, null);
+	expectThrows!AssertException(assertExists(unsafeHaystack, &c));
+}
+
 /**
  * Asserts that the array contains the given slice
  * Throws: AssertException otherwise
@@ -1090,6 +1168,21 @@ unittest
 	assertEquals(`slice length <9> should be less or equal than <5>`, exception.msg);
 	exception = expectThrows!AssertException(assertContains(array, [0]));
 	assertEquals(`expected array containing the slice <[0]>, but not found`, exception.msg);
+}
+
+pure
+@("Assertion: unsafe assertContains")
+unittest
+{
+	int a;
+	int b = 2;
+	int c = -5;
+	void*[] unsafeHaystack = [&a, &b, null];
+
+	assertContains(unsafeHaystack, [&b, null]);
+	// test with void*[] and typeof(null)[]
+	assertContains(unsafeHaystack, [null]);
+	expectThrows!AssertException(assertContains(unsafeHaystack, [&c]));
 }
 
 private string repr(T)(T value)
