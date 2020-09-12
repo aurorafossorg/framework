@@ -40,16 +40,22 @@ More about silly: https://gitlab.com/AntonMeep/silly
 
 module aurorafw.unit.internal.console;
 
-__gshared bool noColours;
+package(aurorafw.unit):
+version(unittest):
 
-enum Colour {
-	none,
-	ok = 32,
-	fail = 31,
-}
+__gshared bool noColours;
 
 static struct Console {
 	import std.conv : text;
+
+	enum Colour : ushort {
+		None,
+		Red = 31,
+		Green = 32,
+		Cyan = 36,
+		DarkGray = 90,
+		LightRed = 91
+	}
 
 	static void init() {
 		if(noColours) {
@@ -76,7 +82,7 @@ static struct Console {
 		}
 	}
 
-	static string colour(T)(T t, Colour c = Colour.none)
+	static string colour(T)(T t, Colour c = Colour.None)
 	{
 		return noColours
 			? text(t)
