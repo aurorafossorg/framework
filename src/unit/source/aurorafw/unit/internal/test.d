@@ -49,6 +49,7 @@ struct Test {
 	struct Unit {
 		string fullName;
 		string testName;
+		Location location;
 
 		void function() testFunc;
 	}
@@ -63,6 +64,39 @@ struct Test {
 		immutable(string)[] info;
 	}
 
+	struct Location {
+		string file;
+		size_t line, column;
+	}
+
+	@safe pure
+	public static string getName(alias test)()
+	{
+		string name = __traits(identifier, test);
+		foreach(attribute; __traits(getAttributes, test))
+		{
+			if(is(typeof(attribute) : string))
+			{
+				name = attribute;
+				break;
+			}
+		}
+
+		return name;
+	}
+
+	@safe pure
+	public static Location getLocation(alias test)()
+	{
+		enum loc = __traits(getLocation, test);
+
+		static if(is(typeof(loc)))
+			return Location(loc);
+		else
+			return Location.init;
+	}
+
+
 	Unit test;
 	bool status;
 	Duration duration;
@@ -70,15 +104,50 @@ struct Test {
 	immutable(Thrown)[] thrown;
 }
 
-string getTestName(alias test)() {
-	string name = __traits(identifier, test);
+enum moduleHasUnittest(alias module_, alias member) =
+	__traits(compiles, __traits(parent, __traits(getMember, module_, member))) &&
+	__traits(isSame, __traits(parent, __traits(getMember, module_, member)), module_) &&
+	__traits(compiles, __traits(getUnitTests, __traits(getMember, module_, member)));
 
-	foreach(attribute; __traits(getAttributes, test)) {
-		static if(is(typeof(attribute) : string)) {
-			name = attribute;
-			break;
-		}
+Test[] getTestsFromModule(alias m)()
+{
+	Test[] tests;
+	import std.traits : fullyQualifiedName, isAggregateType;
+	static if(__traits(compiles, __traits(getUnitTests, m)) &&
+			!(__traits(isTemplate, m) || (__traits(compiles, isAggregateType!m) && isAggregateType!m))) {
+		alias module_ = m;
+	} else {
+		import std.meta : Alias;
+		// For cases when module contains member of the same name
+		alias module_ = Alias!(__traits(parent, m));
 	}
 
-	return name;
+	foreach(test; __traits(getUnitTests, module_))
+		tests ~= Test(Test.Unit(fullyQualifiedName!test, Test.getName!test, Test.getLocation!test, &test));
+
+	// Unittests in structs and classes
+	foreach(member; __traits(derivedMembers, module_))
+		static if(moduleHasUnittest!(module_, member))
+			foreach(test; __traits(getUnitTests, __traits(getMember, module_, member)))
+				tests ~= Test(Test.Unit(fullyQualifiedName!test, Test.getName!test, Test.getLocation!test, &test));
+	return tests;
+}
+
+Test[] getTests()()
+{
+	Test[] tests;
+	static if(__traits(compiles, () {static import dub_test_root;})) {
+		static import dub_test_root;
+
+		foreach(m; dub_test_root.allModules)
+		{
+			tests ~= getTestsFromModule!m;
+		}
+	} else {
+		foreach(m; ModuleInfo)
+			if(m && m.unitTest)
+				tests ~= Test(Test.Unit(m.name, null, m.unitTest));
+	}
+
+	return tests;
 }

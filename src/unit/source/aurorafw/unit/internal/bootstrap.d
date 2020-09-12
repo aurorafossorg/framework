@@ -57,44 +57,6 @@ import aurorafw.unit.internal.test;
 import aurorafw.unit.internal.runner;
 import aurorafw.unit.internal.console;
 
-private Test[] getTests()()
-{
-	Test[] tests;
-	static if(__traits(compiles, () {static import dub_test_root;})) {
-		static import dub_test_root;
-
-		foreach(m; dub_test_root.allModules)
-		{
-			import std.traits : fullyQualifiedName, isAggregateType;
-			static if(__traits(compiles, __traits(getUnitTests, m)) &&
-					!(__traits(isTemplate, m) || (__traits(compiles, isAggregateType!m) && isAggregateType!m))) {
-				alias module_ = m;
-			} else {
-				import std.meta : Alias;
-				// For cases when module contains member of the same name
-				alias module_ = Alias!(__traits(parent, m));
-			}
-
-			foreach(test; __traits(getUnitTests, module_))
-				tests ~= Test(Test.Unit(fullyQualifiedName!test, getTestName!test, &test));
-
-			// Unittests in structs and classes
-			foreach(member; __traits(derivedMembers, module_))
-				static if(__traits(compiles, __traits(parent, __traits(getMember, module_, member))) &&
-					__traits(isSame, __traits(parent, __traits(getMember, module_, member)), module_) &&
-					__traits(compiles, __traits(getUnitTests, __traits(getMember, module_, member))))
-						foreach(test; __traits(getUnitTests, __traits(getMember, module_, member)))
-							tests ~= Test(Test.Unit(fullyQualifiedName!test, getTestName!test, &test));
-		}
-	} else {
-		foreach(m; ModuleInfo)
-			if(m && m.unitTest)
-				tests ~= Test(Test.Unit(m.name, null, m.unitTest));
-	}
-
-	return tests;
-}
-
 shared static this() {
 	Runtime.extendedModuleUnitTester = () {
 		bool isVerbose;

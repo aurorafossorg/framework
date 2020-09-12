@@ -91,7 +91,17 @@ void runTest(ref Test testCase, bool isVerbose)
 	);
 
 	if(isVerbose)
+	{
 		writer.formattedWrite(" (%.3f ms)", (cast(real) testCase.duration.total!"usecs") / 10.0f ^^ 3);
+
+		if(testCase.test.location != Test.Location.init) {
+			writer.formattedWrite(" [%s:%d:%d]",
+				testCase.test.location.file,
+				testCase.test.location.line,
+				testCase.test.location.column);
+		}
+	}
+
 
 	writer.put(newline);
 	foreach(th; testCase.thrown) {
