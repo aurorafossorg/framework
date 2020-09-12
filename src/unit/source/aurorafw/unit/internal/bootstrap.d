@@ -133,11 +133,11 @@ shared static this() {
 		}
 
 		stdout.writeln;
-		stdout.writefln("%s: %s passed, %s failed in %d ms",
+		stdout.writefln("%s: %s passed, %s failed in " ~ Console.colour("%.3f ms", Console.Colour.Cyan),
 			Console.emphasis("Summary"),
-			Console.colour(passed, Colour.ok),
-			Console.colour(failed, failed ? Colour.fail : Colour.none),
-			(MonoTime.currTime - started).total!"msecs",
+			Console.colour(passed, Console.Colour.Green),
+			Console.colour(failed, failed ? Console.Colour.Red : Console.Colour.None),
+			(MonoTime.currTime - started).total!"usecs"  / 10.0f ^^ 3,
 		);
 
 		return UnitTestResult(passed + failed, passed, false, false);
