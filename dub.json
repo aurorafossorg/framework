@@ -6,7 +6,8 @@
 	"authors": [
 		"Luís Ferreira",
 		"Filipe Laíns",
-		"Ricardo Subtil"
+		"Ricardo Subtil",
+		"João Lourenço"
 	],
 	"targetType": "library",
 	"targetPath": ".out/bin",
@@ -14,22 +15,24 @@
 	"sourcePaths": [ "src/source" ],
 	"importPaths": [ "src/source" ],
 	"dependencies": {
-		":math": "*",
-		":core": "*",
 		":cli": "*",
+		":core": "*",
+		":entity": "*",
+		":event": "*",
+		":math": "*",
 		":metadata": "*",
 		":stdx": "*",
-		":unit": "*",
-		":entity": "*"
+		":unit": "*"
 	},
 	"subPackages": [
-		"src/core",
 		"src/cli",
+		"src/core",
+		"src/entity",
+		"src/event",
 		"src/math",
 		"src/metadata",
 		"src/stdx",
-		"src/unit",
-		"src/entity"
+		"src/unit"
 	],
 	"configurations": [
 		{

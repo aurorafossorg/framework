@@ -1,0 +1,10 @@
+{
+	"name": "event",
+	"targetType": "library",
+	"targetPath": "../../.out/bin",
+	"sourcePaths": ["source"],
+	"importPaths": ["source"],
+	"dependencies": {
+		"aurorafw:unit": {"path": "../unit"}
+	}
+}
