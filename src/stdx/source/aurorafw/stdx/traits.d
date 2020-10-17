@@ -54,8 +54,7 @@ public import std.traits;
 import std.format;
 import std.meta;
 
-version(unittest) import aurorafw.unit.assertion;
-
+version (unittest) import aurorafw.unit.assertion;
 
 /**
  * Detect version identifiers
@@ -67,7 +66,7 @@ version(unittest) import aurorafw.unit.assertion;
  * --------------------
  * static if(isVersion!"unittest")
  * {
-*      // code with version unittest ...
+ *      // code with version unittest ...
  * }
  * --------------------
  */
@@ -82,12 +81,10 @@ template isVersion(string ver) {
 	}, ver));
 }
 
-
 ///
 @safe pure
 @("Traits: isVersion")
-unittest
-{
+unittest {
 	assertTrue(isVersion!"unittest");
 	assertFalse(isVersion!"this_shouldnt_be_a_version_identifier");
 }
@@ -109,22 +106,27 @@ template MatchReturnType(funcs...) if (allSatisfy!(isSomeFunction, funcs)) {
 ///
 @safe pure
 @("Traits: MatchReturnType")
-unittest
-{
-	alias TL_1 = MatchReturnType!(void delegate(), void function(), void function(string foo));
+unittest {
+	alias TL_1 = MatchReturnType!(void delegate(), void function(), void function(
+			string foo));
 	assertTrue(is(TL_1 == void));
 	assertFalse(is(TL_1 == string));
 
-	alias TL_2 = MatchReturnType!(string delegate(), string function(), string function(int foo), () => null);
+	alias TL_2 = MatchReturnType!(string delegate(), string function(), string function(
+			int foo), () => null);
 	assertTrue(is(TL_2 == string));
-	assertTrue(is(MatchReturnType!(()=> "atum") == string));
+	assertTrue(is(MatchReturnType!(() => "atum") == string));
 }
 
-version(unittest)
-{
-	private interface IUnittestTestClass {}
-	private class UnittestTestClass {}
-	private struct UnittestTestStruct {}
+version (unittest) {
+	private interface IUnittestTestClass {
+	}
+
+	private class UnittestTestClass {
+	}
+
+	private struct UnittestTestStruct {
+	}
 }
 
 /**
@@ -141,16 +143,17 @@ template isNullType(alias T) {
 @("Traits: isNullType")
 unittest {
 	int a;
-    int *b = null;
-    UnittestTestStruct c;
-    void f() {}
+	int* b = null;
+	UnittestTestStruct c;
+	void f() {
+	}
 
-    assertTrue(isNullType!null);
+	assertTrue(isNullType!null);
 
-    assertFalse(isNullType!a);
-    assertFalse(isNullType!b);
-    assertFalse(isNullType!c);
-    assertFalse(isNullType!f);
+	assertFalse(isNullType!a);
+	assertFalse(isNullType!b);
+	assertFalse(isNullType!c);
+	assertFalse(isNullType!f);
 }
 
 /**
@@ -170,21 +173,26 @@ template isNullTestable(alias T) {
 @safe pure
 @("Traits: isNullTestable")
 unittest {
-	class Class1 {}
-    struct Struct1 {
-        void opAssign(int*) {}
-    }
-    assertFalse(isNullTestable!Struct1);
-    assertTrue(isNullTestable!Class1);
-    assertTrue(isNullTestable!(int*));
+	class Class1 {
+	}
 
-    assertFalse(isNullTestable!UnittestTestStruct);
-    assertFalse(isNullTestable!int);
+	struct Struct1 {
+		void opAssign(int*) {
+		}
+	}
 
-    class Class2 {
-        @disable this();
-    }
-    assertTrue(isNullTestable!Class2);
+	assertFalse(isNullTestable!Struct1);
+	assertTrue(isNullTestable!Class1);
+	assertTrue(isNullTestable!(int*));
+
+	assertFalse(isNullTestable!UnittestTestStruct);
+	assertFalse(isNullTestable!int);
+
+	class Class2 {
+		@disable this();
+	}
+
+	assertTrue(isNullTestable!Class2);
 }
 
 /**
@@ -199,8 +207,7 @@ template isNullSettable(alias T) {
 ///
 @safe pure
 @("Traits: isNullSettable")
-unittest
-{
+unittest {
 	assertTrue(isNullSettable!IUnittestTestClass);
 	assertTrue(isNullSettable!UnittestTestClass);
 	assertTrue(isNullSettable!(int[]));
@@ -218,39 +225,46 @@ unittest
 	assertFalse(isNullSettable!UnittestTestStruct);
 
 	struct Struct1 {
-        void opAssign(int*) {}
-    }
-    assertTrue(isNullSettable!Struct1);
+		void opAssign(int*) {
+		}
+	}
+
+	assertTrue(isNullSettable!Struct1);
 
 	struct Struct3 {
-        @disable this();
-        void opAssign(int*) {}
-    }
-    assertTrue(isNullSettable!Struct3);
+		@disable this();
+		void opAssign(int*) {
+		}
+	}
+
+	assertTrue(isNullSettable!Struct3);
 }
 
+/**
+ * Get's an AliasSeq of types from the given arguments
+ */
 template TypesOf(Symbols...) {
-    import std.meta: AliasSeq;
-    static if (Symbols.length) {
-        static if (isFunction!(Symbols[0]) && is(typeof(&Symbols[0]) F)) {
-            alias T = F;
-        } else static if (is(typeof(Symbols[0]))) {
-            alias T = typeof(Symbols[0]);
-        } else {
-            alias T = Symbols[0];
-        }
-        alias TypesOf = AliasSeq!(T, TypesOf!(Symbols[1..$]));
-    } else {
-        alias TypesOf = AliasSeq!();
-    }
-}
+	import std.meta : AliasSeq;
 
+	static if (Symbols.length) {
+		static if (isFunction!(Symbols[0]) && is(typeof(&Symbols[0]) F)) {
+			alias T = F;
+		} else static if (is(typeof(Symbols[0]))) {
+			alias T = typeof(Symbols[0]);
+		} else {
+			alias T = Symbols[0];
+		}
+		alias TypesOf = AliasSeq!(T, TypesOf!(Symbols[1 .. $]));
+	} else {
+		alias TypesOf = AliasSeq!();
+	}
+}
 
 ///
 @safe pure
 @("Traits: TypesOf")
 unittest {
-    assertTrue(is(TypesOf!("foo", 42U, 24, 123.0, float) == AliasSeq!(string, uint, int, double, float)));
+	assertTrue(is(TypesOf!("foo", 42U, 24, 123.0, float) == AliasSeq!(string, uint, int, double, float)));
 	assertTrue(is(TypesOf!(null) == AliasSeq!(typeof(null))));
 	assertTrue(is(TypesOf!("foobar") == AliasSeq!(string)));
 
@@ -258,17 +272,20 @@ unittest {
 	static assert(is(TypesOf!("foobar") == AliasSeq!(string)));
 }
 
-
+/**
+ * Trait to verify if a module can be imported
+ *
+ * Params:
+ *   moduleName = module to validate import
+ */
 template CanImport(string moduleName) {
-    enum CanImport = __traits(compiles, { mixin("import ", moduleName, ";"); });
+	enum CanImport = __traits(compiles, { mixin("import " ~ moduleName ~ ";"); });
 }
-
 
 ///
 @safe pure
 @("Traits: CanImport")
-unittest
-{
+unittest {
 	assertTrue(CanImport!"std.stdio");
 	// check for static eval
 	static assert(CanImport!"std.stdio");
@@ -276,18 +293,23 @@ unittest
 	assertFalse(CanImport!"this.module.doesnt.exists.dont.create.it");
 }
 
+/**
+ * Check if module contains a symbol
+ *
+ * Params:
+ *   moduleName = module to be imported
+ *   symbolName = symbol to be checked
+ */
 template ModuleContainsSymbol(string moduleName, string symbolName) {
-    enum ModuleContainsSymbol = CanImport!moduleName && __traits(compiles, {
-        mixin("import ", moduleName, ":", symbolName, ";");
-    });
+	enum ModuleContainsSymbol = CanImport!moduleName && __traits(compiles, {
+			mixin("import " ~ moduleName ~ ":" ~ symbolName ~ ";");
+		});
 }
-
 
 ///
 @safe pure
 @("Traits: ModuleContainsSymbol")
-unittest
-{
+unittest {
 	assertTrue(ModuleContainsSymbol!("std.stdio", "writeln"));
 	assertFalse(ModuleContainsSymbol!("std.stdio", "thissymboldoesntactuallyexist"));
 
@@ -295,106 +317,128 @@ unittest
 	static assert(ModuleContainsSymbol!("std.stdio", "writeln"));
 }
 
-
+/**
+ * Checks if a certain literal or function return type is equal.
+ * Basically the same as is(... == ...) but resolves the function
+ * return type.
+ */
 template isOf(ab...) if (ab.length == 2) {
-    alias Ts = TypesOf!ab;
-    template resolve(T) {
-        import std.traits: isCallable, ReturnType;
-        static if (isCallable!T) {
-            alias resolve = ReturnType!T;
-        } else {
-            alias resolve = T;
-        }
-    }
+	alias Ts = TypesOf!ab;
+	template resolve(T) {
+		import std.traits : isCallable, ReturnType;
 
-    enum isOf = is(resolve!(Ts[0]) == resolve!(Ts[1]));
+		static if (isCallable!T) {
+			alias resolve = ReturnType!T;
+		} else {
+			alias resolve = T;
+		}
+	}
+
+	enum isOf = is(resolve!(Ts[0]) == resolve!(Ts[1]));
 }
 
 ///
 @safe pure
 @("Traits: isOf")
 unittest {
-    assertTrue(isOf!(int, 3));
-    assertTrue(isOf!(7, 3));
-    assertTrue(isOf!(3, int));
-    assertFalse(isOf!(float, 3));
-    assertFalse(isOf!(float, string));
-    assertFalse(isOf!(string, 3));
+	assertTrue(isOf!(int, 3));
+	assertTrue(isOf!(7, 3));
+	assertTrue(isOf!(3, int));
+	assertFalse(isOf!(float, 3));
+	assertFalse(isOf!(float, string));
+	assertFalse(isOf!(string, 3));
 
-    string foobar() { return ""; }
-    assertTrue(isOf!(string, foobar));
+	string foobar() {
+		return "";
+	}
+
+	assertTrue(isOf!(string, foobar));
+	// cover foobar()
+	assertEquals("", foobar());
 
 	// check static eval
 	static assert(isOf!(string, foobar));
 }
 
+/**
+ * Checks if two symbols are the same in compile-time
+ *
+ * Params:
+ *   lhs = left-hand symbol to compare
+ *   rhs = right-hand symbol to compare
+ */
+template isSame(alias lhs, alias rhs) {
 
-template isSame(symbols...) if (symbols.length == 2) {
+	// this should test if the type is bool easily with
+	// compiles trait
+	private static template expectBool(bool b) {
+	}
 
-    private static template expectType(T) {}
-    private static template expectBool(bool b) {}
+	// check if its a type or a value
+	static if (!__traits(compiles, typeof(lhs)) && !__traits(compiles, typeof(rhs))) {
+		enum isSame = is(lhs == rhs);
+		// check if its comparable
+	} else static if (__traits(compiles, typeof(lhs))
+			&& __traits(compiles, typeof(rhs))
+			&& __traits(compiles, expectBool!(lhs == rhs))
+		) {
+		// check if its a rvalue
+		static if (!__traits(compiles, &lhs) || !__traits(compiles, &rhs))
 
-    static if (__traits(compiles, expectType!(symbols[0]), expectType!(symbols[1]))) {
-        enum isSame = is(symbols[0] == symbols[1]);
-    } else static if (!__traits(compiles, expectType!(symbols[0]))
-        && !__traits(compiles, expectType!(symbols[1]))
-        && __traits(compiles, expectBool!(symbols[0] == symbols[1]))
-    ) {
-        static if (!__traits(compiles, &symbols[0]) || !__traits(compiles, &symbols[1]))
-            enum isSame = (symbols[0] == symbols[1]);
-        else
-            enum isSame = __traits(isSame, symbols[0], symbols[1]);
-    } else {
-        enum isSame = __traits(isSame, symbols[0], symbols[1]);
-    }
+			enum isSame = (lhs == rhs);
+		else // literal comparable
+			enum isSame = __traits(isSame, lhs, rhs);
+	} else {
+		// if none of this, fallback to isSame trait
+		enum isSame = __traits(isSame, lhs, rhs);
+	}
 }
-
 
 ///
 @safe pure
 @("Traits: isSame")
 unittest {
-    assertTrue(isSame!(int, int));
-    assertFalse(isSame!(int, short));
+	assertTrue(isSame!(int, int));
+	assertFalse(isSame!(int, short));
 
-    enum a = 1, b = 1, c = 2, s = "a", t = "a";
-    assertTrue(isSame!(1, 1));
-    assertTrue(isSame!(a, 1));
-    assertTrue(isSame!(a, b));
-    assertFalse(isSame!(b, c));
-    assertTrue(isSame!("a", "a"));
-    assertTrue(isSame!(s, "a"));
-    assertTrue(isSame!(s, t));
-    assertFalse(isSame!(s, "g"));
-    assertFalse(isSame!(1, "1"));
-    assertFalse(isSame!(a, "a"));
-    assertTrue(isSame!(isSame, isSame));
-    assertFalse(isSame!(isSame, a));
+	enum a = 1, b = 1, c = 2, s = "a", t = "a";
+	assertTrue(isSame!(1, 1));
+	assertTrue(isSame!(a, 1));
+	assertTrue(isSame!(a, b));
+	assertFalse(isSame!(b, c));
+	assertTrue(isSame!("a", "a"));
+	assertTrue(isSame!(s, "a"));
+	assertTrue(isSame!(s, t));
+	assertFalse(isSame!(s, "g"));
+	assertFalse(isSame!(1, "1"));
+	assertFalse(isSame!(a, "a"));
+	assertTrue(isSame!(isSame, isSame));
+	assertFalse(isSame!(isSame, a));
 
-    assertFalse(isSame!(byte, a));
-    assertFalse(isSame!(short, isSame));
-    assertFalse(isSame!(a, int));
-    assertFalse(isSame!(long, isSame));
+	assertFalse(isSame!(byte, a));
+	assertFalse(isSame!(short, isSame));
+	assertFalse(isSame!(a, int));
+	assertFalse(isSame!(long, isSame));
 
-    static immutable X = 1, Y = 1, Z = 2;
-    assertTrue(isSame!(X, X));
-    assertFalse(isSame!(X, Y));
-    assertFalse(isSame!(Y, Z));
+	static immutable X = 1, Y = 1, Z = 2;
+	assertTrue(isSame!(X, X));
+	assertFalse(isSame!(X, Y));
+	assertFalse(isSame!(Y, Z));
 
-    int foo();
-    int bar();
-    real baz(int);
-    assertTrue(isSame!(foo, foo));
-    assertFalse(isSame!(foo, bar));
-    assertFalse(isSame!(bar, baz));
-    assertTrue(isSame!(baz, baz));
-    assertFalse(isSame!(foo, 0));
+	int foo();
+	int bar();
+	real baz(int);
+	assertTrue(isSame!(foo, foo));
+	assertFalse(isSame!(foo, bar));
+	assertFalse(isSame!(bar, baz));
+	assertTrue(isSame!(baz, baz));
+	assertFalse(isSame!(foo, 0));
 
-    int x, y;
-    real z;
-    assertTrue(isSame!(x, x));
-    assertFalse(isSame!(x, y));
-    assertFalse(isSame!(y, z));
-    assertTrue(isSame!(z, z));
-    assertFalse(isSame!(x, 0));
+	int x, y;
+	real z;
+	assertTrue(isSame!(x, x));
+	assertFalse(isSame!(x, y));
+	assertFalse(isSame!(y, z));
+	assertTrue(isSame!(z, z));
+	assertFalse(isSame!(x, 0));
 }
