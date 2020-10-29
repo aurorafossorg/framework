@@ -36,8 +36,8 @@ directly send an email to: contact (at) aurorafoss.org .
 module aurorafw.core.input;
 
 public:
-	import aurorafw.core.input.keys;
-	import aurorafw.core.input.manager;
-	import aurorafw.core.input.rawlistener;
-	import aurorafw.core.input.state;
-	import aurorafw.core.input.events;
+import aurorafw.core.input.keys;
+import aurorafw.core.input.manager;
+import aurorafw.core.input.rawlistener;
+import aurorafw.core.input.state;
+import aurorafw.core.input.events;

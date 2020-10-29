@@ -17,7 +17,8 @@ class StreamException : Exception
 	mixin basicExceptionCtors;
 }
 
-interface IStream {
+interface IStream
+{
 	/**
 	 * A property that returns the length of the stream
 	 *
@@ -90,7 +91,6 @@ interface IStream {
 	 */
 	void write(in ubyte[] b);
 
-
 	/**
 	 * Readable
 	 *
@@ -123,7 +123,7 @@ interface IStream {
 	ubyte[] data();
 }
 
-version(unittest)
+version (unittest)
 {
 	// assuming the content of the stream is "abc"
 	// and the function leave the stream at the beginning
@@ -161,7 +161,7 @@ version(unittest)
 		s.seek(0, Seek.END);
 		s.write(arr);
 		s.write('6');
-		if(s.readable)
+		if (s.readable)
 		{
 			s.seek(-3, Seek.END);
 			assertEquals(arr ~ '6', s.data);

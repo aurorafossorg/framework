@@ -37,7 +37,8 @@ module aurorafw.core.input.keys;
 
 /// TODO: Need documentation
 
-enum Keycode : short {
+enum Keycode : short
+{
 	Unknown = -1,
 	Space = 32,
 	Apostrophe = 39,
@@ -162,7 +163,8 @@ enum Keycode : short {
 	Last = Menu
 }
 
-enum InputButton : ubyte {
+enum InputButton : ubyte
+{
 	B1,
 	B2,
 	B3,
@@ -177,7 +179,8 @@ enum InputButton : ubyte {
 	Middle = B3
 }
 
-enum InputModifier : ubyte {
+enum InputModifier : ubyte
+{
 	None = 0,
 	Shift = 1 << 0,
 	Control = 1 << 1,

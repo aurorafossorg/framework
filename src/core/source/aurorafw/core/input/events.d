@@ -37,7 +37,6 @@ module aurorafw.core.input.events;
 
 import aurorafw.core.input.keys;
 
-
 /**
  * Keyboard Event
  *
@@ -49,11 +48,11 @@ import aurorafw.core.input.keys;
  * auto ke = KeyboardEvent(Keycode.A, InputModifier.Control | InputModifier.Alt);
  * --------------------
  */
-struct KeyboardEvent {
+struct KeyboardEvent
+{
 	Keycode key;
 	InputModifier mods;
 }
-
 
 /**
  * Mouse Button Event
@@ -66,11 +65,11 @@ struct KeyboardEvent {
  * auto mbe = MouseButtonEvent(InputButton.B1, InputModifier.None);
  * --------------------
  */
-struct MouseButtonEvent {
+struct MouseButtonEvent
+{
 	InputButton btn;
 	InputModifier mods;
 }
-
 
 /**
  * Mouse Motion Event
@@ -83,10 +82,10 @@ struct MouseButtonEvent {
  * auto mme = MouseMotionEvent(0.5, -0.4);
  * --------------------
  */
-struct MouseMotionEvent {
+struct MouseMotionEvent
+{
 	double xpos, ypos;
 }
-
 
 /**
  * Mouse Scroll Event
@@ -99,10 +98,10 @@ struct MouseMotionEvent {
  * auto mse = MouseScrollEvent(-1.0, 0);
  * --------------------
  */
-struct MouseScrollEvent {
+struct MouseScrollEvent
+{
 	double xoffset, yoffset;
 }
-
 
 /**
  * Touch Finger Event
@@ -116,7 +115,8 @@ struct MouseScrollEvent {
  * auto tfe = TouchFingerEvent(1.0f, 1.0f, 0.5f, 0.4f, 1);
  * --------------------
  */
-struct TouchFingerEvent {
+struct TouchFingerEvent
+{
 	float dx, dy;
 	float x, y;
 	ubyte fingerID;

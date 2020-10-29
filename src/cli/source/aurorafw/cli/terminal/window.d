@@ -5,85 +5,81 @@ import std.string : fromStringz, toStringz;
 
 import riverd.ncurses;
 
-version(unittest) import aurorafw.unit.assertion;
-
+version (unittest) import aurorafw.unit.assertion;
 
 struct Window
 {
 	this(
-		int _xOrigin,
-		int _yOrigin,
-		int _width,
-		int _height,
-		Position p = Position.ORIGIN)
+			int _xOrigin,
+			int _yOrigin,
+			int _width,
+			int _height,
+			Position p = Position.ORIGIN)
 	{
 		if (p == Position.CENTER)
-			window = newwin(_height, _width, _yOrigin - _height/2, _xOrigin - _width/2);
+			window = newwin(_height, _width, _yOrigin - _height / 2, _xOrigin - _width / 2);
 		else
 			window = newwin(_height, _width, _yOrigin, _xOrigin);
 
 		setWindowValues();
 	}
 
-
 	~this()
 	{
 		delwin(window);
 	}
 
-
 	bool opEquals(const Window o) const
 	{
 		return (_xOrigin == o._xOrigin &&
 				_yOrigin == o._yOrigin &&
-				_width   == o._width   &&
-				_height  == o._height);
+				_width == o._width &&
+				_height == o._height);
 	}
-
 
 	bool opEquals(const WINDOW* o) const
 	{
 		return (_xOrigin == getbegx(o) &&
 				_yOrigin == getbegy(o) &&
-				_width   == getmaxx(o) &&
-				_height  == getmaxy(o));
+				_width == getmaxx(o) &&
+				_height == getmaxy(o));
 	}
-
 
 	void opIndexAssign(in char value, in int x, in int y)
-	in {
-		assert( x >= 0 &&
+	in
+	{
+		assert(x >= 0 &&
 				y >= 0 &&
-				x <= _width    &&
-				y <= _height );
+				x <= _width &&
+				y <= _height);
 	}
-	body
+	do
 	{
 		mvwaddch(window, y, x, value);
 	}
 
-
 	void opIndexAssign(in string value, in int x, in int y)
-	in {
-		assert( x >= 0 &&
+	in
+	{
+		assert(x >= 0 &&
 				y >= 0 &&
 				x <= _width &&
-				y <= _height );
+				y <= _height);
 	}
-	body
+	do
 	{
 		mvwaddstr(window, y, x, toStringz(value));
 	}
 
-
 	void opIndexAssign(in char value, int[2] length, int y)
-	in {
-		assert( length[0] >= 0 &&
+	in
+	{
+		assert(length[0] >= 0 &&
 				length[1] <= _width &&
 				y >= 0 &&
 				y <= _height);
 	}
-	body
+	do
 	{
 		for (int x = length[0]; x <= length[1]; x++)
 		{
@@ -91,15 +87,15 @@ struct Window
 		}
 	}
 
-
 	void opIndexAssign(in char value, int x, int[2] length)
-	in {
-		assert( x >= 0 &&
+	in
+	{
+		assert(x >= 0 &&
 				x <= _width &&
 				length[0] >= 0 &&
 				length[1] <= _height);
 	}
-	body
+	do
 	{
 		for (int y = length[0]; y <= length[1]; y++)
 		{
@@ -107,15 +103,15 @@ struct Window
 		}
 	}
 
-
 	void opIndexAssign(in char value, int[2] _width, int[2] _height)
-	in {
-		assert( _width[0] >= 0 &&
+	in
+	{
+		assert(_width[0] >= 0 &&
 				_width[1] <= this._width &&
 				_height[0] >= 0 &&
 				_height[1] <= this._height);
 	}
-	body
+	do
 	{
 		for (int y = _height[0]; y <= _height[1]; y++)
 		{
@@ -123,30 +119,28 @@ struct Window
 		}
 	}
 
-
 	char opIndex(in int x, in int y)
-	in {
-		assert( x >= _xOrigin &&
+	in
+	{
+		assert(x >= _xOrigin &&
 				y >= _yOrigin &&
-				x <= _width    &&
-				y <= _height );
+				x <= _width &&
+				y <= _height);
 	}
-	body
+	do
 	{
 		return to!char(mvwinch(window, y, x) & A_CHARTEXT);
 	}
 
-
-	int[2] opSlice(size_t dim)(int start, int end)
-		if (dim >= 0 && dim < 2)
-	in {
+	int[2] opSlice(size_t dim)(int start, int end) if (dim >= 0 && dim < 2)
+	in
+	{
 		assert(start >= 0 && end <= this.opDollar!dim);
 	}
-	body
+	do
 	{
 		return [start, end];
 	}
-
 
 	string opIndex(int[2] length, int y)
 	{
@@ -155,7 +149,6 @@ struct Window
 		mvwinnstr(window, y, length[0], str.ptr, cast(int)(str.length));
 		return str[0 .. $ - 1].dup;
 	}
-
 
 	string[] opIndex(int x, int[2] length)
 	{
@@ -182,7 +175,6 @@ struct Window
 		return matrix;
 	}
 
-
 	int opDollar(size_t dim : 0)() @property
 	{
 		return _width;
@@ -193,13 +185,11 @@ struct Window
 		return _height;
 	}
 
-
 	public enum Position
 	{
 		ORIGIN,
 		CENTER
 	}
-
 
 	private void setWindowValues()
 	{
@@ -210,29 +200,27 @@ struct Window
 		_height = getmaxy(window);
 	}
 
-
 	public char readInputCh()
 	{
 		return to!char(wgetch(window) & A_CHARTEXT);
 	}
-
 
 	public char readInputCh(int x, int y)
 	{
 		return to!char(mvwgetch(window, y, x) & A_CHARTEXT);
 	}
 
-
 	public string readInputStr()
 	{
 		char[] str;
-		do {
+		do
+		{
 			str ~= readInputCh();
-		} while(str[$ - 1] != '\n' && str[$ - 1] != '\r');
+		}
+		while (str[$ - 1] != '\n' && str[$ - 1] != '\r');
 
 		return fromStringz(str.ptr).dup;
 	}
-
 
 	public string readInputStr(int n)
 	{
@@ -241,13 +229,11 @@ struct Window
 		return str.dup;
 	}
 
-
 	public void moveWindow(int x, int y)
 	{
 		mvwin(window, y, x);
 		setWindowValues();
 	}
-
 
 	public void moveCursor(int x, int y)
 	{
@@ -255,67 +241,56 @@ struct Window
 		setWindowValues();
 	}
 
-
 	public void resizeWindow(int _width, int _height)
 	{
 		wresize(window, _height, _width);
 		setWindowValues();
 	}
 
-
 	public void addCh(in char c)
 	{
 		waddch(window, c);
 	}
-
 
 	public void addStr(in string str)
 	{
 		waddstr(window, toStringz(str));
 	}
 
-
 	public void writeFormated(A...)(string fmt, A args)
 	{
 		wprintw(window, toStringz(fmt), args);
 	}
-
 
 	public void writeFormated(A...)(int[2] coords, string fmt, A args)
 	{
 		mvwprintw(window, coords[1], coords[0], toStringz(fmt), args);
 	}
 
-
 	public void fill(in char c)
 	{
 		this.opIndexAssign(c, [0, _width], [0, _height]);
 	}
-
 
 	public void clear()
 	{
 		wclear(window);
 	}
 
-
-	public const int cursorPositionX() @property
+	public int cursorPositionX() const @property
 	{
 		return getcurx(window);
 	}
 
-
-	public const int cursorPositionY() @property
+	public int cursorPositionY() const @property
 	{
 		return getcury(window);
 	}
 
-
-	public const int[2] cursorPosition() @property
+	public int[2] cursorPosition() const @property
 	{
 		return [cursorPositionX, cursorPositionY];
 	}
-
 
 	public void xOrigin(int value) @property
 	{
@@ -323,71 +298,65 @@ struct Window
 		wmove(window, _yOrigin, _xOrigin);
 	}
 
-
 	public void yOrigin(int value) @property
 	{
 		_yOrigin = value;
 		wmove(window, _yOrigin, _xOrigin);
 	}
 
-
 	public void width(int value) @property
 	{
 		resizeWindow(value, _height);
 	}
-
 
 	public void height(int value) @property
 	{
 		resizeWindow(_width, value);
 	}
 
-
-	public const int xCenter() @property
+	public int xCenter() const @property
 	{
 		return (_xOrigin + _width) / 2;
 	}
 
-	public const int yCenter() @property
+	public int yCenter() const @property
 	{
 		return (_yOrigin + _height) / 2;
 	}
 
-	public const int[2] xyCenter() @property
+	public int[2] xyCenter() const @property
 	{
 		return [xCenter, yCenter];
 	}
 
-	public const int xEnd() @property
+	public int xEnd() const @property
 	{
 		return _xOrigin + _width;
 	}
 
-	public const int yEnd() @property
+	public int yEnd() const @property
 	{
 		return _yOrigin + _height;
 	}
 
-	public const int[2] xyEnd() @property
+	public int[2] xyEnd() const @property
 	{
 		return [xEnd, yEnd];
 	}
-
 
 	public WINDOW* window;
 	private int _xOrigin, _yOrigin;
 	private int _width, _height;
 }
 
-
 @("Window: Comparing windows")
 unittest
 {
 	initscr();
 
-	Window win1 = Window(5,0,10,3);
-	Window win2 = Window(5,0,10,3);
-	WINDOW* win3 = newwin(3,10,0,5);
+	Window win1 = Window(5, 0, 10, 3);
+	Window win2 = Window(5, 0, 10, 3);
+	WINDOW* win3 = newwin(3, 10, 0, 5);
 
 	assertTrue(win1 == win2);
 	assertTrue(win2 == win3);
@@ -400,8 +369,8 @@ unittest
 {
 	initscr();
 
-	Window win1 = Window(5,5,5,5,Window.Position.CENTER);
-	Window win2 = Window(3,3,5,5);
+	Window win1 = Window(5, 5, 5, 5, Window.Position.CENTER);
+	Window win2 = Window(3, 3, 5, 5);
 
 	assertTrue(win1 == win2);
 
@@ -417,20 +386,20 @@ unittest
 {
 	initscr();
 
-	Window win = Window(1,1,13,11);
-	win[0,0] = "Hello World";
-	win[1,2] = 'c';
+	Window win = Window(1, 1, 13, 11);
+	win[0, 0] = "Hello World";
+	win[1, 2] = 'c';
 
-	assertTrue(win[1,2] == 'c');
+	assertTrue(win[1, 2] == 'c');
 
-	assertTrue(win[0..11, 0] == "Hello World");
-	assertTrue(win[1, 0..3] == ["e", " ", "c"]);
+	assertTrue(win[0 .. 11, 0] == "Hello World");
+	assertTrue(win[1, 0 .. 3] == ["e", " ", "c"]);
 
-	assertTrue(win[0..13, 0] == win[0..$, 0]);
+	assertTrue(win[0 .. 13, 0] == win[0 .. $, 0]);
 
-	assertTrue(win[0..11, 0..3] == ["Hello World",
-								"           ",
-								" c         "]);
+	assertTrue(win[0 .. 11, 0 .. 3] == ["Hello World",
+			"           ",
+			" c         "]);
 
 	endwin();
 }
@@ -440,10 +409,10 @@ unittest
 {
 	initscr();
 
-	Window win = Window(0,0,50,10);
-	win.writeFormated([0,0], "Hello World n. %d!", 3432);
+	Window win = Window(0, 0, 50, 10);
+	win.writeFormated([0, 0], "Hello World n. %d!", 3432);
 
-	assertTrue(win[0.."Hello World n. 3432!".length, 0] == "Hello World n. 3432!");
+	assertTrue(win[0 .. "Hello World n. 3432!".length, 0] == "Hello World n. 3432!");
 
 	endwin();
 }
@@ -453,19 +422,19 @@ unittest
 {
 	initscr();
 
-	Window win = Window(0,0,10,10);
+	Window win = Window(0, 0, 10, 10);
 
-	win[0..2, 0] = 'H';
-	win[0, 1..3] = 'T';
-	win[5..$, 5..$] = 'O';
+	win[0 .. 2, 0] = 'H';
+	win[0, 1 .. 3] = 'T';
+	win[5 .. $, 5 .. $] = 'O';
 
-	assertTrue(win[0..3, 0] == "HHH");
-	assertTrue(win[0, 1..4] == ["T", "T", "T"]);
-	assertTrue(win[5..$, 5..$] == [ "OOOOO",
-									"OOOOO",
-									"OOOOO",
-									"OOOOO",
-									"OOOOO" ]);
+	assertTrue(win[0 .. 3, 0] == "HHH");
+	assertTrue(win[0, 1 .. 4] == ["T", "T", "T"]);
+	assertTrue(win[5 .. $, 5 .. $] == ["OOOOO",
+			"OOOOO",
+			"OOOOO",
+			"OOOOO",
+			"OOOOO"]);
 
 	endwin();
 }
@@ -475,13 +444,13 @@ unittest
 {
 	initscr();
 
-	Window win = Window(0,0,5,5);
+	Window win = Window(0, 0, 5, 5);
 
-	win.resizeWindow(10,10);
-	assertTrue(win == Window(0,0,10,10));
+	win.resizeWindow(10, 10);
+	assertTrue(win == Window(0, 0, 10, 10));
 
-	win.moveWindow(2,3);
-	assertTrue(win == Window(2,3,10,10));
+	win.moveWindow(2, 3);
+	assertTrue(win == Window(2, 3, 10, 10));
 
 	endwin();
 }
@@ -491,9 +460,9 @@ unittest
 {
 	initscr();
 
-	Window win = Window(0,0,10,10);
-	win.moveCursor(5,7);
-	assertTrue(win.cursorPosition == [5,7]);
+	Window win = Window(0, 0, 10, 10);
+	win.moveCursor(5, 7);
+	assertTrue(win.cursorPosition == [5, 7]);
 
 	endwin();
 }
@@ -503,12 +472,12 @@ unittest
 {
 	initscr();
 
-	Window win = Window(0,0,10,10);
+	Window win = Window(0, 0, 10, 10);
 	win.addCh('c');
-	assertTrue(win[0,0] == 'c');
+	assertTrue(win[0, 0] == 'c');
 
 	win.addStr("string");
-	assertTrue(win[0..6, 0] == "string");
+	assertTrue(win[0 .. 6, 0] == "string");
 
 	endwin();
 }
@@ -518,21 +487,21 @@ unittest
 {
 	initscr();
 
-	Window win = Window(0,0,3,3);
+	Window win = Window(0, 0, 3, 3);
 
-	assertTrue(win[0..$, 0..$] == [ "   ",
-									"   ",
-									"   "]);
+	assertTrue(win[0 .. $, 0 .. $] == ["   ",
+			"   ",
+			"   "]);
 
 	win.fill('F');
-	assertTrue(win[0..$, 0..$] == [ "FFF",
-									"FFF",
-									"FFF"]);
+	assertTrue(win[0 .. $, 0 .. $] == ["FFF",
+			"FFF",
+			"FFF"]);
 
 	win.clear();
-	assertTrue(win[0..$, 0..$] == [ "   ",
-									"   ",
-									"   "]);
+	assertTrue(win[0 .. $, 0 .. $] == ["   ",
+			"   ",
+			"   "]);
 
 	endwin();
 }
@@ -542,20 +511,20 @@ unittest
 {
 	initscr();
 
-	Window win = Window(0,0,10,10);
+	Window win = Window(0, 0, 10, 10);
 	win.xOrigin = 5;
 	win.yOrigin = 8;
 
-	assertTrue(win == Window(5,8,10,10));
+	assertTrue(win == Window(5, 8, 10, 10));
 
 	win.width = 25;
 	win.height = 15;
 
-	assertTrue(win == Window(0,0,25,15));
+	assertTrue(win == Window(0, 0, 25, 15));
 
 	assertTrue(win.xEnd == 25);
 	assertTrue(win.yEnd == 15);
-	assertTrue(win.xyEnd == [25,15]);
+	assertTrue(win.xyEnd == [25, 15]);
 
 	endwin();
 }

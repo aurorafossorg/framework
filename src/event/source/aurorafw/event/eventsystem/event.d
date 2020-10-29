@@ -36,8 +36,7 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.event.eventsystem.event;
 
-version(unittest) import aurorafw.unit;
-
+version (unittest) import aurorafw.unit;
 
 /** Main event class
  *
@@ -51,13 +50,11 @@ public:
 	@safe pure
 	abstract @property string eventType() const;
 
-
 	@safe
 	override string toString() const
 	{
 		return eventType;
 	}
-
 
 	/** Compare two EventTypes
 	 *
@@ -74,11 +71,9 @@ public:
 		return eventType == otherType;
 	}
 
-
 	// defaults to false
 	bool handled;
 }
-
 
 /** Default EventType struct
  *
@@ -101,7 +96,6 @@ struct EventType
 {
 	const string name;
 }
-
 
 /** Quick way to implement your default abstract and static methods
  *
@@ -129,6 +123,7 @@ public:
 	static @property string staticEventType()
 	{
 		import std.traits : getUDAs;
+
 		return getUDAs!(T, EventType)[0].name;
 	}
 
@@ -139,20 +134,22 @@ public:
 	}
 }
 
-
 ///
 @safe pure
 @("Event: basicEventType")
 unittest
 {
 	@EventType("MyEvent")
-	class MyEvent : Event { mixin basicEventType!MyEvent; }
+	class MyEvent : Event
+	{
+		mixin basicEventType!MyEvent;
+	}
+
 	MyEvent event = new MyEvent();
 	assertEquals(event.staticEventType, "MyEvent");
 	assertEquals(event.staticEventType, event.eventType);
 	assertTrue(event.isEventTypeOf(MyEvent.staticEventType));
 }
-
 
 /** Generate generic callback functions
  *
@@ -214,7 +211,8 @@ unittest
  * }
  * --------------------
  */
-mixin template genCallback(T, E : Event, args ...)
+mixin template genCallback(T, E:
+		Event, args...)
 {
 	static assert(is(T == class));
 
@@ -241,8 +239,9 @@ mixin template genCallback(T, E : Event, args ...)
 		 * do not let the user insert args like (int, int, "foo", "bar")
 		 */
 		import std.typecons : Tuple;
+
 		static assert(is(Tuple!_types == Tuple!(Stride!(2, _as))),
-			"Cannot have sequential types!");
+				"Cannot have sequential types!");
 	}
 	else
 	{
@@ -252,8 +251,8 @@ mixin template genCallback(T, E : Event, args ...)
 
 public:
 	@safe pure
-	void connect(bool delegate (T, _types) dg)
-		in(dg.funcptr !is null || dg.ptr !is null)
+	void connect(bool delegate(T, _types) dg)
+	in (dg.funcptr !is null || dg.ptr !is null)
 	{
 		callback = dg;
 	}
@@ -265,31 +264,33 @@ public:
 		static foreach (j, t; ctorOverloads)
 		{
 			import std.traits : Parameters, isImplicitlyConvertible;
+
 			static foreach (i, type; _types)
 			{
 				static if (j == len - 1)
 				{
 					static if (_types.length != (Parameters!t).length)
 					{
-						static assert (_types.length == (Parameters!t).length,
-							"Type(s) in %s are not valid in any of the %s ctor overloads!"
-							.format(_types.stringof, E.stringof)
-							~" Failed on: types.length <> ctor_parameters.length (%s <> %s) at %s"
-							.format(_types.length, (Parameters!t).length, typeof(t).stringof));
+						static assert(_types.length == (Parameters!t).length,
+								"Type(s) in %s are not valid in any of the %s ctor overloads!"
+								.format(_types.stringof, E.stringof)
+								~ " Failed on: types.length <> ctor_parameters.length (%s <> %s) at %s"
+								.format(_types.length, (Parameters!t).length, typeof(t).stringof));
 					}
 					else static if ((!isImplicitlyConvertible!(type, (Parameters!t)[i])))
 					{
-						static assert (isImplicitlyConvertible!(type, (Parameters!t)[i]),
-							"Type(s) in %s are not valid in any of the %s ctor overloads!"
-							.format(_types.stringof, E.stringof)
-							~" Failed on: <%s> cannot convert to <%s> at %s"
-							.format(type.stringof, (Parameters!t)[i].stringof, typeof(t).stringof));
+						static assert(isImplicitlyConvertible!(type, (Parameters!t)[i]),
+								"Type(s) in %s are not valid in any of the %s ctor overloads!"
+								.format(_types.stringof, E.stringof)
+								~ " Failed on: <%s> cannot convert to <%s> at %s"
+								.format(type.stringof, (Parameters!t)[i].stringof, typeof(t).stringof));
 					}
 				}
 			}
 		}
 		mixin(q{
-			void emit(}~joinTypeName!args~q{)
+			void emit(}
+				~ joinTypeName!args ~ q{)
 			{
 				import std.string : format;
 				mixin(q{ auto event = scoped!E(%s); }.format(stringTuple!_names));
@@ -311,7 +312,7 @@ public:
 	 *   have an empty ctor
 	 */
 	void emit(E event)
-		in(event !is null, "%s cannot be null".format(E.stringof))
+	in (event !is null, "%s cannot be null".format(E.stringof))
 	{
 		if (callback.funcptr !is null || callback.ptr !is null)
 			onEvent(event);
@@ -321,6 +322,7 @@ protected:
 	void dispatch(E event)
 	{
 		import std.string : format;
+
 		if (callback.funcptr !is null || callback.ptr !is null)
 			mixin(q{
 				event.handled = callback(this%s);
@@ -329,7 +331,6 @@ protected:
 
 	bool delegate(T, _types) callback;
 }
-
 
 /* This template is used **internaly** only!
  *
@@ -349,17 +350,19 @@ protected:
  * Returns:
  *     string `enum`
  */
-template toEventFormat(args ...)
+template toEventFormat(args...)
 {
 	@safe pure
 	auto toEventFormat()
 	{
 		import std.array : appender;
+
 		auto ret = appender!string;
 		foreach (var; args)
 		{
 			import std.string : format;
 			import std.traits : isType;
+
 			static assert(!isType!var);
 			static assert(is(typeof(var) == string));
 			ret ~= ",event." ~ var;
@@ -368,7 +371,6 @@ template toEventFormat(args ...)
 	}
 }
 
-
 ///
 @safe pure
 @("Event: toEventFormat")
@@ -376,7 +378,6 @@ unittest
 {
 	assertEquals(toEventFormat!("a", "b"), (",event.a,event.b"));
 }
-
 
 /* This is used internaly only!
  *
@@ -393,7 +394,7 @@ unittest
  * Returns:
  *     `string` of named parameters
  */
-template joinTypeName(args ...)
+template joinTypeName(args...)
 {
 	@safe pure
 	auto joinTypeName()
@@ -420,16 +421,14 @@ template joinTypeName(args ...)
 	}
 }
 
-
 ///
 @safe pure
 @("Event: joinTypeName")
 unittest
 {
-	assertEquals(joinTypeName!(int,"foo",string,"bar"), "int foo,string bar");
-	assertEquals(joinTypeName!(const int,"i",immutable char,"c"), "const(int) i,immutable(char) c");
+	assertEquals(joinTypeName!(int, "foo", string, "bar"), "int foo,string bar");
+	assertEquals(joinTypeName!(const int, "i", immutable char, "c"), "const(int) i,immutable(char) c");
 }
-
 
 /* Joins strings with a coma
  *
@@ -444,7 +443,7 @@ unittest
  * Returns:
  *     `string` of joined string separated by comas
  */
-template stringTuple(args ...)
+template stringTuple(args...)
 {
 	@safe pure
 	auto stringTuple()
@@ -456,8 +455,8 @@ template stringTuple(args ...)
 		foreach (v; args)
 		{
 			static assert(isSomeString!(typeof(v)),
-				"Args must be a string! (%s of type \'%s\' is not a string)"
-				.format(v, typeof(v).stringof));
+					"Args must be a string! (%s of type \'%s\' is not a string)"
+					.format(v, typeof(v).stringof));
 		}
 
 		auto ret = appender!string;
@@ -467,7 +466,6 @@ template stringTuple(args ...)
 	}
 }
 
-
 ///
 @safe pure
 @("Event: stringTuple")
@@ -476,13 +474,12 @@ unittest
 	assertEquals(stringTuple!("hi", "there"), "hi,there");
 }
 
-
-private version(unittest)
+private version (unittest)
 {
 	@safe
 	bool onFooEvent(in Foo sender, in int a, int b, int c)
 	{
-		assertEquals([a,b,c], [2,4,5]);
+		assertEquals([a, b, c], [2, 4, 5]);
 
 		return true;
 	}
@@ -497,14 +494,17 @@ private version(unittest)
 		return true;
 	}
 
-
 	@EventType("FooEvent")
 	@safe class FooEvent : Event
 	{
 		mixin basicEventType!FooEvent;
 
 	public:
-		this() { a = b = c = int.init; }
+		this()
+		{
+			a = b = c = int.init;
+		}
+
 		this(in int a, in int b, in int c)
 		{
 			this.a = a;
@@ -555,16 +555,13 @@ private version(unittest)
 			this.b = b;
 			this.c = c;
 
-			onBaz.connect(delegate bool(Foo, BazEvent event) {
-				assertEquals([event.x, event.y], [3, 7]);
-
-				return true;
-			});
+			onBaz.connect(delegate bool(Foo, BazEvent event) { assertEquals([event.x, event.y], [3, 7]); return true; });
 		}
 
 		void bar()
 		{
 			import std.typecons : scoped;
+
 			auto event = scoped!BarEvent(a, b);
 			onBar.emit(event);
 
@@ -587,6 +584,7 @@ private version(unittest)
 		{
 			import std.typecons : scoped;
 			import aurorafw.event.eventsystem.eventdispatcher : EventDispatcher;
+
 			auto ed = new EventDispatcher(event);
 			ed.dispatch!FooEvent(&onFoo.dispatch);
 			ed.dispatch!BarEvent(&onBar.dispatch);
@@ -597,25 +595,24 @@ private version(unittest)
 	}
 }
 
-
 @safe
 @("Event: event ctor")
 unittest
 {
-	FooEvent event = new FooEvent(1,2,3);
-	assertEquals([1,2,3], [event.a, event.b, event.c]);
+	FooEvent event = new FooEvent(1, 2, 3);
+	assertEquals([1, 2, 3], [event.a, event.b, event.c]);
 }
-
 
 @system
 @("Event: connect to a delegate")
 unittest
 {
-	Foo foo = new Foo(2,4,5);
+	Foo foo = new Foo(2, 4, 5);
 	foo.foo(); // nothing fires
 	foo.baz(); // fires the default onBaz event
 
 	import std.functional : toDelegate;
+
 	foo.onFoo.connect(toDelegate(&onFooEvent));
 	foo.onBar.connect(toDelegate(&onBarEvent));
 

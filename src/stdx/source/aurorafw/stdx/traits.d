@@ -70,7 +70,8 @@ version (unittest) import aurorafw.unit.assertion;
  * }
  * --------------------
  */
-template isVersion(string ver) {
+template isVersion(string ver)
+{
 	mixin(format(q{
 		version(%s) {
 			enum isVersion = true;
@@ -84,7 +85,8 @@ template isVersion(string ver) {
 ///
 @safe pure
 @("Traits: isVersion")
-unittest {
+unittest
+{
 	assertTrue(isVersion!"unittest");
 	assertFalse(isVersion!"this_shouldnt_be_a_version_identifier");
 }
@@ -95,7 +97,8 @@ unittest {
  * This template match the return type of the passed functions
  * and fail if there's more than one type (except typeof(null))
  */
-template MatchReturnType(funcs...) if (allSatisfy!(isSomeFunction, funcs)) {
+template MatchReturnType(funcs...) if (allSatisfy!(isSomeFunction, funcs))
+{
 	alias types = NoDuplicates!(staticMap!(Unqual, staticMap!(ReturnType, funcs)));
 	static assert(types.length == 1 || (types.length == 2 && is(types[1] == typeof(
 			null))));
@@ -106,7 +109,8 @@ template MatchReturnType(funcs...) if (allSatisfy!(isSomeFunction, funcs)) {
 ///
 @safe pure
 @("Traits: MatchReturnType")
-unittest {
+unittest
+{
 	alias TL_1 = MatchReturnType!(void delegate(), void function(), void function(
 			string foo));
 	assertTrue(is(TL_1 == void));
@@ -118,14 +122,18 @@ unittest {
 	assertTrue(is(MatchReturnType!(() => "atum") == string));
 }
 
-version (unittest) {
-	private interface IUnittestTestClass {
+version (unittest)
+{
+	private interface IUnittestTestClass
+	{
 	}
 
-	private class UnittestTestClass {
+	private class UnittestTestClass
+	{
 	}
 
-	private struct UnittestTestStruct {
+	private struct UnittestTestStruct
+	{
 	}
 }
 
@@ -134,18 +142,21 @@ version (unittest) {
  * Params:
  *   T = type or typeof a variable for null check
  */
-template isNullType(alias T) {
+template isNullType(alias T)
+{
 	enum isNullType = is(typeof(T) == typeof(null));
 }
 
 ///
 @safe pure
 @("Traits: isNullType")
-unittest {
+unittest
+{
 	int a;
 	int* b = null;
 	UnittestTestStruct c;
-	void f() {
+	void f()
+	{
 	}
 
 	assertTrue(isNullType!null);
@@ -162,9 +173,11 @@ unittest {
  * Params:
  *   T = type or typeof a variable
  */
-template isNullTestable(alias T) {
+template isNullTestable(alias T)
+{
 	enum isNullTestable = __traits(compiles, {
-			if (T.init is null) {
+			if (T.init is null)
+			{
 			}
 		});
 }
@@ -172,12 +185,16 @@ template isNullTestable(alias T) {
 ///
 @safe pure
 @("Traits: isNullTestable")
-unittest {
-	class Class1 {
+unittest
+{
+	class Class1
+	{
 	}
 
-	struct Struct1 {
-		void opAssign(int*) {
+	struct Struct1
+	{
+		void opAssign(int*)
+		{
 		}
 	}
 
@@ -188,7 +205,8 @@ unittest {
 	assertFalse(isNullTestable!UnittestTestStruct);
 	assertFalse(isNullTestable!int);
 
-	class Class2 {
+	class Class2
+	{
 		@disable this();
 	}
 
@@ -200,14 +218,16 @@ unittest {
  * Params:
  *   T = type or typeof a variable
  */
-template isNullSettable(alias T) {
+template isNullSettable(alias T)
+{
 	enum isNullSettable = __traits(compiles, { typeof(T.init) t = T.init; t = null; });
 }
 
 ///
 @safe pure
 @("Traits: isNullSettable")
-unittest {
+unittest
+{
 	assertTrue(isNullSettable!IUnittestTestClass);
 	assertTrue(isNullSettable!UnittestTestClass);
 	assertTrue(isNullSettable!(int[]));
@@ -224,16 +244,20 @@ unittest {
 	assertFalse(isNullSettable!real);
 	assertFalse(isNullSettable!UnittestTestStruct);
 
-	struct Struct1 {
-		void opAssign(int*) {
+	struct Struct1
+	{
+		void opAssign(int*)
+		{
 		}
 	}
 
 	assertTrue(isNullSettable!Struct1);
 
-	struct Struct3 {
+	struct Struct3
+	{
 		@disable this();
-		void opAssign(int*) {
+		void opAssign(int*)
+		{
 		}
 	}
 
@@ -243,19 +267,28 @@ unittest {
 /**
  * Get's an AliasSeq of types from the given arguments
  */
-template TypesOf(Symbols...) {
+template TypesOf(Symbols...)
+{
 	import std.meta : AliasSeq;
 
-	static if (Symbols.length) {
-		static if (isFunction!(Symbols[0]) && is(typeof(&Symbols[0]) F)) {
+	static if (Symbols.length)
+	{
+		static if (isFunction!(Symbols[0]) && is(typeof(&Symbols[0]) F))
+		{
 			alias T = F;
-		} else static if (is(typeof(Symbols[0]))) {
+		}
+		else static if (is(typeof(Symbols[0])))
+		{
 			alias T = typeof(Symbols[0]);
-		} else {
+		}
+		else
+		{
 			alias T = Symbols[0];
 		}
 		alias TypesOf = AliasSeq!(T, TypesOf!(Symbols[1 .. $]));
-	} else {
+	}
+	else
+	{
 		alias TypesOf = AliasSeq!();
 	}
 }
@@ -263,7 +296,8 @@ template TypesOf(Symbols...) {
 ///
 @safe pure
 @("Traits: TypesOf")
-unittest {
+unittest
+{
 	assertTrue(is(TypesOf!("foo", 42U, 24, 123.0, float) == AliasSeq!(string, uint, int, double, float)));
 	assertTrue(is(TypesOf!(null) == AliasSeq!(typeof(null))));
 	assertTrue(is(TypesOf!("foobar") == AliasSeq!(string)));
@@ -278,14 +312,16 @@ unittest {
  * Params:
  *   moduleName = module to validate import
  */
-template CanImport(string moduleName) {
+template CanImport(string moduleName)
+{
 	enum CanImport = __traits(compiles, { mixin("import " ~ moduleName ~ ";"); });
 }
 
 ///
 @safe pure
 @("Traits: CanImport")
-unittest {
+unittest
+{
 	assertTrue(CanImport!"std.stdio");
 	// check for static eval
 	static assert(CanImport!"std.stdio");
@@ -300,7 +336,8 @@ unittest {
  *   moduleName = module to be imported
  *   symbolName = symbol to be checked
  */
-template ModuleContainsSymbol(string moduleName, string symbolName) {
+template ModuleContainsSymbol(string moduleName, string symbolName)
+{
 	enum ModuleContainsSymbol = CanImport!moduleName && __traits(compiles, {
 			mixin("import " ~ moduleName ~ ":" ~ symbolName ~ ";");
 		});
@@ -309,7 +346,8 @@ template ModuleContainsSymbol(string moduleName, string symbolName) {
 ///
 @safe pure
 @("Traits: ModuleContainsSymbol")
-unittest {
+unittest
+{
 	assertTrue(ModuleContainsSymbol!("std.stdio", "writeln"));
 	assertFalse(ModuleContainsSymbol!("std.stdio", "thissymboldoesntactuallyexist"));
 
@@ -322,14 +360,19 @@ unittest {
  * Basically the same as is(... == ...) but resolves the function
  * return type.
  */
-template isOf(ab...) if (ab.length == 2) {
+template isOf(ab...) if (ab.length == 2)
+{
 	alias Ts = TypesOf!ab;
-	template resolve(T) {
+	template resolve(T)
+	{
 		import std.traits : isCallable, ReturnType;
 
-		static if (isCallable!T) {
+		static if (isCallable!T)
+		{
 			alias resolve = ReturnType!T;
-		} else {
+		}
+		else
+		{
 			alias resolve = T;
 		}
 	}
@@ -340,7 +383,8 @@ template isOf(ab...) if (ab.length == 2) {
 ///
 @safe pure
 @("Traits: isOf")
-unittest {
+unittest
+{
 	assertTrue(isOf!(int, 3));
 	assertTrue(isOf!(7, 3));
 	assertTrue(isOf!(3, int));
@@ -348,7 +392,8 @@ unittest {
 	assertFalse(isOf!(float, string));
 	assertFalse(isOf!(string, 3));
 
-	string foobar() {
+	string foobar()
+	{
 		return "";
 	}
 
@@ -367,28 +412,35 @@ unittest {
  *   lhs = left-hand symbol to compare
  *   rhs = right-hand symbol to compare
  */
-template isSame(alias lhs, alias rhs) {
+template isSame(alias lhs, alias rhs)
+{
 
 	// this should test if the type is bool easily with
 	// compiles trait
-	private static template expectBool(bool b) {
+	private static template expectBool(bool b)
+	{
 	}
 
 	// check if its a type or a value
-	static if (!__traits(compiles, typeof(lhs)) && !__traits(compiles, typeof(rhs))) {
+	static if (!__traits(compiles, typeof(lhs)) && !__traits(compiles, typeof(rhs)))
+	{
 		enum isSame = is(lhs == rhs);
 		// check if its comparable
-	} else static if (__traits(compiles, typeof(lhs))
+	}
+	else static if (__traits(compiles, typeof(lhs))
 			&& __traits(compiles, typeof(rhs))
 			&& __traits(compiles, expectBool!(lhs == rhs))
-		) {
+		)
+	{
 		// check if its a rvalue
 		static if (!__traits(compiles, &lhs) || !__traits(compiles, &rhs))
 
 			enum isSame = (lhs == rhs);
 		else // literal comparable
 			enum isSame = __traits(isSame, lhs, rhs);
-	} else {
+	}
+	else
+	{
 		// if none of this, fallback to isSame trait
 		enum isSame = __traits(isSame, lhs, rhs);
 	}
@@ -397,7 +449,8 @@ template isSame(alias lhs, alias rhs) {
 ///
 @safe pure
 @("Traits: isSame")
-unittest {
+unittest
+{
 	assertTrue(isSame!(int, int));
 	assertFalse(isSame!(int, short));
 

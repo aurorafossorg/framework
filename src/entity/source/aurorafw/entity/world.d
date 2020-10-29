@@ -43,8 +43,7 @@ import aurorafw.entity.componentmanager;
 import aurorafw.entity.systemmanager;
 import aurorafw.entity.system;
 
-version(unittest) import aurorafw.unit.assertion;
-
+version (unittest) import aurorafw.unit.assertion;
 
 final class World
 {
@@ -55,7 +54,6 @@ final class World
 		_entity = new EntityManager();
 		_system = new SystemManager(_entity);
 	}
-
 
 	/**
 	 * Entity
@@ -68,8 +66,10 @@ final class World
 	 * --------------------
 	 */
 	@safe pure
-	public EntityManager entity() { return _entity; } @property
-
+	public EntityManager entity()
+	{
+		return _entity;
+	}
 
 	/**
 	 * Component
@@ -81,9 +81,11 @@ final class World
 	 * ComponentManager maneger = world.component;
 	 * --------------------
 	 */
-	@safe pure
-	public ComponentManager component() { return _component; } @property
-
+	@property @safe pure
+	public ComponentManager component()
+	{
+		return _component;
+	}
 
 	/**
 	 * System
@@ -95,9 +97,11 @@ final class World
 	 * SystemManager manager = world.system;
 	 * --------------------
 	 */
-	@safe pure
-	public SystemManager system() { return _system; } @property
-
+	@property @safe pure
+	public SystemManager system()
+	{
+		return _system;
+	}
 
 	/**
 	 * Update
@@ -109,11 +113,10 @@ final class World
 	 * world.update();
 	 * --------------------
 	 */
-	public void update()
+	@property public void update()
 	{
 		_system.update;
 	}
-
 
 	/**
 	 * Update
@@ -130,28 +133,34 @@ final class World
 		_system.update!S;
 	}
 
-
 	private EntityManager _entity;
 	private ComponentManager _component;
 	private SystemManager _system;
 }
 
-
-version(unittest)
+version (unittest)
 {
 	private class unittest_FooSystem : System
 	{
-		override public void update() { this.updatePolicy = UpdatePolicy.Manual; }
+		override public void update()
+		{
+			this.updatePolicy = UpdatePolicy.Manual;
+		}
 	}
 
 	private class unittest_BarSystem : System
 	{
 		@safe pure
-		public this() { super(UpdatePolicy.Manual); }
+		public this()
+		{
+			super(UpdatePolicy.Manual);
+		}
 
-		override public void update() { this.updatePolicy = UpdatePolicy.Automatic; }
+		override public void update()
+		{
+			this.updatePolicy = UpdatePolicy.Automatic;
+		}
 	}
-
 
 	private class unittest_FooComponent : IComponent
 	{
@@ -164,14 +173,13 @@ version(unittest)
 		{
 			Entity[] arr = this.manager.entity.getAllWith!(unittest_FooComponent);
 
-			foreach(Entity e; arr)
+			foreach (Entity e; arr)
 			{
 				e.modify!unittest_FooComponent(5);
 			}
 		}
 	}
 }
-
 
 ///
 @("World: System update")
@@ -194,7 +202,6 @@ unittest
 	assertEquals(barSys.updatePolicy, barSys.UpdatePolicy.Automatic); // Got updated
 }
 
-
 ///
 @("World: Main loop")
 unittest
@@ -209,7 +216,6 @@ unittest
 
 	assertEquals(5, e.get!unittest_FooComponent.a); // Component variable modified in the update method
 }
-
 
 ///
 @safe pure

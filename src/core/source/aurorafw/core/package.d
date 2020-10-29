@@ -37,8 +37,8 @@ directly send an email to: contact (at) aurorafoss.org .
 module aurorafw.core;
 
 public:
-	import aurorafw.core.appcontext;
-	import aurorafw.core.application;
-	import aurorafw.core.input;
-	import aurorafw.core.logger;
-	import aurorafw.core.opt;
+import aurorafw.core.appcontext;
+import aurorafw.core.application;
+import aurorafw.core.input;
+import aurorafw.core.logger;
+import aurorafw.core.opt;

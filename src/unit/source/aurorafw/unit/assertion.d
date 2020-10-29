@@ -102,11 +102,14 @@ class AssertAllException : AssertException
 @("Assertion: Assert Exceptions")
 unittest
 {
-	try {
+	try
+	{
 		throw new AssertAllException([new AssertException("simple assert from unittesting")]);
-	} catch(AssertAllException e)
+	}
+	catch (AssertAllException e)
 	{
 		import std.algorithm.searching : startsWith;
+
 		assert(e.msg.startsWith("1 assertion failure:"));
 	}
 }
@@ -131,10 +134,10 @@ unittest
 unittest
 {
 	assert(description(new Throwable("foobar"))
-		== "object.Throwable: foobar");
+			== "object.Throwable: foobar");
 
 	assert(description(new Throwable("foobar", "foo.d", 42))
-		== "object.Throwable@foo.d(42): foobar");
+			== "object.Throwable@foo.d(42): foobar");
 }
 
 /**
@@ -145,8 +148,8 @@ string description(string expected, string actual) @safe pure
 	const MAX_LENGTH = 20;
 	const result = diff(expected, actual);
 	const oneLiner = max(result[0].length, result[1].length) <= MAX_LENGTH
-			&& !result[0].canFind("\n", "\r")
-			&& !result[1].canFind("\n", "\r");
+		&& !result[0].canFind("\n", "\r")
+		&& !result[1].canFind("\n", "\r");
 
 	if (oneLiner)
 		return "expected: <" ~ result[0] ~ "> but was: <" ~ result[1] ~ ">";
@@ -230,7 +233,7 @@ void assertTrue(T)(T condition, lazy string msg = null,
 unittest
 {
 	assertTrue(true);
-	assertTrue("foo" in ["foo": "bar"]);
+	assertTrue("foo" in ["foo" : "bar"]);
 
 	auto exception = expectThrows!AssertException(assertTrue(false));
 
@@ -258,7 +261,7 @@ void assertFalse(T)(T condition, lazy string msg = null,
 unittest
 {
 	assertFalse(false);
-	assertFalse("foo" in ["bar": "foo"]);
+	assertFalse("foo" in ["bar" : "foo"]);
 
 	auto exception = expectThrows!AssertException(assertFalse(true));
 
@@ -272,8 +275,7 @@ unittest
 @safe pure
 void assertEquals(T, U)(T expected, U actual, lazy string msg = null,
 		string file = __FILE__,
-		size_t line = __LINE__)
-	if (isSomeString!T)
+		size_t line = __LINE__) if (isSomeString!T)
 {
 	if (expected == actual)
 		return;
@@ -303,8 +305,7 @@ unittest
 @safe
 void assertEquals(T, U)(T expected, U actual, lazy string msg = null,
 		string file = __FILE__,
-		size_t line = __LINE__)
-	if (isFloatingPoint!T || isFloatingPoint!U)
+		size_t line = __LINE__) if (isFloatingPoint!T || isFloatingPoint!U)
 {
 	import std.math : approxEqual;
 
@@ -320,7 +321,7 @@ void assertEquals(T, U)(T expected, U actual, lazy string msg = null,
 ///
 @safe /*pure*/
 @("Assertion: assertEquals for floating-points")
-unittest // format is impure for floating point values
+unittest  // format is impure for floating point values
 {
 	assertEquals(1, 1.01);
 
@@ -335,8 +336,7 @@ unittest // format is impure for floating point values
  */
 void assertEquals(T, U)(T expected, U actual, lazy string msg = null,
 		string file = __FILE__,
-		size_t line = __LINE__)
-	if (!isSomeString!T && !isFloatingPoint!T && !isFloatingPoint!U)
+		size_t line = __LINE__) if (!isSomeString!T && !isFloatingPoint!T && !isFloatingPoint!U)
 {
 	if (expected == actual)
 		return;
@@ -362,7 +362,7 @@ unittest
 ///
 @system
 @("Assertion: assertEquals with Object")
-unittest // Object.opEquals is impure
+unittest  // Object.opEquals is impure
 {
 	Object foo = new Object();
 	Object bar = null;
@@ -405,10 +405,10 @@ void assertArrayEquals(T, U, size_t l1, size_t l2)(
 			header ~ "length mismatch",
 			file, line);
 
-	foreach(idx, val; expected)
+	foreach (idx, val; expected)
 		assertEquals(val, actual[idx],
-			header ~ format("mismatch at index %s", idx),
-			file, line);
+				header ~ format("mismatch at index %s", idx),
+				file, line);
 }
 
 ///
@@ -416,15 +416,15 @@ void assertArrayEquals(T, U, size_t l1, size_t l2)(
 @("Assertion: Static arrays")
 unittest
 {
-	int[4] expected = [1,2,3,4];
+	int[4] expected = [1, 2, 3, 4];
 
-	assertArrayEquals(expected, [1,2,3,4]);
+	assertArrayEquals(expected, [1, 2, 3, 4]);
 
 	AssertException exception;
 
-	exception = expectThrows!AssertException(assertArrayEquals(expected, [1,2]));
+	exception = expectThrows!AssertException(assertArrayEquals(expected, [1, 2]));
 	assertEquals(`length mismatch; expected: <4> but was: <2>`, exception.msg);
-	exception = expectThrows!AssertException(assertArrayEquals(expected, [1,2,5,4]));
+	exception = expectThrows!AssertException(assertArrayEquals(expected, [1, 2, 5, 4]));
 	assertEquals(`mismatch at index 2; expected: <3> but was: <5>`, exception.msg);
 }
 
@@ -460,8 +460,8 @@ void assertAssocArrayEquals(T, U, V)(in T[V] expected, in U[V] actual, lazy stri
 		size_t line = __LINE__)
 {
 	assertArrayEquals(expected, actual,
-		msg,
-		file, line);
+			msg,
+			file, line);
 }
 
 ///
@@ -469,20 +469,20 @@ void assertAssocArrayEquals(T, U, V)(in T[V] expected, in U[V] actual, lazy stri
 @("Assertion: Associative Arrays comparison")
 unittest  // keys, values, byKey, byValue not usable in @safe context
 {
-	int[string] expected = ["foo": 1, "bar": 2];
+	int[string] expected = ["foo" : 1, "bar" : 2];
 
-	assertArrayEquals(expected, ["foo": 1, "bar": 2]);
-	assertAssocArrayEquals(expected, ["foo": 1, "bar": 2]);
+	assertArrayEquals(expected, ["foo" : 1, "bar" : 2]);
+	assertAssocArrayEquals(expected, ["foo" : 1, "bar" : 2]);
 
 	AssertException exception;
 
-	exception = expectThrows!AssertException(assertArrayEquals(expected, ["foo": 2]));
+	exception = expectThrows!AssertException(assertArrayEquals(expected, ["foo" : 2]));
 	assertEquals(`mismatch at key "foo"; expected: <1> but was: <2>`, exception.msg);
-	exception = expectThrows!AssertException(assertArrayEquals(expected, ["foo": 1]));
+	exception = expectThrows!AssertException(assertArrayEquals(expected, ["foo" : 1]));
 	assertEquals(`key mismatch; difference: "bar"`, exception.msg);
-	exception = expectThrows!AssertException(assertAssocArrayEquals(expected, ["foo": 2]));
+	exception = expectThrows!AssertException(assertAssocArrayEquals(expected, ["foo" : 2]));
 	assertEquals(`mismatch at key "foo"; expected: <1> but was: <2>`, exception.msg);
-	exception = expectThrows!AssertException(assertAssocArrayEquals(expected, ["foo": 1]));
+	exception = expectThrows!AssertException(assertAssocArrayEquals(expected, ["foo" : 1]));
 	assertEquals(`key mismatch; difference: "bar"`, exception.msg);
 }
 
@@ -492,13 +492,12 @@ unittest  // keys, values, byKey, byValue not usable in @safe context
  */
 void assertRangeEquals(R1, R2)(R1 expected, R2 actual, lazy string msg = null,
 		string file = __FILE__,
-		size_t line = __LINE__)
-	if (isInputRange!R1 && isInputRange!R2 && is(typeof(expected.front == actual.front)))
+		size_t line = __LINE__) if (isInputRange!R1 && isInputRange!R2 && is(typeof(expected.front == actual.front)))
 {
 	string header = (msg.empty) ? null : msg ~ "; ";
 	size_t index = 0;
 
-	for (; !expected.empty && ! actual.empty; ++index, expected.popFront, actual.popFront)
+	for (; !expected.empty && !actual.empty; ++index, expected.popFront, actual.popFront)
 	{
 		assertEquals(expected.front, actual.front,
 				header ~ format("mismatch at index %s", index),
@@ -684,7 +683,7 @@ void assertSame(T, U)(T expected, U actual, lazy string msg = null,
 ///
 @system
 @("Assertion: assertSame")
-unittest // format is impure and not safe for Object
+unittest  // format is impure and not safe for Object
 {
 	Object foo = new Object();
 	Object bar = new Object();
@@ -744,8 +743,7 @@ unittest
  * Asserts that all assertions pass.
  * Throws: AssertAllException otherwise
  */
-void assertAll(T)(T[] assertions...)
-	if(isCallable!T)
+void assertAll(T)(T[] assertions...) if (isCallable!T)
 {
 	AssertException[] exceptions = null;
 
@@ -782,13 +780,13 @@ void assertAll(void function()[] assertions...)
 unittest
 {
 	assertAll(
-		assertTrue(true),
-		assertFalse(false),
+			assertTrue(true),
+			assertFalse(false),
 	);
 
 	auto exception = expectThrows!AssertException(assertAll(
-		assertTrue(false),
-		assertFalse(true),
+			assertTrue(false),
+			assertFalse(true),
 	));
 
 	assertTrue(exception.msg.canFind("2 assertion failures"), exception.msg);
@@ -800,8 +798,8 @@ unittest
 unittest
 {
 	assertAll!(void delegate() @safe)(
-		assertTrue(true),
-		assertFalse(false),
+			assertTrue(true),
+			assertFalse(false),
 	);
 }
 
@@ -811,8 +809,8 @@ pure
 unittest
 {
 	assertAll!(void delegate() pure)(
-		assertTrue(true),
-		assertFalse(false),
+			assertTrue(true),
+			assertFalse(false),
 	);
 }
 
@@ -926,13 +924,12 @@ unittest
 @("Assertion: assertIn & assertNotIn")
 unittest
 {
-	assertIn("foo", ["foo": "bar"]);
+	assertIn("foo", ["foo" : "bar"]);
 
-	auto exception = expectThrows!AssertException(assertNotIn("foo", ["foo": "bar"]));
+	auto exception = expectThrows!AssertException(assertNotIn("foo", ["foo" : "bar"]));
 
 	assertEquals(`condition ("foo" !in ["foo":"bar"]) not satisfied`, exception.msg);
 }
-
 
 /**
  * Checks a probe until the timeout expires. The assert error is produced
@@ -953,8 +950,7 @@ void assertEventually(T)(T probe,
 		Duration timeout = 500.msecs, Duration delay = 10.msecs,
 		lazy string msg = null,
 		string file = __FILE__,
-		size_t line = __LINE__)
-	if(isCallable!T)
+		size_t line = __LINE__) if (isCallable!T)
 {
 	const startTime = TickDuration.currSystemTick();
 
@@ -977,7 +973,7 @@ void assertEventually(bool delegate() probe,
 		size_t line = __LINE__)
 {
 	assertEventually!(bool delegate())(probe, timeout, delay, msg,
-		file, line);
+			file, line);
 }
 
 /// ditto
@@ -988,7 +984,7 @@ void assertEventually(bool function() probe,
 		size_t line = __LINE__)
 {
 	assertEventually!(bool function())(probe, timeout, delay, msg,
-		file, line);
+			file, line);
 }
 
 ///
@@ -998,15 +994,14 @@ unittest
 	// this should complete right after the first probe
 	assertEventually({ return true; });
 	// test using delegate implementation
-	assertEventually(delegate (){ return true; });
+	assertEventually(delegate() { return true; });
 
 	assertEventually(
-		{ static count = 0; return ++count > 23; },
-		// make sure every slow/heavy-loaded computers/CI do this unittest
-		// e.g.: Travis-CI due to high number of parallel jobs, can't do it in
-		// time.
-		1000.msecs,
-		1.msecs
+	{ static count = 0; return ++count > 23; }, // make sure every slow/heavy-loaded computers/CI do this unittest
+			// e.g.: Travis-CI due to high number of parallel jobs, can't do it in
+			// time.
+			1000.msecs,
+			1.msecs
 	);
 
 	// this should never complete and eventually timeout.
@@ -1022,17 +1017,17 @@ unittest
 @safe pure
 void assertExistsInArray(T, U)(T haystack, U needle, lazy string msg = null,
 		string file = __FILE__,
-		size_t line = __LINE__)
-	if(isArray!T && is(typeof(haystack.front == needle || is(T == void[]))))
+		size_t line = __LINE__) if (isArray!T && is(typeof(haystack.front == needle || is(T == void[]))))
 {
 	string header = (msg.empty) ? null : msg ~ "; ";
 
 	if (haystack.empty)
 		fail(header ~ format("expected <%s> inside of the array but it was empty", needle),
-			file, line);
+				file, line);
 
-	foreach(value; haystack)
-		if(value == needle) return;
+	foreach (value; haystack)
+		if (value == needle)
+			return;
 
 	fail(header ~ format("expected <%s> inside of the array but not found", needle),
 			file, line);
@@ -1045,7 +1040,7 @@ void assertExists(T)(in T[] haystack, T needle, lazy string msg = null,
 		size_t line = __LINE__)
 {
 	assertExistsInArray(haystack, needle, msg,
-		file, line);
+			file, line);
 }
 
 /**
@@ -1058,7 +1053,7 @@ void assertExists(T, size_t len)(auto ref const T[len] haystack, T needle, lazy 
 		size_t line = __LINE__)
 {
 	assertExistsInArray(haystack, needle, msg,
-		file, line);
+			file, line);
 }
 
 /**
@@ -1068,18 +1063,18 @@ void assertExists(T, size_t len)(auto ref const T[len] haystack, T needle, lazy 
 @safe pure
 void assertExists(R, T)(R haystack, T needle, lazy string msg = null,
 		string file = __FILE__,
-		size_t line = __LINE__)
-	if (isInputRange!R && is(typeof(haystack.front == needle)))
+		size_t line = __LINE__) if (isInputRange!R && is(typeof(haystack.front == needle)))
 {
 	string header = (msg.empty) ? null : msg ~ "; ";
 	size_t index = 0;
 
 	if (haystack.empty)
 		fail(header ~ format("expected <%s> inside of the range but it was empty", needle),
-			file, line);
+				file, line);
 
 	for (; !haystack.empty; ++index, haystack.popFront)
-		if(haystack.front == needle) return;
+		if (haystack.front == needle)
+			return;
 
 	fail(header ~ format("expected <%s> inside of the range but not found", needle),
 			file, line);
@@ -1089,8 +1084,8 @@ void assertExists(R, T)(R haystack, T needle, lazy string msg = null,
 @("Assertion: Needle exists in a haystack")
 unittest
 {
-	int[] haystack = [1,2,3,4,5];
-	int[5] staticHaystack = [1,2,3,4,5];
+	int[] haystack = [1, 2, 3, 4, 5];
+	int[5] staticHaystack = [1, 2, 3, 4, 5];
 
 	assertExists(haystack, 5);
 	assertExists(staticHaystack, 5);
@@ -1140,9 +1135,10 @@ void assertContains(T)(T[] array, T[] slice, lazy string msg = null,
 	if (array.length < slice.length)
 		fail(header ~ format("slice length <%d> should be less or equal than <%d>",
 				slice.length, array.length),
-			file, line);
+				file, line);
 
-	if(canFind(array, slice)) return;
+	if (canFind(array, slice))
+		return;
 
 	fail(header ~ format("expected array containing the slice <%s>, but not found", slice),
 			file, line);
@@ -1152,14 +1148,14 @@ void assertContains(T)(T[] array, T[] slice, lazy string msg = null,
 @("Assertion: Array contains a slice")
 unittest
 {
-	int[] array = [1,2,3,4,5];
-	int[5] staticArray = [1,2,3,4,5];
+	int[] array = [1, 2, 3, 4, 5];
+	int[5] staticArray = [1, 2, 3, 4, 5];
 	int[2] staticSlice = [4, 5];
 
 	assertContains(array, [4, 5]);
 	assertContains(staticArray, [4, 5]);
 	assertContains(staticArray, staticSlice);
-	assertContains([1,2,3,4,5], [4, 5]);
+	assertContains([1, 2, 3, 4, 5], [4, 5]);
 
 	// testing with void[] arrays
 	assertContains([0], []);
@@ -1167,7 +1163,7 @@ unittest
 
 	AssertException exception;
 
-	exception = expectThrows!AssertException(assertContains(array, [1,4,5,5,1,7,0,1,2]));
+	exception = expectThrows!AssertException(assertContains(array, [1, 4, 5, 5, 1, 7, 0, 1, 2]));
 	assertEquals(`slice length <9> should be less or equal than <5>`, exception.msg);
 	exception = expectThrows!AssertException(assertContains(array, [0]));
 	assertEquals(`expected array containing the slice <[0]>, but not found`, exception.msg);

@@ -55,41 +55,41 @@ import std.meta;
 
 import aurorafw.stdx.traits;
 
-version(unittest) import aurorafw.unit.assertion;
+version (unittest) import aurorafw.unit.assertion;
 
-public template match(handlers...) {
-	MatchReturnType!handlers match(T)(auto ref T obj)
-		if(is(T == class) || is(T == interface))
+public template match(handlers...)
+{
+	MatchReturnType!handlers match(T)(auto ref T obj) if (is(T == class) || is(T == interface))
 	{
-		alias TL = staticMap!(Unqual,staticMap!(FunctionTypeOf, handlers));
+		alias TL = staticMap!(Unqual, staticMap!(FunctionTypeOf, handlers));
 		static assert(is(NoDuplicates!(TL) == TL));
 
 		enum CompParams(alias H1, alias H2) = Parameters!H1.length > Parameters!H2.length;
 		alias matchReturnType = typeof(return);
 		alias sortedHandlers = AliasSeq!(
-			staticSort!(CompParams, handlers),
-			// default if everything fails
-			() => matchReturnType.init);
-		foreach(handler; sortedHandlers)
+				staticSort!(CompParams, handlers), // default if everything fails
+				() => matchReturnType.init);
+		foreach (handler; sortedHandlers)
 		{
 			alias paramsHandler = Parameters!handler;
 			static assert(paramsHandler.length <= 1);
-			static if(paramsHandler.length == 1)
+			static if (paramsHandler.length == 1)
 			{
 				alias firstParam = Parameters!handler[0];
 
 				// runtime verifications
-				if(typeid(obj) == typeid(firstParam))
+				if (typeid(obj) == typeid(firstParam))
 					return handler(cast(firstParam) obj);
 			}
-			else static if(paramsHandler.length == 0) {
+			else static if (paramsHandler.length == 0)
+			{
 				return handler();
 			}
 		}
 	}
 }
 
-private version(unittest)
+private version (unittest)
 {
 	// dfmt off
 	@safe pure
@@ -110,31 +110,39 @@ public template _from(string moduleName = null)
 	enum _from = FromImpl!(moduleName)();
 }
 
-
-private struct FromImpl(string moduleName = null) {
-    template opDispatch(string symbolName) {
-        static if (ModuleContainsSymbol!(moduleName, symbolName)) {
-            mixin("import ", moduleName,";");
-            mixin("alias opDispatch = ", symbolName, ";");
-        } else {
-            static if (moduleName.length == 0) {
-                enum opDispatch = FromImpl!(symbolName)();
-            } else {
-                enum importString = moduleName ~ "." ~ symbolName;
-                static assert(
-                    CanImport!importString,
-                    "Symbol \"" ~ symbolName ~ "\" not found in " ~ moduleName
-                );
-                enum opDispatch = FromImpl!importString();
-            }
-        }
-    }
+private struct FromImpl(string moduleName = null)
+{
+	template opDispatch(string symbolName)
+	{
+		static if (ModuleContainsSymbol!(moduleName, symbolName))
+		{
+			mixin("import " ~ moduleName ~ ";");
+			mixin("alias opDispatch = " ~ symbolName ~ ";");
+		}
+		else
+		{
+			static if (moduleName.length == 0)
+			{
+				enum opDispatch = FromImpl!(symbolName)();
+			}
+			else
+			{
+				enum importString = moduleName ~ "." ~ symbolName;
+				static assert(
+						CanImport!importString,
+						"Symbol \"" ~ symbolName ~ "\" not found in " ~ moduleName
+				);
+				enum opDispatch = FromImpl!importString();
+			}
+		}
+	}
 }
 
 ///
 @safe pure
 @("Object: from opDispatch sugar")
-unittest {
+unittest
+{
 	assertTrue(__traits(compiles, { _from!"std.math".abs(-1); }));
 	assertTrue(__traits(compiles, { _from!().std.math.abs(-1); }));
 	assertTrue(__traits(compiles, { from.std.math.abs(-1); }));
@@ -157,17 +165,17 @@ unittest
 {
 	UnittestFoobar foo = new UnittestFoo();
 	assertEquals("yes", foo.match!(
-		(UnittestFoo _) => "yes", (UnittestBar _) => "bar", () => "no"
+			(UnittestFoo _) => "yes", (UnittestBar _) => "bar", () => "no"
 	));
 
 	Object bar = new UnittestBar();
 	assertEquals("yes", bar.match!(
-		(UnittestBar _) => "yes", () => "no"
+			(UnittestBar _) => "yes", () => "no"
 	));
 
 	assertEquals(bar, bar.match!(
-		(UnittestBar _) => _, () => null
+			(UnittestBar _) => _, () => null
 	));
 
-	assertEquals(null, bar.match!( (UnittestFoo _) => _ ));
+	assertEquals(null, bar.match!((UnittestFoo _) => _));
 }

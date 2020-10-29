@@ -37,5 +37,5 @@ directly send an email to: contact (at) aurorafoss.org .
 module aurorafw.event.eventsystem;
 
 public:
-	import aurorafw.event.eventsystem.event;
-	import aurorafw.event.eventsystem.eventdispatcher;
+import aurorafw.event.eventsystem.event;
+import aurorafw.event.eventsystem.eventdispatcher;

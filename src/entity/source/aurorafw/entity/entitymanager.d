@@ -41,17 +41,15 @@ import aurorafw.entity.icomponent;
 import aurorafw.entity.componentmanager;
 import aurorafw.entity.world;
 
-version(unittest) import aurorafw.unit.assertion;
+version (unittest) import aurorafw.unit.assertion;
 
 import std.range;
 import std.exception;
-
 
 class EntityManagerHandlingException : Exception
 {
 	mixin basicExceptionCtors;
 }
-
 
 final class EntityManager
 {
@@ -75,7 +73,6 @@ final class EntityManager
 		return e;
 	}
 
-
 	/**
 	 * Pop deleted id
 	 *
@@ -93,7 +90,6 @@ final class EntityManager
 		return eid;
 	}
 
-
 	/**
 	 * Exists
 	 *
@@ -110,7 +106,6 @@ final class EntityManager
 	{
 		return (eid in this.mEntities) !is null;
 	}
-
 
 	/**
 	 * Get an entity
@@ -130,7 +125,6 @@ final class EntityManager
 		return ((p = eid in this.mEntities) !is null) ? *p : null;
 	}
 
-
 	/**
 	 * Get the first entity in the scope with a component
 	 *
@@ -145,13 +139,12 @@ final class EntityManager
 	@safe pure
 	public Entity getFirstWith(C : IComponent)()
 	{
-		foreach(Entity e; this.mEntities)
+		foreach (Entity e; this.mEntities)
 			if (e.contains!C)
 				return e;
 
 		return null;
 	}
-
 
 	/**
 	 * Get the first entity in the scope which contains a group of components
@@ -166,13 +159,12 @@ final class EntityManager
 	@safe pure
 	public Entity getFirstWith(T...)()
 	{
-		foreach(Entity e; this.mEntities)
+		foreach (Entity e; this.mEntities)
 			if (e.containsAll!T)
 				return e;
 
 		return null;
 	}
-
 
 	/**
 	 * Get every entity in the scope which contains a component
@@ -188,13 +180,12 @@ final class EntityManager
 	public Entity[] getAllWith(T : IComponent)()
 	{
 		Entity[] ret;
-		foreach(Entity e; this.mEntities)
+		foreach (Entity e; this.mEntities)
 			if (e.contains!T)
 				ret ~= e;
 
 		return ret;
 	}
-
 
 	/**
 	 * Get every entity in the scope which contains a group of components
@@ -210,13 +201,12 @@ final class EntityManager
 	public Entity[] getAllWith(T...)()
 	{
 		Entity[] ret;
-		foreach(Entity e; this.mEntities)
+		foreach (Entity e; this.mEntities)
 			if (e.containsAll!T)
 				ret ~= e;
 
 		return ret;
 	}
-
 
 	/**
 	 * Get all the deleted ids
@@ -229,11 +219,10 @@ final class EntityManager
 	 * --------------------
 	 */
 	@safe pure
-	public const size_t[] getDeletedIds()
+	public size_t[] getDeletedIds() const
 	{
 		return this.delEntities.dup;
 	}
-
 
 	/**
 	 * Detach
@@ -258,10 +247,9 @@ final class EntityManager
 		}
 		else
 			throw new EntityManagerHandlingException(
-				"Cannot detach entity. Entity doesn't exist in the world's scope."
+					"Cannot detach entity. Entity doesn't exist in the world's scope."
 			);
 	}
-
 
 	/*
 	 * Clear
@@ -271,19 +259,17 @@ final class EntityManager
 	@safe pure
 	public void clear()
 	{
-		foreach(key, value; this.mEntities)
+		foreach (key, value; this.mEntities)
 		{
 			this.delEntities ~= key;
 			this.mEntities.remove(key);
 		}
 	}
 
-
 	private size_t nextId = 0;
 	private Entity[size_t] mEntities;
 	private size_t[] delEntities;
 }
-
 
 ///
 @safe pure
@@ -312,15 +298,22 @@ unittest
 	assertThrown!EntityManagerHandlingException(manager.detach(e1)); // This entity is no longer in the world's scope
 }
 
-
 ///
 @safe pure
 @("Entity Manager: Entities getAllWith and getFirstWith")
 unittest
 {
-	final class Foo : IComponent {}
-	final class Bar : IComponent {}
-	final class Foobar : IComponent {}
+	final class Foo : IComponent
+	{
+	}
+
+	final class Bar : IComponent
+	{
+	}
+
+	final class Foobar : IComponent
+	{
+	}
 
 	EntityManager manager = new EntityManager();
 
@@ -340,12 +333,12 @@ unittest
 	auto e = manager.getFirstWith!Foo;
 
 	import std.algorithm.comparison : equal;
-	assertTrue(equal!((a,b) => a is b)([e1, e2], arr));
+
+	assertTrue(equal!((a, b) => a is b)([e1, e2], arr));
 	assertTrue(e is e1);
 
 	assertTrue(manager.getFirstWith!Foobar is null); // There are no entities with this Component
 }
-
 
 ///
 @safe pure
@@ -358,7 +351,6 @@ unittest
 
 	assertTrue(e is manager.get(e.id));
 }
-
 
 ///
 @safe pure

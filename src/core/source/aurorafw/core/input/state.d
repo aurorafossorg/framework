@@ -39,12 +39,13 @@ module aurorafw.core.input.state;
 
 import aurorafw.core.input.keys;
 
-struct KeyboardState {
+struct KeyboardState
+{
 	private bool[short] keys;
 
 	bool isKeyPressed(Keycode key) const
 	{
-		if((key in keys) !is null)
+		if ((key in keys) !is null)
 			return keys[key];
 		else
 			return false;
@@ -61,7 +62,8 @@ struct KeyboardState {
 	}
 }
 
-struct MouseState {
+struct MouseState
+{
 	private bool[8] buttons;
 	double x, y;
 
@@ -81,7 +83,8 @@ struct MouseState {
 	}
 }
 
-struct TouchState {
+struct TouchState
+{
 	private bool[ubyte] fingers;
 
 	bool isTouchPressed(ubyte id) const
@@ -91,7 +94,8 @@ struct TouchState {
 
 	void touchPress(ubyte id)
 	{
-		if(fingers[id] == false) fingers[id] = true;
+		if (fingers[id] == false)
+			fingers[id] = true;
 	}
 
 	void touchRelease(ubyte id)

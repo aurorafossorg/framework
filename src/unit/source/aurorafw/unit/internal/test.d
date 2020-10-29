@@ -41,12 +41,12 @@ More about silly: https://gitlab.com/AntonMeep/silly
 module aurorafw.unit.internal.test;
 
 package(aurorafw.unit):
-version(unittest):
+version (unittest)  : import std.datetime : Duration;
 
-import std.datetime : Duration;
-
-struct Test {
-	struct Unit {
+struct Test
+{
+	struct Unit
+	{
 		string fullName;
 		string testName;
 		Location location;
@@ -54,7 +54,8 @@ struct Test {
 		void function() testFunc;
 	}
 
-	struct Thrown {
+	struct Thrown
+	{
 		string type;
 		string msg;
 		string file;
@@ -64,7 +65,8 @@ struct Test {
 		immutable(string)[] info;
 	}
 
-	struct Location {
+	struct Location
+	{
 		string file;
 		size_t line, column;
 	}
@@ -73,9 +75,9 @@ struct Test {
 	public static string getName(alias test)()
 	{
 		string name = __traits(identifier, test);
-		foreach(attribute; __traits(getAttributes, test))
+		foreach (attribute; __traits(getAttributes, test))
 		{
-			if(is(typeof(attribute) : string))
+			if (is(typeof(attribute) : string))
 			{
 				name = attribute;
 				break;
@@ -90,12 +92,11 @@ struct Test {
 	{
 		enum loc = __traits(getLocation, test);
 
-		static if(is(typeof(loc)))
+		static if (is(typeof(loc)))
 			return Location(loc);
 		else
 			return Location.init;
 	}
-
 
 	Unit test;
 	bool status;
@@ -113,22 +114,27 @@ Test[] getTestsFromModule(alias m)()
 {
 	Test[] tests;
 	import std.traits : fullyQualifiedName, isAggregateType;
-	static if(__traits(compiles, __traits(getUnitTests, m)) &&
-			!(__traits(isTemplate, m) || (__traits(compiles, isAggregateType!m) && isAggregateType!m))) {
+
+	static if (__traits(compiles, __traits(getUnitTests, m)) &&
+			!(__traits(isTemplate, m) || (__traits(compiles, isAggregateType!m) && isAggregateType!m)))
+	{
 		alias module_ = m;
-	} else {
+	}
+	else
+	{
 		import std.meta : Alias;
+
 		// For cases when module contains member of the same name
 		alias module_ = Alias!(__traits(parent, m));
 	}
 
-	foreach(test; __traits(getUnitTests, module_))
+	foreach (test; __traits(getUnitTests, module_))
 		tests ~= Test(Test.Unit(fullyQualifiedName!test, Test.getName!test, Test.getLocation!test, &test));
 
 	// Unittests in structs and classes
-	foreach(member; __traits(derivedMembers, module_))
-		static if(moduleHasUnittest!(module_, member))
-			foreach(test; __traits(getUnitTests, __traits(getMember, module_, member)))
+	foreach (member; __traits(derivedMembers, module_))
+		static if (moduleHasUnittest!(module_, member))
+			foreach (test; __traits(getUnitTests, __traits(getMember, module_, member)))
 				tests ~= Test(Test.Unit(fullyQualifiedName!test, Test.getName!test, Test.getLocation!test, &test));
 	return tests;
 }
@@ -136,16 +142,19 @@ Test[] getTestsFromModule(alias m)()
 Test[] getTests()()
 {
 	Test[] tests;
-	static if(__traits(compiles, () {static import dub_test_root;})) {
+	static if (__traits(compiles, () { static import dub_test_root; }))
+	{
 		static import dub_test_root;
 
-		foreach(m; dub_test_root.allModules)
+		foreach (m; dub_test_root.allModules)
 		{
 			tests ~= getTestsFromModule!m;
 		}
-	} else {
-		foreach(m; ModuleInfo)
-			if(m && m.unitTest)
+	}
+	else
+	{
+		foreach (m; ModuleInfo)
+			if (m && m.unitTest)
 				tests ~= Test(Test.Unit(m.name, null, m.unitTest));
 	}
 

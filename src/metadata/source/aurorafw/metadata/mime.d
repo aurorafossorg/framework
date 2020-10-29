@@ -1,19 +1,24 @@
 module aurorafw.metadata.mime;
 
 import aurorafw.metadata.signature;
-version(unittest) import aurorafw.unit.assertion;
+
+version (unittest) import aurorafw.unit.assertion;
 
 @safe pure @nogc nothrow
 string toMIME(FileSignature val)
 {
-	switch(val)
+	switch (val)
 	{
-		case FileSignature.PDF: return "application/pdf";
-		case FileSignature.JPEG: return "image/jpeg";
-		case FileSignature.PNG: return "image/png";
+	case FileSignature.PDF:
+		return "application/pdf";
+	case FileSignature.JPEG:
+		return "image/jpeg";
+	case FileSignature.PNG:
+		return "image/png";
 
-		case FileSignature.Unknown:
-		default: return "application/octet-stream";
+	case FileSignature.Unknown:
+	default:
+		return "application/octet-stream";
 	}
 }
 

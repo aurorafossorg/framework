@@ -36,7 +36,6 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.entity.icomponent;
 
-
 /**
  * IComponent
  *
@@ -47,4 +46,6 @@ module aurorafw.entity.icomponent;
  * final class FooComponent : IComponent {}
  * --------------------
  */
-public interface IComponent {}
+public interface IComponent
+{
+}

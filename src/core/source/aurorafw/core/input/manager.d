@@ -39,7 +39,8 @@ import aurorafw.core.input.state;
 import aurorafw.core.input.rawlistener;
 import aurorafw.core.input.events;
 
-struct InputManager {
+struct InputManager
+{
 	public void addRawListener(RawInputListener listener)
 	{
 		_rawlisteneres ~= listener;
@@ -48,40 +49,41 @@ struct InputManager {
 	public void removeRawListener(int index)
 	{
 		import std.algorithm : remove;
+
 		_rawlisteneres.remove(index);
 	}
 
 	public void keyPressed(immutable KeyboardEvent e)
 	{
-		foreach(listener; _rawlisteneres)
+		foreach (listener; _rawlisteneres)
 			listener.keyPressed(e, _keyboardState.isKeyPressed(e.key));
 		_keyboardState.pressKey(e.key);
 	}
 
 	public void keyReleased(immutable KeyboardEvent e)
 	{
-		foreach(listener; _rawlisteneres)
+		foreach (listener; _rawlisteneres)
 			listener.keyReleased(e);
 		_keyboardState.releaseKey(e.key);
 	}
 
 	public void mousePressed(immutable MouseButtonEvent e)
 	{
-		foreach(listener; _rawlisteneres)
+		foreach (listener; _rawlisteneres)
 			listener.mousePressed(e, _mouseState.isButtonPressed(e.btn));
 		_mouseState.pressButton(e.btn);
 	}
 
 	public void mouseReleased(immutable MouseButtonEvent e)
 	{
-		foreach(listener; _rawlisteneres)
+		foreach (listener; _rawlisteneres)
 			listener.mouseReleased(e);
 		_mouseState.releaseButton(e.btn);
 	}
 
 	public void mouseMoved(immutable MouseMotionEvent e)
 	{
-		foreach(listener; _rawlisteneres)
+		foreach (listener; _rawlisteneres)
 			listener.mouseMoved(e);
 
 		_mouseState.x = e.xpos;
@@ -90,26 +92,26 @@ struct InputManager {
 
 	public void mouseScrolled(immutable MouseScrollEvent e)
 	{
-		foreach(listener; _rawlisteneres)
+		foreach (listener; _rawlisteneres)
 			listener.mouseScrolled(e);
 	}
 
 	public void touchMoved(immutable TouchFingerEvent e)
 	{
-		foreach(listener; _rawlisteneres)
+		foreach (listener; _rawlisteneres)
 			listener.touchMoved(e);
 	}
 
 	public void touchPressed(immutable TouchFingerEvent e)
 	{
-		foreach(listener; _rawlisteneres)
+		foreach (listener; _rawlisteneres)
 			listener.touchPressed(e, _touchState.isTouchPressed(e.fingerID));
 		_touchState.touchPress(e.fingerID);
 	}
 
 	public void touchReleased(immutable TouchFingerEvent e)
 	{
-		foreach(listener; _rawlisteneres)
+		foreach (listener; _rawlisteneres)
 			listener.touchReleased(e);
 		_touchState.touchRelease(e.fingerID);
 	}

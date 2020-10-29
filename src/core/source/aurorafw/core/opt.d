@@ -48,7 +48,8 @@ import std.variant;
 import core.runtime : Runtime;
 import std.traits : fullyQualifiedName;
 import std.typecons;
-version(unittest) import aurorafw.unit.assertion;
+
+version (unittest) import aurorafw.unit.assertion;
 
 @safe pure
 class OptionHandlerException : Exception
@@ -60,19 +61,23 @@ static assert(is(typeof(new OptionHandlerException("message"))));
 static assert(is(typeof(new OptionHandlerException("message", Exception.init))));
 
 @safe pure
-struct OptionHandler {
-	struct Option {
+struct OptionHandler
+{
+	struct Option
+	{
 		string[] opts;
 		string help;
 	}
 
-	struct Argument {
+	struct Argument
+	{
 		string name;
 		ArgumentSize size;
 		string value = null;
 	}
 
-	enum ArgumentSize {
+	enum ArgumentSize
+	{
 		Long,
 		Short
 	}
@@ -80,35 +85,35 @@ struct OptionHandler {
 	@safe pure
 	public this(string[] args)
 	{
-		foreach(string arg ; args[1 .. $])
+		foreach (string arg; args[1 .. $])
 		{
-			if(arg.startsWith("--"))
+			if (arg.startsWith("--"))
 			{
 				string splitted = arg.split("--")[1];
-				if(splitted.length == 0)
+				if (splitted.length == 0)
 					break;
 
 				ptrdiff_t hasValue = splitted.indexOf('=');
-				if(hasValue != -1)
+				if (hasValue != -1)
 				{
 					string newSplitted = splitted[0 .. hasValue];
-					if(newSplitted.isAlpha)
+					if (newSplitted.isAlpha)
 						this.args ~= Argument(newSplitted, ArgumentSize.Long, splitted[hasValue + 1 .. $]);
 				}
-				else if(splitted.isAlpha)
+				else if (splitted.isAlpha)
 					this.args ~= Argument(splitted, ArgumentSize.Long);
 			}
 			else if (arg.startsWith("-"))
 			{
 				string splitted = arg.split("-")[1];
 				ptrdiff_t hasValue = splitted.indexOf('=');
-				if(hasValue != -1)
+				if (hasValue != -1)
 				{
 					string newSplitted = splitted[0 .. hasValue];
-					if(newSplitted.isAlpha)
+					if (newSplitted.isAlpha)
 						this.args ~= Argument(newSplitted, ArgumentSize.Short, splitted[hasValue + 1 .. $]);
 				}
-				else if(splitted.isAlpha && splitted.length != 0)
+				else if (splitted.isAlpha && splitted.length != 0)
 					this.args ~= Argument(splitted, ArgumentSize.Short);
 			}
 		}
@@ -121,18 +126,20 @@ struct OptionHandler {
 
 		T[] ret;
 		bool value = false;
-		foreach(arg; args) if(opts.canFind(arg.name))
-		{
-			value = true;
-			string retstr = arg.value;
-			if(retstr !is null)
+		foreach (arg; args)
+			if (opts.canFind(arg.name))
 			{
-				import std.conv : to;
-				ret ~= to!T(retstr);
-			}
-		}
+				value = true;
+				string retstr = arg.value;
+				if (retstr !is null)
+				{
+					import std.conv : to;
 
-		if(required && (!value || (value && ret.empty)))
+					ret ~= to!T(retstr);
+				}
+			}
+
+		if (required && (!value || (value && ret.empty)))
 			throw new OptionHandlerException("Required option %s with %s type".format(opts, fullyQualifiedName!T));
 
 		return ret;
@@ -143,15 +150,16 @@ struct OptionHandler {
 	{
 		Option opte = read(opts, help);
 		value = false;
-		foreach(opt; opte.opts)
+		foreach (opt; opte.opts)
 		{
-			foreach(arg; args) if(arg.name == opt)
-			{
-				value = true;
+			foreach (arg; args)
+				if (arg.name == opt)
+				{
+					value = true;
 					return arg.nullable;
-			}
+				}
 		}
-		if(value == false && required == true)
+		if (value == false && required == true)
 			throw new OptionHandlerException("Required option " ~ opts);
 
 		return Nullable!Argument();
@@ -164,7 +172,7 @@ struct OptionHandler {
 		opte.opts = opts.split("|").sort!((a, b) => a.length < b.length).array;
 		opte.help = help;
 
-		if(this.opts.any!(o => o.opts == opte.opts))
+		if (this.opts.any!(o => o.opts == opte.opts))
 			throw new OptionHandlerException("Trying to read the same option name twice");
 
 		this.opts ~= opte;
@@ -175,9 +183,9 @@ struct OptionHandler {
 	@safe pure nothrow
 	public bool helpWanted()
 	{
-		foreach(arg; args)
+		foreach (arg; args)
 		{
-			if(arg.name == "help")
+			if (arg.name == "help")
 				return true;
 		}
 		return false;
@@ -190,10 +198,10 @@ struct OptionHandler {
 
 		ret ~= "Usage:\n\t%s -- <options>\n\nOptions:\n".format(programName);
 
-		foreach(opt; opts)
+		foreach (opt; opts)
 		{
 			ret ~= opt.opts[0];
-			if(opt.opts.length == 2)
+			if (opt.opts.length == 2)
 			{
 				ret ~= " " ~ opt.opts[1];
 			}
@@ -257,7 +265,6 @@ unittest
 	assertEquals([], opts.options);
 }
 
-
 @safe pure
 @("Option Handler: check read")
 unittest
@@ -284,7 +291,6 @@ unittest
 	assertTrue(isFoobar);
 }
 
-
 @safe pure
 @("Option Handler: check values")
 unittest
@@ -301,7 +307,6 @@ unittest
 	assertEquals(4, foo[0]);
 	assertEquals(7, foo[1]);
 }
-
 
 @safe pure
 @("Option Handler: required exception")

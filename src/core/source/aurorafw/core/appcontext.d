@@ -37,19 +37,27 @@ module aurorafw.core.appcontext;
 
 import aurorafw.core.application;
 
-abstract class ApplicationContext : Application {
+abstract class ApplicationContext : Application
+{
 public:
 	import core.runtime : Runtime;
+
 	this(immutable string packageName, string[] args = Runtime.args())
 	{
 		super(packageName, args);
 	}
 
-	protected void onStart() {}
-	protected void onClose() {}
+	protected void onStart()
+	{
+	}
+
+	protected void onClose()
+	{
+	}
 
 	pragma(inline)
-	protected void loop() {
+	protected void loop()
+	{
 		stop();
 	}
 
@@ -58,7 +66,7 @@ public:
 		onStart();
 
 		running = true;
-		while(running)
+		while (running)
 			loop();
 
 		onClose();
@@ -81,8 +89,10 @@ public:
 
 @system
 @("Application: context")
-unittest {
-	class MyApplicationContext : ApplicationContext {
+unittest
+{
+	class MyApplicationContext : ApplicationContext
+	{
 		this(immutable string packageName, string[] args)
 		{
 			super(packageName, args);
@@ -91,7 +101,8 @@ unittest {
 			assert(args == ["app", "--args"]);
 		}
 
-		override void loop() {
+		override void loop()
+		{
 			assert(this.isRunning);
 			this.stop();
 		}

@@ -38,8 +38,7 @@ module aurorafw.entity.system;
 
 import aurorafw.entity.systemmanager;
 
-version(unittest) import aurorafw.unit.assertion;
-
+version (unittest) import aurorafw.unit.assertion;
 
 abstract class System
 {
@@ -56,13 +55,11 @@ abstract class System
 		Manual
 	}
 
-
 	@safe pure
 	public this(UpdatePolicy updatePolicy = UpdatePolicy.Automatic)
 	{
 		this.updatePolicy = updatePolicy;
 	}
-
 
 	/**
 	 * Manager
@@ -79,7 +76,6 @@ abstract class System
 	{
 		return _manager;
 	}
-
 
 	/**
 	 * Manager
@@ -99,7 +95,6 @@ abstract class System
 		return _manager = manager;
 	}
 
-
 	/**
 	 * Update
 	 *
@@ -114,7 +109,6 @@ abstract class System
 	 * --------------------
 	 */
 	public abstract void update();
-
 
 	public UpdatePolicy updatePolicy;
 	private SystemManager _manager;

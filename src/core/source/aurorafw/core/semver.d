@@ -64,7 +64,7 @@ import std.algorithm;
 import std.exception : enforce;
 import core.exception;
 
-version(unittest) import aurorafw.unit.assertion;
+version (unittest) import aurorafw.unit.assertion;
 import aurorafw.stdx.string : indexOfAny;
 
 /** Version struct
@@ -78,7 +78,8 @@ import aurorafw.stdx.string : indexOfAny;
  * --------------------
  */
 @safe pure
-struct Version {
+struct Version
+{
 	/// Major version
 	public uint major;
 	/// Minor version
@@ -86,17 +87,15 @@ struct Version {
 	/// Patch version
 	public uint patch;
 
-
 	/// Default constructor
 	@safe pure @nogc
 	public this(M = uint, N = uint, P = uint)(M major = uint.init, N minor = uint.init, P patch = uint.init)
-	if(isIntegral!M && isIntegral!N && isIntegral!P)
+			if (isIntegral!M && isIntegral!N && isIntegral!P)
 	{
 		this.major = major;
 		this.minor = minor;
 		this.patch = patch;
 	}
-
 
 	/** Construct from string
 	 * Use common version strings and convert to
@@ -107,52 +106,53 @@ struct Version {
 	@safe pure
 	public this(string str)
 	{
-		if(str.empty)
+		if (str.empty)
 			return;
 
-		if(str.length > 0 && str[0] == 'v')
+		if (str.length > 0 && str[0] == 'v')
 			str = str[1 .. $];
 
 		auto strSplitted = str.split('.');
 
-		try {
-			foreach(i, verStr; strSplitted)
+		try
+		{
+			foreach (i, verStr; strSplitted)
 			{
-				if((i + 1 == strSplitted.length && i <= 2) || i == 2)
+				if ((i + 1 == strSplitted.length && i <= 2) || i == 2)
 				{
 					auto verStrReplaced = verStr.replaceFirst('+', '-');
 					auto verStrSplitted = verStrReplaced.split('-');
 					this[i] = verStrSplitted.front.to!uint;
-					if(verStrSplitted.length > 1 &&
-						verStrReplaced == verStr &&
-						verStrSplitted[1].all!(isNumber) &&
-						i != 2)
+					if (verStrSplitted.length > 1 &&
+							verStrReplaced == verStr &&
+							verStrSplitted[1].all!(isNumber) &&
+							i != 2)
 					{
 						this[2] = verStrSplitted[1].to!uint;
 					}
-				} else if(i >= 3)
+				}
+				else if (i >= 3)
 				{
 					return;
 				}
-				else {
+				else
+				{
 					this[i] = verStr.to!uint;
 				}
 			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			throw new FormatException("Invalid version format", e.file, e.line);
 		}
 
 	}
 
-
 	@safe pure
 	uint[] opIndex()
 	{
 		return [major, minor, patch];
 	}
-
 
 	@safe pure
 	uint opIndex(size_t idx)
@@ -162,31 +162,31 @@ struct Version {
 		return opIndex[idx];
 	}
 
-
 	@safe pure
 	uint opIndexAssign(uint val, size_t idx)
 	{
 		enforce(idx < 3, "Invalid index");
 
-		final switch(idx)
+		final switch (idx)
 		{
-			case 0: return this.major = val;
-			case 1: return this.minor = val;
-			case 2: return this.patch = val;
+		case 0:
+			return this.major = val;
+		case 1:
+			return this.minor = val;
+		case 2:
+			return this.patch = val;
 		}
 	}
 
 	@safe pure
-	int opCmp(ref const Version v) const // for l-values
+	int opCmp(ref const Version v) const  // for l-values
 	{
-		return (this.major != v.major) ? this.major - v.major :
-				(this.minor != v.minor) ? this.minor - v.minor :
-				(this.patch != v.patch) ? this.patch - v.patch :
-				0;
+		return (this.major != v.major) ? this.major - v.major : (this.minor != v.minor) ? this.minor - v.minor
+			: (this.patch != v.patch) ? this.patch - v.patch : 0;
 	}
 
 	@safe pure
-	int opCmp(const Version v) const // for r-values
+	int opCmp(const Version v) const  // for r-values
 	{
 		return opCmp(v);
 	}
@@ -197,7 +197,6 @@ struct Version {
 		return major.to!string ~ "." ~ minor.to!string ~ "." ~ patch.to!string;
 	}
 }
-
 
 ///
 @safe pure
@@ -225,7 +224,6 @@ unittest
 	assertEquals(4, ver.patch);
 }
 
-
 ///
 @safe pure
 @("Versioning: index operator")
@@ -242,7 +240,6 @@ unittest
 	expectThrows(ver[3] = 0);
 	expectThrows(ver[3]);
 }
-
 
 ///
 @safe pure
@@ -295,11 +292,11 @@ unittest
 	expectThrows(Version("."));
 }
 
-
 ///
 @safe pure
 @("Versioning: string conversion")
-unittest {
+unittest
+{
 	Version ver = Version(1, 3, 4);
 	assertEquals("1.3.4", ver.to!string);
 
@@ -310,7 +307,8 @@ unittest {
 ///
 @safe pure
 @("Versioning: boolean operations")
-unittest {
+unittest
+{
 	assertGreaterThan(Version(2), Version(1));
 	assertGreaterThan(Version(2), Version(1, 2, 3));
 	assertLessThan(Version(2), Version(3));
@@ -323,17 +321,18 @@ unittest {
 	assertLessThan(Version(1, 0, 32), Version(1, 1, 0));
 }
 
-
 /**
  * Check if the given version is semver compatible
  */
 @safe pure
 bool isValidVersion(string str)
 {
-	try {
+	try
+	{
 		Version(str);
 		return true;
-	} catch (FormatException )
+	}
+	catch (FormatException)
 	{
 		return false;
 	}
@@ -341,7 +340,8 @@ bool isValidVersion(string str)
 
 @("Versioning: check valid version")
 @safe pure
-unittest {
+unittest
+{
 	enum testCTFE = isValidVersion("1.0.0");
 
 	assertTrue(isValidVersion("1.0.0"));
@@ -375,72 +375,95 @@ bool isSemVer(string ver)
 {
 	// a
 	auto sepi = ver.indexOf('.');
-	if (sepi < 0) return false;
-	if (!isSemVerNumber(ver[0 .. sepi])) return false;
-	ver = ver[sepi+1 .. $];
+	if (sepi < 0)
+		return false;
+	if (!isSemVerNumber(ver[0 .. sepi]))
+		return false;
+	ver = ver[sepi + 1 .. $];
 
 	// c
 	sepi = ver.indexOf('.');
-	if (sepi < 0) return false;
-	if (!isSemVerNumber(ver[0 .. sepi])) return false;
-	ver = ver[sepi+1 .. $];
+	if (sepi < 0)
+		return false;
+	if (!isSemVerNumber(ver[0 .. sepi]))
+		return false;
+	ver = ver[sepi + 1 .. $];
 
 	// c
 	sepi = ver.indexOfAny("-+");
-	if (sepi < 0) sepi = ver.length;
-	if (!isSemVerNumber(ver[0 .. sepi])) return false;
+	if (sepi < 0)
+		sepi = ver.length;
+	if (!isSemVerNumber(ver[0 .. sepi]))
+		return false;
 	ver = ver[sepi .. $];
 
 	@safe pure @nogc
 	bool isValidIdentifierChain(string str, bool allow_leading_zeros = false)
 	{
 		bool isValidIdentifier(string str, bool allow_leading_zeros = false)
-		pure @nogc {
-			if (str.length < 1) return false;
+		pure @nogc
+		{
+			if (str.length < 1)
+				return false;
 
 			bool numeric = true;
-			foreach (ch; str) {
-				switch (ch) {
-					default: return false;
-					case 'a': .. case 'z':
-					case 'A': .. case 'Z':
-					case '-':
-						numeric = false;
-						break;
-					case '0': .. case '9':
-						break;
+			foreach (ch; str)
+			{
+				switch (ch)
+				{
+				default:
+					return false;
+				case 'a': .. case 'z':
+				case 'A': .. case 'Z':
+				case '-':
+					numeric = false;
+					break;
+				case '0': .. case '9':
+					break;
 				}
 			}
 
-			if (!allow_leading_zeros && numeric && str[0] == '0' && str.length > 1) return false;
+			if (!allow_leading_zeros && numeric && str[0] == '0' && str.length > 1)
+				return false;
 
 			return true;
 		}
 
-		if (str.length == 0) return false;
-		while (str.length) {
+		if (str.length == 0)
+			return false;
+		while (str.length)
+		{
 			auto end = str.indexOf('.');
-			if (end < 0) end = str.length;
-			if (!isValidIdentifier(str[0 .. end], allow_leading_zeros)) return false;
-			if (end < str.length) str = str[end+1 .. $];
-			else break;
+			if (end < 0)
+				end = str.length;
+			if (!isValidIdentifier(str[0 .. end], allow_leading_zeros))
+				return false;
+			if (end < str.length)
+				str = str[end + 1 .. $];
+			else
+				break;
 		}
 		return true;
 	}
 
 	// prerelease tail
-	if (ver.length > 0 && ver[0] == '-') {
+	if (ver.length > 0 && ver[0] == '-')
+	{
 		ver = ver[1 .. $];
 		sepi = ver.indexOf('+');
-		if (sepi < 0) sepi = ver.length;
-		if (!isValidIdentifierChain(ver[0 .. sepi])) return false;
+		if (sepi < 0)
+			sepi = ver.length;
+		if (!isValidIdentifierChain(ver[0 .. sepi]))
+			return false;
 		ver = ver[sepi .. $];
 	}
 
 	// build tail
-	if (ver.length > 0 && ver[0] == '+') {
+	if (ver.length > 0 && ver[0] == '+')
+	{
 		ver = ver[1 .. $];
-		if (!isValidIdentifierChain(ver, true)) return false;
+		if (!isValidIdentifierChain(ver, true))
+			return false;
 		ver = null;
 	}
 
@@ -448,11 +471,11 @@ bool isSemVer(string ver)
 	return true;
 }
 
-
 ///
 @("Versioning: check valid semantic version")
 @safe pure
-unittest {
+unittest
+{
 	enum testCTFE = isSemVer("1.0.0");
 
 	assertTrue(isSemVer("1.9.0"));
@@ -483,7 +506,6 @@ unittest {
 	assertFalse(isSemVer("1.0-1.0"));
 }
 
-
 /**
  * Takes a partial version and expands it to a valid SemVer version.
  *
@@ -497,21 +519,23 @@ string expandVersion(string ver)
 {
 	auto mi = ver.indexOfAny("+-");
 	auto sub = "";
-	if (mi > 0) {
-		sub = ver[mi..$];
-		ver = ver[0..mi];
+	if (mi > 0)
+	{
+		sub = ver[mi .. $];
+		ver = ver[0 .. mi];
 	}
-	auto splitted = () @trusted { return split(ver, "."); } ();
+	auto splitted = () @trusted { return split(ver, "."); }();
 	assert(splitted.length > 0 && splitted.length <= 3, "Version corrupt: " ~ ver);
-	while (splitted.length < 3) splitted ~= "0";
+	while (splitted.length < 3)
+		splitted ~= "0";
 	return splitted.join(".") ~ sub;
 }
-
 
 ///
 @("Versioning: expand version")
 @safe pure
-unittest {
+unittest
+{
 	assertEquals("1.0.0", expandVersion("1"));
 	assertEquals("1.0.0", expandVersion("1.0"));
 	assertEquals("1.0.0", expandVersion("1.0.0"));
@@ -521,36 +545,40 @@ unittest {
 	assertEquals("1.0.0-pre.release+meta", expandVersion("1-pre.release+meta"));
 }
 
-
 /**
  * Determines if a given valid SemVer version has a pre-release suffix.
  */
 @safe pure
 bool isPreReleaseVersion(string ver)
-in { assert(isSemVer(ver)); }
-body {
-	foreach (i; 0 .. 2) {
+in
+{
+	assert(isSemVer(ver));
+}
+do
+{
+	foreach (i; 0 .. 2)
+	{
 		auto di = ver.indexOf('.');
 		assert(di > 0);
-		ver = ver[di+1 .. $];
+		ver = ver[di + 1 .. $];
 	}
 	auto di = ver.indexOf('-');
-	if (di < 0) return false;
+	if (di < 0)
+		return false;
 	return isSemVerNumber(ver[0 .. di]);
 }
 
 ///
 @("Versioning: check pre-release")
 @safe pure
-unittest {
+unittest
+{
 	assertTrue(isPreReleaseVersion("1.0.0-alpha"));
 	assertTrue(isPreReleaseVersion("1.0.0-alpha+b1"));
 	assertTrue(isPreReleaseVersion("0.9.0-beta.1"));
 	assertFalse(isPreReleaseVersion("0.9.0"));
 	assertFalse(isPreReleaseVersion("0.9.0+b1"));
 }
-
-
 
 /**
  * Compares the precedence of two SemVer version strings.
@@ -573,25 +601,38 @@ int compareSemVer(string a, string b)
 		bool bnumber = true;
 		bool aempty = true, bempty = true;
 		int res = 0;
-		while (true) {
-			if (a[0] != b[0] && res == 0) res = a[0] - b[0];
-			if (anumber && (a[0] < '0' || a[0] > '9')) anumber = false;
-			if (bnumber && (b[0] < '0' || b[0] > '9')) bnumber = false;
-			a = a[1 .. $]; b = b[1 .. $];
+		while (true)
+		{
+			if (a[0] != b[0] && res == 0)
+				res = a[0] - b[0];
+			if (anumber && (a[0] < '0' || a[0] > '9'))
+				anumber = false;
+			if (bnumber && (b[0] < '0' || b[0] > '9'))
+				bnumber = false;
+			a = a[1 .. $];
+			b = b[1 .. $];
 			aempty = !a.length || a[0] == '.' || a[0] == '+';
 			bempty = !b.length || b[0] == '.' || b[0] == '+';
-			if (aempty || bempty) break;
+			if (aempty || bempty)
+				break;
 		}
 
-		if (anumber && bnumber) {
-			if (aempty != bempty) return bempty - aempty;
+		if (anumber && bnumber)
+		{
+			if (aempty != bempty)
+				return bempty - aempty;
 			return res;
-		} else {
-			if (anumber && aempty) return -1;
-			if (bnumber && bempty) return 1;
+		}
+		else
+		{
+			if (anumber && aempty)
+				return -1;
+			if (bnumber && bempty)
+				return 1;
 
 			static assert('0' < 'a' && '0' < 'A');
-			if (res != 0) return res;
+			if (res != 0)
+				return res;
 			return bempty - aempty;
 		}
 	}
@@ -600,41 +641,58 @@ int compareSemVer(string a, string b)
 	int compareNumber(ref string a, ref string b)
 	{
 		int res = 0;
-		while (true) {
-			if (a[0] != b[0] && res == 0) res = a[0] - b[0];
-			a = a[1 .. $]; b = b[1 .. $];
+		while (true)
+		{
+			if (a[0] != b[0] && res == 0)
+				res = a[0] - b[0];
+			a = a[1 .. $];
+			b = b[1 .. $];
 			auto aempty = !a.length || (a[0] < '0' || a[0] > '9');
 			auto bempty = !b.length || (b[0] < '0' || b[0] > '9');
-			if (aempty != bempty) return bempty - aempty;
-			if (aempty) return res;
+			if (aempty != bempty)
+				return bempty - aempty;
+			if (aempty)
+				return res;
 		}
 	}
 
 	// compare a.b.c numerically
-	if (auto ret = compareNumber(a, b)) return ret;
+	if (auto ret = compareNumber(a, b))
+		return ret;
 	assert(a[0] == '.' && b[0] == '.');
-	a = a[1 .. $]; b = b[1 .. $];
-	if (auto ret = compareNumber(a, b)) return ret;
+	a = a[1 .. $];
+	b = b[1 .. $];
+	if (auto ret = compareNumber(a, b))
+		return ret;
 	assert(a[0] == '.' && b[0] == '.');
-	a = a[1 .. $]; b = b[1 .. $];
-	if (auto ret = compareNumber(a, b)) return ret;
+	a = a[1 .. $];
+	b = b[1 .. $];
+	if (auto ret = compareNumber(a, b))
+		return ret;
 
 	// give precedence to non-prerelease versions
 	bool apre = a.length > 0 && a[0] == '-';
 	bool bpre = b.length > 0 && b[0] == '-';
-	if (apre != bpre) return bpre - apre;
-	if (!apre) return 0;
+	if (apre != bpre)
+		return bpre - apre;
+	if (!apre)
+		return 0;
 
 	// compare the prerelease tail lexicographically
-	do {
-		a = a[1 .. $]; b = b[1 .. $];
-		if (auto ret = compareIdentifier(a, b)) return ret;
-	} while (a.length > 0 && b.length > 0 && a[0] != '+' && b[0] != '+');
+	do
+	{
+		a = a[1 .. $];
+		b = b[1 .. $];
+		if (auto ret = compareIdentifier(a, b))
+			return ret;
+	}
+	while (a.length > 0 && b.length > 0 && a[0] != '+' && b[0] != '+');
 
 	// give longer prerelease tails precedence
 	bool aempty = a.length == 0 || a[0] == '+';
 	bool bempty = b.length == 0 || b[0] == '+';
-	if (aempty == bempty) {
+	if (aempty == bempty)
+	{
 		assert(aempty);
 		return 0;
 	}
@@ -644,19 +702,22 @@ int compareSemVer(string a, string b)
 ///
 @("Versioning: semver comparison")
 @safe pure
-unittest {
+unittest
+{
 	assertEquals(0, compareSemVer("1.0.0", "1.0.0"));
 	assertEquals(0, compareSemVer("1.0.0+b1", "1.0.0+b2"));
 	assertLessThan(compareSemVer("1.0.0", "2.0.0"), 0);
 	assertLessThan(compareSemVer("1.0.0-beta", "1.0.0"), 0);
 	assertGreaterThan(compareSemVer("1.0.1", "1.0.0"), 0);
 
-	void assertLess(string a, string b) {
+	void assertLess(string a, string b)
+	{
 		assertLessThan(compareSemVer(a, b), 0);
 		assertGreaterThan(compareSemVer(b, a), 0);
 		assertEquals(0, compareSemVer(a, a));
 		assertEquals(0, compareSemVer(b, b));
 	}
+
 	assertLess("1.0.0", "2.0.0");
 	assertLess("2.0.0", "2.1.0");
 	assertLess("2.1.0", "2.1.1");
@@ -680,7 +741,6 @@ unittest {
 	assertLess("1.0.0-alphZ", "1.0.0-alpha");
 }
 
-
 /**
  * Increments a given (partial) version number to the next higher version.
  *
@@ -703,23 +763,25 @@ string bumpVersion(string ver)
 {
 	// Cut off metadata and prerelease information.
 	auto mi = ver.indexOfAny("+-");
-	if (mi > 0) ver = ver[0..mi];
+	if (mi > 0)
+		ver = ver[0 .. mi];
 	// Increment next to last version from a[.b[.c]].
-	auto splitted = () @trusted { return split(ver, "."); } (); // DMD 2.065.0
+	auto splitted = () @trusted { return split(ver, "."); }(); // DMD 2.065.0
 	assert(splitted.length > 0 && splitted.length <= 3, "Version corrupt: " ~ ver);
-	auto to_inc = splitted.length == 3? 1 : 0;
-	splitted = splitted[0 .. to_inc+1];
+	auto to_inc = splitted.length == 3 ? 1 : 0;
+	splitted = splitted[0 .. to_inc + 1];
 	splitted[to_inc] = to!string(to!int(splitted[to_inc]) + 1);
 	// Fill up to three compontents to make valid SemVer version.
-	while (splitted.length < 3) splitted ~= "0";
+	while (splitted.length < 3)
+		splitted ~= "0";
 	return splitted.join(".");
 }
-
 
 ///
 @("Versioning: bump version")
 @safe pure
-unittest {
+unittest
+{
 	assertEquals("1.0.0", bumpVersion("0"));
 	assertEquals("1.0.0", bumpVersion("0.0"));
 	assertEquals("0.1.0", bumpVersion("0.0.0"));
@@ -729,16 +791,17 @@ unittest {
 	assertEquals("1.3.0", bumpVersion("1.2.3-pre.release+metadata"));
 }
 
-
 @safe pure @nogc nothrow
 private bool isSemVerNumber(string str)
 {
-	if (str.length < 1) return false;
+	if (str.length < 1)
+		return false;
 	foreach (ch; str)
 		if (ch < '0' || ch > '9')
 			return false;
 
-	if (str[0] == '0' && str.length > 1) return false;
+	if (str[0] == '0' && str.length > 1)
+		return false;
 
 	return true;
 }

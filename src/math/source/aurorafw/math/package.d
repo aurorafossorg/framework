@@ -36,5 +36,5 @@ directly send an email to: contact (at) aurorafoss.org .
 module aurorafw.math;
 
 public:
-	import aurorafw.math.vector;
-	import aurorafw.math.matrix;
+import aurorafw.math.vector;
+import aurorafw.math.matrix;

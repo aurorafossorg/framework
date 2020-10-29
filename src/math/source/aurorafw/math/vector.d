@@ -35,7 +35,8 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.math.vector;
 
-@nogc pure @safe struct vec(T, size_t N) {
+@nogc pure @safe struct vec(T, size_t N)
+{
 	private static string _elements(string[4] l)
 	{
 		string ret;
@@ -51,26 +52,37 @@ module aurorafw.math.vector;
 		T[N] vec;
 		static if (N <= 4)
 		{
-			struct { mixin(_elements(["x", "y", "z", "w"])); }
-			struct { mixin(_elements(["r", "g", "b", "a"])); }
-			struct { mixin(_elements(["s", "t", "p", "q"])); }
+			struct
+			{
+				mixin(_elements(["x", "y", "z", "w"]));
+			}
+
+			struct
+			{
+				mixin(_elements(["r", "g", "b", "a"]));
+			}
+
+			struct
+			{
+				mixin(_elements(["s", "t", "p", "q"]));
+			}
 		}
 	}
 }
 
 //TODO: Add unittesting
 
-alias vec!(int, 2) Vector2i, ivec2;
-alias vec!(uint, 2) Vector2u, uvec2;
-alias vec!(float, 2) Vector2f, vec2;
-alias vec!(double, 2) Vector2d, dvec2;
+alias Vector2i = vec!(int, 2), ivec2 = vec!(int, 2);
+alias Vector2u = vec!(uint, 2), uvec2 = vec!(uint, 2);
+alias Vector2f = vec!(float, 2), vec2 = vec!(float, 2);
+alias Vector2d = vec!(double, 2), dvec2 = vec!(double, 2);
 
-alias vec!(int, 3) Vector3i, ivec3;
-alias vec!(uint, 3) Vector3u, uvec3;
-alias vec!(float, 3) Vector3f, vec3;
-alias vec!(double, 3) Vector3d, dvec3;
+alias Vector3i = vec!(int, 3), ivec3 = vec!(int, 3);
+alias Vector3u = vec!(uint, 3), uvec3 = vec!(uint, 3);
+alias Vector3f = vec!(float, 3), vec3 = vec!(float, 3);
+alias Vector3d = vec!(double, 3), dvec3 = vec!(double, 3);
 
-alias vec!(int, 4) Vector4i, ivec4;
-alias vec!(uint, 4) Vector4u, uvec4;
-alias vec!(float, 4) Vector4f, vec4;
-alias vec!(double, 4) Vector4d, dvec4;
+alias Vector4i = vec!(int, 4), ivec4 = vec!(int, 4);
+alias Vector4u = vec!(uint, 4), uvec4 = vec!(uint, 4);
+alias Vector4f = vec!(float, 4), vec4 = vec!(float, 4);
+alias Vector4d = vec!(double, 4), dvec4 = vec!(double, 4);

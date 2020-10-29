@@ -41,14 +41,14 @@ More about silly: https://gitlab.com/AntonMeep/silly
 module aurorafw.unit.internal.console;
 
 package(aurorafw.unit):
-version(unittest):
+version (unittest)  : __gshared bool noColours;
 
-__gshared bool noColours;
-
-static struct Console {
+static struct Console
+{
 	import std.conv : text;
 
-	enum Colour : ushort {
+	enum Colour : ushort
+	{
 		None,
 		Red = 31,
 		Green = 32,
@@ -57,14 +57,22 @@ static struct Console {
 		LightRed = 91
 	}
 
-	static void init() {
-		if(noColours) {
+	static void init()
+	{
+		if (noColours)
+		{
 			return;
-		} else {
-			version(Posix) {
+		}
+		else
+		{
+			version (Posix)
+			{
 				import core.sys.posix.unistd;
+
 				noColours = isatty(STDOUT_FILENO) == 0;
-			} else version(Windows) {
+			}
+			else version (Windows)
+			{
 				import core.sys.windows.winbase;
 				import core.sys.windows.wincon;
 				import core.sys.windows.windef;
@@ -85,23 +93,21 @@ static struct Console {
 	static string colour(T)(T t, Colour c = Colour.None)
 	{
 		return noColours
-			? text(t)
-			: text("\033[", cast(int) c, "m", t, "\033[m");
+			? text(t) : text("\033[", cast(int) c, "m", t, "\033[m");
 	}
 
 	static string emphasis(T)(T t)
 	{
 		return noColours
-			? text(t)
-			: text("\033[1m", t, "\033[m");
+			? text(t) : text("\033[1m", t, "\033[m");
 	}
 
 	static string truncateName(string s, bool verbose = false)
 	{
 		import std.algorithm : max;
 		import std.string : indexOf;
+
 		return s.length > 30 && !verbose
-			? s[max(s.indexOf('.', s.length - 30), s.length - 30) .. $]
-			: s;
+			? s[max(s.indexOf('.', s.length - 30), s.length - 30) .. $] : s;
 	}
 }

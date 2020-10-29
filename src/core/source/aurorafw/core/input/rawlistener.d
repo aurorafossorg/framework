@@ -40,25 +40,55 @@ module aurorafw.core.input.rawlistener;
 public import aurorafw.core.input.events;
 public import aurorafw.core.input.keys;
 
-pure @safe abstract class RawInputListener {
-	~this() {}
+pure @safe abstract class RawInputListener
+{
+	~this()
+	{
+	}
 
-	void keyPressed(immutable KeyboardEvent e, bool lastState) {}
-	void keyReleased(immutable KeyboardEvent e) {}
-	void mousePressed(immutable MouseButtonEvent e, bool lastState) {}
-	void mouseReleased(immutable MouseButtonEvent e) {}
-	void mouseMoved(immutable MouseMotionEvent e) {}
-	void mouseScrolled(immutable MouseScrollEvent e) {}
-	void touchMoved(immutable TouchFingerEvent e) {}
-	void touchPressed(immutable TouchFingerEvent e, bool lastState) {}
-	void touchReleased(immutable TouchFingerEvent e) {}
+	void keyPressed(immutable KeyboardEvent e, bool lastState)
+	{
+	}
+
+	void keyReleased(immutable KeyboardEvent e)
+	{
+	}
+
+	void mousePressed(immutable MouseButtonEvent e, bool lastState)
+	{
+	}
+
+	void mouseReleased(immutable MouseButtonEvent e)
+	{
+	}
+
+	void mouseMoved(immutable MouseMotionEvent e)
+	{
+	}
+
+	void mouseScrolled(immutable MouseScrollEvent e)
+	{
+	}
+
+	void touchMoved(immutable TouchFingerEvent e)
+	{
+	}
+
+	void touchPressed(immutable TouchFingerEvent e, bool lastState)
+	{
+	}
+
+	void touchReleased(immutable TouchFingerEvent e)
+	{
+	}
 }
-
 
 @safe pure
 @("Input: raw listener")
-unittest {
-	class MyInputListener : RawInputListener {
+unittest
+{
+	class MyInputListener : RawInputListener
+	{
 
 		override void keyPressed(immutable KeyboardEvent e, bool lastState)
 		{
@@ -68,13 +98,11 @@ unittest {
 			assert(!lastState);
 		}
 
-
 		override void keyReleased(immutable KeyboardEvent e)
 		{
 			assert(e.key == Keycode.Enter);
 			assert(e.mods == InputModifier.None);
 		}
-
 
 		override void mousePressed(immutable MouseButtonEvent e, bool lastState)
 		{
@@ -84,13 +112,11 @@ unittest {
 			assert(lastState);
 		}
 
-
 		override void mouseReleased(immutable MouseButtonEvent e)
 		{
 			assert(e.btn == InputButton.Right);
 			assert(e.mods == InputModifier.None);
 		}
-
 
 		override void mouseMoved(immutable MouseMotionEvent e)
 		{
@@ -98,13 +124,11 @@ unittest {
 			assert(e.ypos == -0.23);
 		}
 
-
 		override void mouseScrolled(immutable MouseScrollEvent e)
 		{
 			assert(e.xoffset == 1.0);
 			assert(e.yoffset == -1.0);
 		}
-
 
 		override void touchMoved(immutable TouchFingerEvent e)
 		{
@@ -116,7 +140,6 @@ unittest {
 
 			assert(e.fingerID == 3);
 		}
-
 
 		override void touchPressed(immutable TouchFingerEvent e, bool lastState)
 		{
@@ -130,7 +153,6 @@ unittest {
 
 			assert(lastState);
 		}
-
 
 		override void touchReleased(immutable TouchFingerEvent e)
 		{

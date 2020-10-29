@@ -41,9 +41,7 @@ More about silly: https://gitlab.com/AntonMeep/silly
 module aurorafw.unit.internal.bootstrap;
 
 package(aurorafw.unit):
-version(unittest):
-
-import core.runtime : Runtime, UnitTestResult;
+version (unittest)  : import core.runtime : Runtime, UnitTestResult;
 import std.parallelism : TaskPool, totalCPUs;
 import std.range.primitives;
 import std.stdio : writeln, stdout;
@@ -57,7 +55,8 @@ import aurorafw.unit.internal.test;
 import aurorafw.unit.internal.runner;
 import aurorafw.unit.internal.console;
 
-shared static this() {
+shared static this()
+{
 	Runtime.extendedModuleUnitTester = () {
 		bool isVerbose;
 		shared size_t passed, failed;
@@ -68,29 +67,30 @@ shared static this() {
 			auto args = Runtime.args;
 
 			auto getoptResult = args.getopt(
-				"no-colours",
+					"no-colours",
 					"Disable colours",
 					&noColours,
-				"v|verbose",
+					"v|verbose",
 					"Show verbose output (full stack traces and durations)",
 					&isVerbose,
-				"t|threads",
+					"t|threads",
 					"Show verbose output (full stack traces and durations)",
 					&threadNumber,
-				"i|include",
+					"i|include",
 					"Run tests if their name matches specified regular expression",
 					&include,
-				"e|exclude",
+					"e|exclude",
 					"Skip tests if their name matches specified regular expression",
 					&exclude
 			);
 
-			if(getoptResult.helpWanted)
+			if (getoptResult.helpWanted)
 			{
 				import std.string : leftJustifier;
+
 				stdout.writefln("Usage:%1$s\t%2$s -- <options>%1$s%1$sOptions:", newline, args.front);
 
-				foreach(option; getoptResult.options)
+				foreach (option; getoptResult.options)
 					stdout.writefln("  %s\t%s\t%s", option.optShort, option.optLong.leftJustifier(20), option.help);
 
 				return UnitTestResult(0, 0, false, false);
@@ -102,18 +102,20 @@ shared static this() {
 
 		Test[] tests = getTests!()
 			.filter!(t => (!include && !exclude) ||
-					(include && !(t.test.fullName ~ " " ~ t.test.testName).matchFirst(include).empty) ||
+					(include && !(t.test.fullName ~ " " ~ t.test.testName)
+						.matchFirst(include).empty) ||
 					(exclude && (t.test.fullName ~ " " ~ t.test.testName).matchFirst(exclude).empty)
-				).array;
+			).array;
 
 		import core.atomic : atomicOp;
 
 		auto started = MonoTime.currTime;
 
-		if(threadNumber > 1)
+		if (threadNumber > 1)
 		{
-			with(new TaskPool(threadNumber-1)) {
-				foreach(ref test; parallel(tests))
+			with (new TaskPool(threadNumber - 1))
+			{
+				foreach (ref test; parallel(tests))
 				{
 					runTest(test, isVerbose);
 					atomicOp!"+="(test.status ? passed : failed, 1UL);
@@ -125,7 +127,7 @@ shared static this() {
 		}
 		else
 		{
-			foreach(ref test; tests)
+			foreach (ref test; tests)
 			{
 				runTest(test, isVerbose);
 				atomicOp!"+="(test.status ? passed : failed, 1UL);
@@ -134,10 +136,10 @@ shared static this() {
 
 		stdout.writeln;
 		stdout.writefln("%s: %s passed, %s failed in " ~ Console.colour("%.3f ms", Console.Colour.Cyan),
-			Console.emphasis("Summary"),
-			Console.colour(passed, Console.Colour.Green),
-			Console.colour(failed, failed ? Console.Colour.Red : Console.Colour.None),
-			(MonoTime.currTime - started).total!"usecs"  / 10.0f ^^ 3,
+				Console.emphasis("Summary"),
+				Console.colour(passed, Console.Colour.Green),
+				Console.colour(failed, failed ? Console.Colour.Red : Console.Colour.None),
+				(MonoTime.currTime - started).total!"usecs" / 10.0f ^^ 3,
 		);
 
 		return UnitTestResult(passed + failed, passed, false, false);

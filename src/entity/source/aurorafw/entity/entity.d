@@ -40,18 +40,16 @@ import aurorafw.entity.icomponent;
 import aurorafw.entity.componentmanager;
 import aurorafw.entity.entitymanager;
 
-version(unittest) import aurorafw.unit.assertion;
+version (unittest) import aurorafw.unit.assertion;
 
 import std.exception;
 import std.traits : fullyQualifiedName, Fields, FieldNameTuple;
 import std.meta : AliasSeq;
 
-
 class EntityComponentHandlingException : Exception
 {
 	mixin basicExceptionCtors;
 }
-
 
 class Entity
 {
@@ -62,7 +60,6 @@ class Entity
 		this.manager = manager;
 		this.enabled = true;
 	}
-
 
 	/**
 	 * Add a component
@@ -84,13 +81,12 @@ class Entity
 
 		if (id in this.components)
 			throw new EntityComponentHandlingException(
-				"Cannot add component. Entity already contains the same type."
+					"Cannot add component. Entity already contains the same type."
 			);
 
 		this.components[id] = t;
 		return t;
 	}
-
 
 	/**
 	 * Add a component
@@ -107,7 +103,6 @@ class Entity
 	{
 		return add(new T());
 	}
-
 
 	/**
 	 * Remove a component
@@ -133,10 +128,9 @@ class Entity
 
 		else
 			throw new EntityComponentHandlingException(
-				"Cannot remove component. Entity doesn't contain the type you're trying to remove."
+					"Cannot remove component. Entity doesn't contain the type you're trying to remove."
 			);
 	}
-
 
 	/**
 	 * Removes a component
@@ -154,7 +148,6 @@ class Entity
 	{
 		remove(ComponentManager.idOf!C);
 	}
-
 
 	/**
 	 * Modify
@@ -176,17 +169,18 @@ class Entity
 		IComponent* p;
 		p = id in components;
 
-		if(p is null)
+		if (p is null)
 			throw new EntityComponentHandlingException(
-				"Cannot modify component. Entity doesn't contain "
-				~ __traits(identifier, C) ~ "."
+					"Cannot modify component. Entity doesn't contain "
+					~ __traits(identifier, C) ~ "."
 			);
 
-		C c = cast(C)components[id];
+		C c = cast(C) components[id];
 		import std.conv : to;
-		static foreach(i, f; [FieldNameTuple!C])
+
+		static foreach (i, f; [FieldNameTuple!C])
 		{
-			mixin("c."~f~"="~"args["~i.to!string~"];");
+			mixin("c." ~ f ~ "=" ~ "args[" ~ i.to!string ~ "];");
 		}
 
 		return c;
@@ -206,9 +200,9 @@ class Entity
 	public void clear()
 	{
 		import std.algorithm.iteration : each;
+
 		components.byKey.each!(_ => components.remove(_));
 	}
-
 
 	/**
 	 * Get a component
@@ -232,7 +226,6 @@ class Entity
 		return p !is null ? cast(C)(*p) : null;
 	}
 
-
 	/**
 	 * Get components
 	 *
@@ -248,9 +241,9 @@ class Entity
 	public IComponent[] getAll()
 	{
 		import std.array : array;
+
 		return components.byValue.array;
 	}
-
 
 	/**
 	 * Contains a component
@@ -278,7 +271,6 @@ class Entity
 		return (id in components) !is null;
 	}
 
-
 	/**
 	 * Contains a component
 	 *
@@ -298,7 +290,6 @@ class Entity
 	{
 		return contains(ComponentManager.idOf!C);
 	}
-
 
 	/**
 	 * Contains components
@@ -323,13 +314,12 @@ class Entity
 	@safe pure
 	public bool containsAll(in string[] ids) const
 	{
-		foreach(id; ids)
+		foreach (id; ids)
 			if (!contains(id))
 				return false;
 
 		return true;
 	}
-
 
 	/**
 	 * Contains components
@@ -351,7 +341,6 @@ class Entity
 	{
 		return containsAll(ids!C);
 	}
-
 
 	/**
 	 * Contains any component
@@ -376,13 +365,12 @@ class Entity
 	@safe pure
 	public bool containsAny(in string[] ids) const
 	{
-		foreach(id; ids)
+		foreach (id; ids)
 			if (contains(id))
 				return true;
 
 		return false;
 	}
-
 
 	/**
 	 * Contains any component
@@ -405,7 +393,6 @@ class Entity
 		return containsAny(ids!C);
 	}
 
-
 	/**
 	 * Ids
 	 *
@@ -416,9 +403,9 @@ class Entity
 	private auto ids(C...)() const
 	{
 		import std.meta : staticMap;
+
 		return [staticMap!(fullyQualifiedName, C)];
 	}
-
 
 	/**
 	 * Detach
@@ -432,7 +419,6 @@ class Entity
 		manager.detach(this);
 	}
 
-
 	public immutable size_t id;
 	public string name;
 	public string description;
@@ -441,13 +427,18 @@ class Entity
 	private EntityManager manager;
 }
 
-
-version(unittest)
+version (unittest)
 {
-	final class unittest_FooComponent : IComponent { int a; }
-	final class unittest_BarComponent : IComponent { int a; }
-}
+	final class unittest_FooComponent : IComponent
+	{
+		int a;
+	}
 
+	final class unittest_BarComponent : IComponent
+	{
+		int a;
+	}
+}
 
 ///
 @safe pure
@@ -462,9 +453,8 @@ unittest
 
 	e.remove!unittest_FooComponent; // First time the component is removed, no error
 	assertThrown!EntityComponentHandlingException(e.remove!unittest_FooComponent,
-				"Second time the type is being accessed");
+			"Second time the type is being accessed");
 }
-
 
 ///
 @safe pure
@@ -480,20 +470,21 @@ unittest
 	assertTrue(e.containsAny!(unittest_FooComponent, unittest_BarComponent), "Entity contains an unittets_FooComponent");
 
 	assertFalse(e.containsAll!(unittest_FooComponent, unittest_BarComponent),
-				"Entity doesn't contain an unittest_BarComponent");
+			"Entity doesn't contain an unittest_BarComponent");
 	assertFalse(e.containsAny!(unittest_BarComponent));
 
 	import std.range.primitives;
+
 	auto arr = e.getAll;
 
 	import std.traits : ReturnType;
+
 	assertTrue(is(ReturnType!(e.get!unittest_FooComponent) == unittest_FooComponent), "Returns the original type");
 	assertTrue(foo is e.get!unittest_FooComponent);
 	assertTrue(e.get!unittest_BarComponent is null, "Entity doesn't contain a type unittest_BarComponent component");
 	assertEquals(1, arr.length, "Entity should contain only 1 component");
 	assertTrue(is(typeof(arr.front) == IComponent));
 }
-
 
 ///
 @safe pure
@@ -507,7 +498,6 @@ unittest
 
 	assertEquals(0, e.getAll().length);
 }
-
 
 ///
 @safe pure

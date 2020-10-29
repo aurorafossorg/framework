@@ -38,7 +38,6 @@ module aurorafw.event.eventsystem.eventdispatcher;
 
 import aurorafw.event.eventsystem.event : Event;
 
-
 /** Dispatch an Event to a function
  *
  * Use this class whenever you want to redirect a specific event to a function. \
@@ -51,7 +50,6 @@ public:
 	{
 		this.event = event;
 	}
-
 
 	/** Dispatch an event
 	 *
@@ -96,7 +94,7 @@ public:
 	 */
 	@system
 	void dispatch(T : Event)(in void delegate(T) func)
-		in(func.ptr !is null || func.funcptr !is null)
+	in (func.ptr !is null || func.funcptr !is null)
 	{
 		if (event.isEventTypeOf(T.staticEventType))
 			func(cast(T) event);
@@ -106,8 +104,7 @@ private:
 	Event event;
 }
 
-
-private version(unittest)
+private version (unittest)
 {
 	import aurorafw.unit;
 	import aurorafw.event.eventsystem.event : EventType, basicEventType;
@@ -119,7 +116,6 @@ private version(unittest)
 	}
 }
 
-
 @safe
 @("EventDispatcher: ctor")
 unittest
@@ -129,7 +125,6 @@ unittest
 	assertSame(ed.event, event);
 }
 
-
 @system
 @("EventDispatcher: dispatch")
 unittest
@@ -138,21 +133,11 @@ unittest
 	FooEvent event2 = new FooEvent();
 	EventDispatcher ed = new EventDispatcher(event);
 
-	ed.dispatch!FooEvent(delegate void(in FooEvent _event)
-	{
-		assertSame(_event, event);
-		assertNotSame(_event, event2);
-	});
+	ed.dispatch!FooEvent(delegate void(in FooEvent _event) { assertSame(_event, event); assertNotSame(_event, event2); });
 
-	ed.dispatch!FooEvent((in FooEvent _event) {
-		assertSame(_event, event);
-		assertNotSame(_event, event2);
-	});
+	ed.dispatch!FooEvent((in FooEvent _event) { assertSame(_event, event); assertNotSame(_event, event2); });
 
-	auto func = (in FooEvent _event) {
-		assertSame(_event, event);
-		assertNotSame(_event, event2);
-	};
+	auto func = (in FooEvent _event) { assertSame(_event, event); assertNotSame(_event, event2); };
 
 	ed.dispatch!FooEvent(func);
 }

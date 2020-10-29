@@ -37,9 +37,11 @@ module aurorafw.core.application;
 
 import core.stdc.stdlib : exit, EXIT_SUCCESS, EXIT_FAILURE;
 
-abstract class Application {
+abstract class Application
+{
 public:
 	import core.runtime : Runtime;
+
 	this(immutable string packageName, string[] args)
 	{
 		this.packageName = packageName;

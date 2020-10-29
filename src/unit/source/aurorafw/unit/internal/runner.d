@@ -41,9 +41,7 @@ More about silly: https://gitlab.com/AntonMeep/silly
 module aurorafw.unit.internal.runner;
 
 package(aurorafw.unit):
-version(unittest):
-
-import std.datetime;
+version (unittest)  : import std.datetime;
 import aurorafw.unit.internal.test;
 import core.exception : AssertError;
 import std.stdio : stdout;
@@ -59,18 +57,22 @@ void runTest(ref Test testCase, bool isVerbose)
 
 	auto started = MonoTime.currTime;
 
-	try {
-		scope(exit) testCase.duration = MonoTime.currTime - started;
+	try
+	{
+		scope (exit)
+			testCase.duration = MonoTime.currTime - started;
 		testCase.test.testFunc();
 		testCase.status = true;
-	} catch(Throwable t)
+	}
+	catch (Throwable t)
 	{
-		if(!(cast(Exception) t || cast(AssertError) t))
+		if (!(cast(Exception) t || cast(AssertError) t))
 			throw t;
 
-		foreach(th; t) {
+		foreach (th; t)
+		{
 			immutable(string)[] trace;
-			foreach(i; th.info)
+			foreach (i; th.info)
 				trace ~= i.idup;
 
 			testCase.thrown ~= Test.Thrown(typeid(th).name, th.message.idup, th.file, th.line, trace);
@@ -80,7 +82,7 @@ void runTest(ref Test testCase, bool isVerbose)
 	auto writer = stdout.lockingTextWriter;
 
 	// windows cmd doesn't support unicode
-	version(Windows)
+	version (Windows)
 	{
 		immutable successText = "success";
 		immutable failText = "fail";
@@ -90,53 +92,58 @@ void runTest(ref Test testCase, bool isVerbose)
 		immutable successText = "✓";
 		immutable failText = "✗";
 	}
-
-	writer.formattedWrite(" %s %s %s",
-		// status symbol
-		testCase.status
-			? Console.colour(successText, Console.Colour.Green)	// Success
-			: Console.colour(failText, Console.Colour.Red),	// Error
-		// module name
-		Console.emphasis(Console.truncateName(testCase.test.fullName[0..testCase.test.fullName.lastIndexOf('.')], isVerbose)),
-		// test name
-		testCase.test.testName,
+	// dfmt off
+	writer.formattedWrite(" %s %s %s", // status symbol
+			testCase.status
+			? Console.colour(successText, Console.Colour.Green) // Success
+			: Console.colour(failText, Console.Colour.Red), // Error
+			// module name
+			Console.emphasis(
+				Console.truncateName(testCase.test.fullName[0 .. testCase.test.fullName.lastIndexOf('.')], isVerbose)), // test name
+			testCase.test.testName,
 	);
+	// dfmt on
 
-	if(isVerbose)
+	if (isVerbose)
 	{
-		writer.formattedWrite(" (" ~ Console.colour("%.3f ms", Console.Colour.Cyan) ~")", (cast(real) testCase.duration.total!"usecs") / 10.0f ^^ 3);
+		writer.formattedWrite(" (" ~ Console.colour("%.3f ms", Console.Colour.Cyan) ~ ")", (cast(real) testCase.duration
+				.total!"usecs") / 10.0f ^^ 3);
 
-		if(testCase.test.location != Test.Location.init) {
+		if (testCase.test.location != Test.Location.init)
+		{
 			writer.formattedWrite(Console.colour(" [%s:%d:%d]", Console.Colour.DarkGray),
-				testCase.test.location.file,
-				testCase.test.location.line,
-				testCase.test.location.column);
+					testCase.test.location.file,
+					testCase.test.location.line,
+					testCase.test.location.column);
 		}
 	}
 
-
 	writer.put(newline);
-	foreach(th; testCase.thrown) {
+	foreach (th; testCase.thrown)
+	{
 		writer.formattedWrite(Console.colour("    %s thrown from %s on line %d: %s%s", Console.Colour.LightRed),
-			th.type,
-			th.file,
-			th.line,
-			th.msg.lineSplitter.front,
-			newline,
+				th.type,
+				th.file,
+				th.line,
+				th.msg.lineSplitter.front,
+				newline,
 		);
 
-		foreach(line; th.msg.lineSplitter.drop(1))
+		foreach (line; th.msg.lineSplitter.drop(1))
 			writer.formattedWrite(Console.colour("      %s%s", Console.Colour.LightRed), line, newline);
 
 		writer.formattedWrite(
-			Console.emphasis(Console.colour("    --- Stack trace ---%s", Console.Colour.DarkGray)),
-			newline);
+				Console.emphasis(Console.colour("    --- Stack trace ---%s", Console.Colour.DarkGray)),
+				newline);
 
-		if(isVerbose) {
-			foreach(line; th.info)
+		if (isVerbose)
+		{
+			foreach (line; th.info)
 				writer.formattedWrite(Console.colour("    %s%s", Console.Colour.DarkGray), line, newline);
-		} else {
-			for(size_t i = 0; i < th.info.length && !th.info[i].canFind(__FILE__); ++i)
+		}
+		else
+		{
+			for (size_t i = 0; i < th.info.length && !th.info[i].canFind(__FILE__); ++i)
 				writer.formattedWrite(Console.colour("    %s%s", Console.Colour.DarkGray), th.info[i], newline);
 		}
 	}

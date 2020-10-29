@@ -39,17 +39,15 @@ module aurorafw.entity.componentmanager;
 import aurorafw.entity.icomponent;
 import aurorafw.entity.world;
 
-version(unittest) import aurorafw.unit.assertion;
+version (unittest) import aurorafw.unit.assertion;
 
 import std.exception;
 import std.traits : fullyQualifiedName;
-
 
 final class ComponentHandlingException : Exception
 {
 	mixin basicExceptionCtors;
 }
-
 
 final class ComponentManager
 {
@@ -69,7 +67,6 @@ final class ComponentManager
 		return fullyQualifiedName!C;
 	}
 
-
 	/// ditto
 	@safe pure
 	static public string idOf(C : IComponent)(C component)
@@ -78,10 +75,10 @@ final class ComponentManager
 	}
 }
 
-
-version(unittest)
-	private final class unittest_FooComponent : IComponent { int var; }
-
+version (unittest) private final class unittest_FooComponent : IComponent
+{
+	int var;
+}
 
 ///
 @safe pure
@@ -91,5 +88,5 @@ unittest
 	ComponentManager manager = new ComponentManager();
 
 	assertEquals("aurorafw.entity.componentmanager.unittest_FooComponent",
-				manager.idOf!unittest_FooComponent);
+			manager.idOf!unittest_FooComponent);
 }

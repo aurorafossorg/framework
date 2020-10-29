@@ -43,6 +43,7 @@ import core.runtime;
 import std.algorithm : filter, startsWith;
 import std.array : array;
 
-pragma(inline, true) string[] defaultRuntimeArgs() @trusted {
+pragma(inline, true) string[] defaultRuntimeArgs() @trusted
+{
 	return Runtime.args.filter!(arg => !arg.startsWith("--DRT-")).array;
 }

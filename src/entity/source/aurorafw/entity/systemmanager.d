@@ -39,31 +39,29 @@ module aurorafw.entity.systemmanager;
 import aurorafw.entity.system;
 import aurorafw.entity.entitymanager;
 
-version(unittest) import aurorafw.unit.assertion;
+version (unittest) import aurorafw.unit.assertion;
 
 import std.traits : fullyQualifiedName;
 import std.exception;
-
 
 final class SystemHandlingException : Exception
 {
 	mixin basicExceptionCtors;
 }
 
-
 class SystemManager
 {
 	// unittesting only
 	@safe pure
 	private this()
-	{}
+	{
+	}
 
 	@safe pure
 	public this(EntityManager entity)
 	{
 		_entity = entity;
 	}
-
 
 	/**
 	 * Create a new system
@@ -81,13 +79,12 @@ class SystemManager
 
 		if (id in this.systems)
 			throw new SystemHandlingException(
-				"Cannot add system. " ~ __traits(identifier, S) ~ " is already created!"
+					"Cannot add system. " ~ __traits(identifier, S) ~ " is already created!"
 			);
 
 		system.manager = this;
 		this.systems[id] = system;
 	}
-
 
 	/**
 	 * Create a new System
@@ -101,7 +98,6 @@ class SystemManager
 	{
 		create(new S());
 	}
-
 
 	/**
 	 * Get a system
@@ -123,7 +119,6 @@ class SystemManager
 		return p !is null ? cast(S)(*p) : null;
 	}
 
-
 	/**
 	 * Remove
 	 *
@@ -144,10 +139,9 @@ class SystemManager
 
 		else
 			throw new SystemHandlingException(
-				"Cannot remove system. " ~ __traits(identifier, S) ~ " was already removed or it wasn't created!"
+					"Cannot remove system. " ~ __traits(identifier, S) ~ " was already removed or it wasn't created!"
 			);
 	}
-
 
 	/**
 	 * Clear
@@ -162,10 +156,9 @@ class SystemManager
 	@safe pure
 	public void clear()
 	{
-		foreach(key, value; this.systems)
+		foreach (key, value; this.systems)
 			this.systems.remove(key);
 	}
-
 
 	/**
 	 * Update
@@ -179,11 +172,10 @@ class SystemManager
 	 */
 	public void update()
 	{
-		foreach(System s; this.systems)
+		foreach (System s; this.systems)
 			if (s.updatePolicy == s.UpdatePolicy.Automatic)
 				s.update();
 	}
-
 
 	/**
 	 * Update
@@ -201,7 +193,6 @@ class SystemManager
 		this.systems[fullyQualifiedName!S].update();
 	}
 
-
 	/**
 	 * Entity
 	 *
@@ -213,32 +204,43 @@ class SystemManager
 	 * --------------------
 	 */
 	@safe pure
-	public EntityManager entity() { return _entity; } @property
+	public EntityManager entity()
+	{
+		return _entity;
+	}
 
+	@property
 
 	private EntityManager _entity;
 	private System[string] systems;
 }
 
-
-version(unittest)
+version (unittest)
 {
 	private class unittest_FooSystem : System
 	{
 		@safe
-		override public void update() { this.updatePolicy = UpdatePolicy.Manual; }
+		override public void update()
+		{
+			this.updatePolicy = UpdatePolicy.Manual;
+		}
 	}
 
 	private class unittest_BarSystem : System
 	{
 		@safe pure
-		public this () { super(UpdatePolicy.Manual); }
+		public this()
+		{
+			super(UpdatePolicy.Manual);
+		}
 
 		@safe
-		override public void update() { this.updatePolicy = UpdatePolicy.Automatic; }
+		override public void update()
+		{
+			this.updatePolicy = UpdatePolicy.Automatic;
+		}
 	}
 }
-
 
 ///
 @safe pure
@@ -250,11 +252,11 @@ unittest
 	system.create(new unittest_FooSystem());
 
 	import std.traits : ReturnType;
+
 	assertTrue(is(ReturnType!(system.get!unittest_FooSystem) == unittest_FooSystem));
 
 	assertThrown!SystemHandlingException(system.create(new unittest_FooSystem())); // System created twice
 }
-
 
 ///
 @safe pure
@@ -266,11 +268,11 @@ unittest
 	system.create(new unittest_FooSystem());
 
 	import std.traits : ReturnType;
+
 	assertTrue((system.get!(unittest_FooSystem)).manager is system);
 	assertTrue(is(ReturnType!(system.get!unittest_FooSystem) == unittest_FooSystem));
 	assertTrue(system.get!(unittest_BarSystem) is null); // System wasn't created
 }
-
 
 ///
 @("System Manager: System update")
@@ -295,7 +297,6 @@ unittest
 
 	assertEquals(barSys.updatePolicy, barSys.UpdatePolicy.Automatic); // Got updated
 }
-
 
 ///
 @safe pure

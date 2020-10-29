@@ -9,6 +9,7 @@ int main(string[] args)
 
 	File file = File(args[1], "r");
 	import std.conv : to;
+
 	writeln(getPDFVersion(file).to!string);
 
 	return 0;

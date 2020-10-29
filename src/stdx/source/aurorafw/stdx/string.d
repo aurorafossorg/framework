@@ -38,8 +38,7 @@ module aurorafw.stdx.string;
 
 public import std.string;
 
-version(unittest) import aurorafw.unit.assertion;
-
+version (unittest) import aurorafw.unit.assertion;
 
 @nogc @safe pure nothrow
 string substr(string s, ptrdiff_t offset, ptrdiff_t length = -1)
@@ -55,12 +54,11 @@ string substr(string s, ptrdiff_t offset, ptrdiff_t length = -1)
 		end = s.length;
 	else
 		end = offset + length;
-	if(end > s.length)
+	if (end > s.length)
 		end = s.length;
 
 	return s[offset .. end];
 }
-
 
 ///
 @safe pure
@@ -68,7 +66,7 @@ string substr(string s, ptrdiff_t offset, ptrdiff_t length = -1)
 unittest
 {
 	string s = "Aurora Framework";
-	assertEquals("urora", s.substr(1,5));
+	assertEquals("urora", s.substr(1, 5));
 	assertEquals("urora Framework", s.substr(1));
 	assertEquals(s, s.substr(-1, -1));
 	assertEquals(s, s.substr(-1));
@@ -76,20 +74,18 @@ unittest
 	assertEquals("", s.substr(ptrdiff_t.max));
 }
 
-
 @nogc @safe pure nothrow
 bool isAlpha(string str)
 {
 	import std.algorithm : all;
 	import std.uni : isAlpha;
 
-	foreach(c; str)
+	foreach (c; str)
 		if (!isAlpha(c))
 			return false;
 
 	return true;
 }
-
 
 ///
 @safe pure
@@ -100,12 +96,12 @@ unittest
 	assertFalse(isAlpha("tun41s900d"));
 }
 
-
 @safe pure @nogc nothrow
 bool isNumber(string str)
 {
-	if (str.length < 1) return false;
-	if(str[0] == '-' || str[0] == '+')
+	if (str.length < 1)
+		return false;
+	if (str[0] == '-' || str[0] == '+')
 		str = str[1 .. $];
 	foreach (ch; str)
 		if (ch < '0' || ch > '9')
@@ -113,7 +109,6 @@ bool isNumber(string str)
 
 	return true;
 }
-
 
 ///
 @safe pure
@@ -127,19 +122,18 @@ unittest
 	assertFalse(isNumber("p3"));
 }
 
-
 @safe pure @nogc nothrow
 ptrdiff_t indexOfAny(string str, in char[] chars)
 {
 	ptrdiff_t ret = -1;
-	foreach (ch; chars) {
+	foreach (ch; chars)
+	{
 		auto idx = str.indexOf(ch);
 		if (idx >= 0 && (ret < 0 || idx < ret))
 			ret = idx;
 	}
 	return ret;
 }
-
 
 ///
 @safe pure

@@ -59,7 +59,7 @@ import std.format : singleSpec, FormatSpec, formatValue;
 import aurorafw.stdx.object;
 import aurorafw.stdx.traits;
 
-version(unittest) import aurorafw.unit.assertion;
+version (unittest) import aurorafw.unit.assertion;
 
 /**
  * Pattern matching for Nullable and Optional types
@@ -74,30 +74,37 @@ version(unittest) import aurorafw.unit.assertion;
  * ); // true
  * ---
  */
-public template match(handlers...)
-	if (handlers.length <= 2 && handlers.length >= 1)
+public template match(handlers...) if (handlers.length <= 2 && handlers.length >= 1)
 {
 	MatchReturnType!handlers match(T)(auto ref T t)
-		if(__traits(isSame, TemplateOf!T, Nullable) || __traits(isSame, TemplateOf!T, Optional))
+			if (__traits(isSame, TemplateOf!T, Nullable) || __traits(isSame, TemplateOf!T, Optional))
 	{
-		static if (is(typeof(handlers[0](t.get)))) {
+		static if (is(typeof(handlers[0](t.get))))
+		{
 			alias someHandler = handlers[0];
 			alias noHandler = handlers[1];
-		} else {
+		}
+		else
+		{
 			alias someHandler = handlers[1];
 			alias noHandler = handlers[0];
 		}
 
-		static if(__traits(isSame, TemplateOf!T, Nullable))
+		static if (__traits(isSame, TemplateOf!T, Nullable))
 		{
 			// Nullable type
-			if(t.isNull) return noHandler();
-			else return someHandler(t.get());
-		} else
+			if (t.isNull)
+				return noHandler();
+			else
+				return someHandler(t.get());
+		}
+		else
 		{
 			// Optional type
-			if(!t.defined) return noHandler();
-			else return someHandler(t.get());
+			if (!t.defined)
+				return noHandler();
+			else
+				return someHandler(t.get());
 		}
 
 	}
@@ -141,9 +148,10 @@ unittest
 	// dfmt on
 }
 
+template isOptional(T)
+{
+	import std.traits : isInstanceOf;
 
-template isOptional(T) {
-	import std.traits: isInstanceOf;
 	enum isOptional = isInstanceOf!(Optional, T);
 }
 
@@ -164,11 +172,14 @@ template isOptional(T) {
 struct Optional(T)
 {
 
-	private static string autoReturn(string expression)() {
+	private static string autoReturn(string expression)()
+	{
 		return `
 			auto ref expr() {
-				return ` ~ expression ~ `;
-			}` ~ q{
+				return `
+			~ expression ~ `;
+			}`
+			~ q{
 			alias R = typeof(expr());
 			static if (!is(R == void))
 				return empty ? none!R : some!R(expr());
@@ -207,11 +218,16 @@ struct Optional(T)
 	 */
 	this(T value)
 	{
-		import std.traits: isCopyable;
-		static if (!isCopyable!T) {
-			import std.functional: forward;
+		import std.traits : isCopyable;
+
+		static if (!isCopyable!T)
+		{
+			import std.functional : forward;
+
 			this.value.payload = forward!value;
-		} else {
+		}
+		else
+		{
 			this.value.payload = value;
 		}
 
@@ -223,7 +239,8 @@ struct Optional(T)
 	 * Params:
 	 *   None = None type, empty data
 	 */
-	this(const None) {
+	this(const None)
+	{
 		this.value = DontCallDestructorT.init;
 	}
 
@@ -248,7 +265,8 @@ struct Optional(T)
 	 *
 	 * See_Also: defined()
 	 */
-	@property bool empty() const {
+	@property bool empty() const
+	{
 		return !this.defined;
 	}
 
@@ -332,13 +350,15 @@ struct Optional(T)
 	 */
 	bool opEquals(U : T)(const auto ref Optional!U rhs) const
 	{
-		if((this.empty || rhs.empty))
+		if ((this.empty || rhs.empty))
 			return this.empty == rhs.empty;
 
-		static if(is(U == class))
+		static if (is(U == class))
 		{
 			return this.value.payload is rhs.value.payload;
-		} else {
+		}
+		else
+		{
 			return this.value.payload == rhs.value.payload;
 		}
 	}
@@ -354,8 +374,7 @@ struct Optional(T)
 	bool opEquals(U : T)(auto ref Nullable!U rhs) const
 	{
 		return (this.empty || rhs.isNull)
-			? this.empty == rhs.isNull
-			: this.value.payload == rhs.get;
+			? this.empty == rhs.isNull : this.value.payload == rhs.get;
 	}
 
 	/**
@@ -368,10 +387,12 @@ struct Optional(T)
 	 */
 	bool opEquals(U : T)(const auto ref U rhs) const
 	{
-		static if(is(U == class) && is(T == class))
+		static if (is(U == class) && is(T == class))
 		{
 			return defined && this.value.payload is rhs;
-		} else {
+		}
+		else
+		{
 			return defined && this.value.payload == rhs;
 		}
 	}
@@ -385,10 +406,12 @@ struct Optional(T)
 	 * Returns: true if equal, false otherwise
 	 */
 	bool opEquals(R)(auto ref R rhs) const
-		if (isInputRange!R)
+	if (isInputRange!R)
 	{
-		if (this.empty && rhs.empty) return true;
-		if (this.empty || rhs.empty) return false;
+		if (this.empty && rhs.empty)
+			return true;
+		if (this.empty || rhs.empty)
+			return false;
 
 		return this.front == rhs.front;
 	}
@@ -399,14 +422,16 @@ struct Optional(T)
 	 * Params:
 	 *   None = None type, empty data
 	 */
-	auto ref opAssign()(const None)
-		if (isMutable!T)
+	auto ref opAssign()(const None) if (isMutable!T)
 	{
-		if (!empty) {
+		if (!empty)
+		{
 			static if (isNullInvalid)
 			{
 				this.value.payload = null;
-			} else {
+			}
+			else
+			{
 				destroy(this.value.payload);
 			}
 			this._defined = false;
@@ -420,8 +445,7 @@ struct Optional(T)
 	 * Params:
 	 *   lhs = left-hand value
 	 */
-	auto ref opAssign(U : T)(auto ref U lhs)
-		if (isMutable!T && isAssignable!(T, U))
+	auto ref opAssign(U : T)(auto ref U lhs) if (isMutable!T && isAssignable!(T, U))
 	{
 		import std.algorithm.mutation : moveEmplace, move;
 
@@ -447,13 +471,16 @@ struct Optional(T)
 	 * Params:
 	 *   lhs = left-hand optional value
 	 */
-	auto ref opAssign(U : T)(auto ref Optional!U lhs)
-		if (isMutable!T && isAssignable!(T, U))
+	auto ref opAssign(U : T)(auto ref Optional!U lhs) if (isMutable!T && isAssignable!(T, U))
 	{
-		static if (__traits(isRef, lhs) || !isMutable!U) {
+		static if (__traits(isRef, lhs) || !isMutable!U)
+		{
 			this.value.payload = lhs.value.payload;
-		} else {
-			import std.algorithm: move;
+		}
+		else
+		{
+			import std.algorithm : move;
+
 			this.value.payload = move(lhs.value.payload);
 		}
 
@@ -475,7 +502,8 @@ struct Optional(T)
 	 * Params:
 	 *   rhs = right-hand value
 	 */
-	auto opBinary(string op, U : T, this This)(auto ref U rhs)
+	auto opBinary(string op, U:
+			T, this This)(auto ref U rhs)
 	{
 		mixin(autoReturn!("front" ~ op ~ "rhs"));
 	}
@@ -486,9 +514,10 @@ struct Optional(T)
 	 * Params:
 	 *   lhs = left-hand value
 	 */
-	auto opBinaryRight(string op, U : T, this This)(auto ref U lhs)
+	auto opBinaryRight(string op, U:
+			T, this This)(auto ref U lhs)
 	{
-		mixin(autoReturn!("lhs"  ~ op ~ "front"));
+		mixin(autoReturn!("lhs" ~ op ~ "front"));
 	}
 
 	/**
@@ -507,12 +536,14 @@ struct Optional(T)
 	 * Params:
 	 *   rhs = right-hand value
 	 */
-	auto opOpAssign(string op, U : T, this This)(auto ref U rhs)
+	auto opOpAssign(string op, U:
+			T, this This)(auto ref U rhs)
 	{
 		mixin(autoReturn!("front" ~ op ~ "= rhs"));
 	}
 
-	static if (isArray!T) {
+	static if (isArray!T)
+	{
 
 		/**
 		 * Index operator with auto return types
@@ -520,11 +551,14 @@ struct Optional(T)
 		 * Params:
 		 *   index = given index of the array
 		 */
-		auto opIndex(this This)(size_t index) {
+		auto opIndex(this This)(size_t index)
+		{
 			enum call = "front[index]";
-			import std.range: ElementType;
-			if (empty || index >= front.length || index < 0) {
-				return none!(mixin("typeof("~call~")"));
+			import std.range : ElementType;
+
+			if (empty || index >= front.length || index < 0)
+			{
+				return none!(mixin("typeof(" ~ call ~ ")"));
 			}
 			mixin(autoReturn!(call));
 		}
@@ -532,7 +566,8 @@ struct Optional(T)
 		/**
 		 * Index operator with auto return types
 		 */
-		auto opIndex(this This)() {
+		auto opIndex(this This)()
+		{
 			mixin(autoReturn!("front[]"));
 		}
 
@@ -543,11 +578,14 @@ struct Optional(T)
 		 *   begin = begin index of the array slice
 		 *   end = end index of the array slice
 		 */
-		auto opSlice(this This)(size_t begin, size_t end) {
+		auto opSlice(this This)(size_t begin, size_t end)
+		{
 			enum call = "front[begin .. end]";
-			import std.range: ElementType;
-			if (empty || begin > end || end > front.length) {
-				return none!(mixin("typeof("~call~")"));
+			import std.range : ElementType;
+
+			if (empty || begin > end || end > front.length)
+			{
+				return none!(mixin("typeof(" ~ call ~ ")"));
 			}
 			mixin(autoReturn!(call));
 		}
@@ -555,7 +593,8 @@ struct Optional(T)
 		/**
 		 * Dollar operator representing the length of the array
 		 */
-		auto opDollar() const {
+		auto opDollar() const
+		{
 			return empty ? 0 : front.length;
 		}
 	}
@@ -573,20 +612,23 @@ struct Optional(T)
 			return defined ? typeid(T).getHash(&value.payload) : 0;
 	}
 
-	 /**
+	/**
 	  * Convert the optional to a human readable string.
 	  */
 	string toString()() const
 	{
 		import std.conv : to;
-		if(empty)
+
+		if (empty)
 		{
 			return "Optional(None)";
 		}
-		static if (__traits(compiles, { value.payload.toString; } )) {
+		static if (__traits(compiles, { value.payload.toString; }))
+		{
 			return "Some(" ~ value.payload.toString ~ ")";
 		}
-		else {
+		else
+		{
 			return "Some(" ~ to!string(value.payload) ~ ")";
 		}
 	}
@@ -618,7 +660,8 @@ public struct None
  * Represents a non defined optional type
  */
 @safe pure
-public auto none(T)() {
+public auto none(T)()
+{
 	return Optional!T();
 }
 
@@ -640,11 +683,16 @@ public None none()
  */
 public auto some(T)(auto ref T value)
 {
-	import std.traits: isCopyable;
-	static if (!isCopyable!T) {
-		import std.functional: forward;
+	import std.traits : isCopyable;
+
+	static if (!isCopyable!T)
+	{
+		import std.functional : forward;
+
 		return optional!T(forward!value);
-	} else {
+	}
+	else
+	{
 		return optional!T(value);
 	}
 }
@@ -652,11 +700,16 @@ public auto some(T)(auto ref T value)
 /// ditto
 public auto optional(T)(auto ref T value)
 {
-	import std.traits: isCopyable;
-	static if (!isCopyable!T) {
-		import std.functional: forward;
+	import std.traits : isCopyable;
+
+	static if (!isCopyable!T)
+	{
+		import std.functional : forward;
+
 		return Optional!T(forward!value);
-	} else {
+	}
+	else
+	{
 		return Optional!T(value);
 	}
 }
@@ -710,11 +763,13 @@ unittest
 	assertTrue(some(5).defined);
 	assertTrue(Optional!int(5).defined);
 
-	struct foobar {
+	struct foobar
+	{
 		@disable this(this);
 
 		int z;
 	}
+
 	assertTrue(some(foobar()).defined);
 	assertTrue(some(none!int).defined);
 
@@ -726,24 +781,27 @@ unittest
 	assertFalse(Optional!(int[])().defined);
 }
 
-
 /**
  * Converts a input range into an optional type
  *
  * Params:
  *   range = given input range
  */
-auto toOptional(R)(auto ref R range)
-	if (isInputRange!R || is(R == void[]))
+auto toOptional(R)(auto ref R range) if (isInputRange!R || is(R == void[]))
 {
-	static if(is(R == void[]))
+	static if (is(R == void[]))
 	{
 		return none;
-	} else {
+	}
+	else
+	{
 		assert(range.empty || range.walkLength == 1);
-		if (range.empty) {
+		if (range.empty)
+		{
 			return none!(ElementType!R);
-		} else {
+		}
+		else
+		{
 			return some(range.front);
 		}
 	}
@@ -757,9 +815,12 @@ auto toOptional(R)(auto ref R range)
  */
 auto toOptional(T)(auto inout ref Nullable!T nullable)
 {
-	if (nullable.isNull) {
+	if (nullable.isNull)
+	{
 		return inout Optional!T();
-	} else {
+	}
+	else
+	{
 		return inout Optional!T(nullable.get);
 	}
 }
@@ -803,7 +864,6 @@ unittest
 	foo = none;
 	assertEquals(none, foo);
 
-
 }
 
 ///
@@ -811,14 +871,14 @@ unittest
 @("Optional: arrays")
 unittest
 {
-	auto arr = some([1,2,3,45]);
+	auto arr = some([1, 2, 3, 45]);
 	assertEquals(2, arr[1]);
-	assertEquals([1,2,3,45], arr[]);
-	assertEquals([1,2,3,45], arr[0..$]);
+	assertEquals([1, 2, 3, 45], arr[]);
+	assertEquals([1, 2, 3, 45], arr[0 .. $]);
 	auto jk = none!(int[]);
 	assertEquals(none!int, jk[213]);
 	assertEquals(none!(int[]), jk[]);
-	assertEquals(none!(int[]), jk[0..$]);
+	assertEquals(none!(int[]), jk[0 .. $]);
 }
 
 ///
@@ -883,17 +943,21 @@ unittest
 @("Optional: class opEquals")
 unittest
 {
-	@safe pure class C {
+	@safe pure class C
+	{
 		int c;
 
 		// assertEquals needs @safe and pure
 		// toString method in case of fail
 		@safe pure
-		override string toString() const {
+		override string toString() const
+		{
 			import std.conv : to;
+
 			return c.to!string;
 		}
 	}
+
 	C c = new C();
 	assertEquals(c, optional(c));
 	assertEquals(optional(c), optional(c));
@@ -917,10 +981,10 @@ unittest
  * Params:
  *   opt = optional
  */
-auto toNullable(T)(auto ref Optional!T opt) {
+auto toNullable(T)(auto ref Optional!T opt)
+{
 	return (opt.empty)
-		? Nullable!T()
-		: opt.front.nullable;
+		? Nullable!T() : opt.front.nullable;
 }
 
 ///
@@ -1012,15 +1076,19 @@ unittest
 	assertEquals(minifiedExpr.array, minify(expr2).array);
 }
 
-struct OptionalChain(T) {
-	import std.traits: hasMember;
+struct OptionalChain(T)
+{
+	import std.traits : hasMember;
 
-	private static string autoReturn(string expression)() {
+	private static string autoReturn(string expression)()
+	{
 		return `
 			auto ref expr() {
-				return ` ~ expression ~ `;
+				return `
+			~ expression ~ `;
 			}
-			` ~ q{
+			`
+			~ q{
 			auto ref val() {
 				// If the dispatched result is an Optional itself, we flatten it out so that client code
 				// does not have to do a.oc.member.oc.otherMember
@@ -1069,32 +1137,45 @@ struct OptionalChain(T) {
 		return value.toString;
 	}
 
-	public template opDispatch(string name)
-		if (hasMember!(T, name))
+	public template opDispatch(string name) if (hasMember!(T, name))
 	{
-		static if (is(typeof(__traits(getMember, T, name)) == function)) {
-			auto opDispatch(Args...)(auto ref Args args) {
+		static if (is(typeof(__traits(getMember, T, name)) == function))
+		{
+			auto opDispatch(Args...)(auto ref Args args)
+			{
 				mixin(autoReturn!("value.front." ~ name ~ "(args)"));
 			}
-		} else static if (is(typeof(mixin("value.front." ~ name)))) {
+		}
+		else static if (is(typeof(mixin("value.front." ~ name))))
+		{
 			// non-function field
-			auto opDispatch(Args...)(auto ref Args args) {
-				static if (Args.length == 0) {
+			auto opDispatch(Args...)(auto ref Args args)
+			{
+				static if (Args.length == 0)
+				{
 					mixin(autoReturn!("value.front." ~ name));
-				} else static if (Args.length == 1) {
+				}
+				else static if (Args.length == 1)
+				{
 					mixin(autoReturn!("value.front." ~ name ~ " = args[0]"));
-				} else {
+				}
+				else
+				{
 					static assert(
-						0,
-						"Dispatched " ~ T.stringof ~ "." ~ name ~ " was resolved to non-function field that has more than one argument",
+							0,
+							"Dispatched " ~ T.stringof ~ "." ~ name ~ " was resolved to non-function field that has more than one argument",
 					);
 				}
 			}
-		} else {
+		}
+		else
+		{
 			// member template
-			template opDispatch(Ts...) {
+			template opDispatch(Ts...)
+			{
 				enum targs = Ts.length ? "!Ts" : "";
-				auto opDispatch(Args...)(auto ref Args args) {
+				auto opDispatch(Args...)(auto ref Args args)
+				{
 					mixin(autoReturn!("value.front." ~ name ~ targs ~ "(args)"));
 				}
 			}
@@ -1102,18 +1183,15 @@ struct OptionalChain(T) {
 	}
 }
 
-auto oc(T)(auto ref T value)
-	if (isNullTestable!T && !isInstanceOf!(Nullable, T))
+auto oc(T)(auto ref T value) if (isNullTestable!T && !isInstanceOf!(Nullable, T))
 {
 	return OptionalChain!T(value);
 }
-
 
 auto oc(T)(auto ref Optional!T value)
 {
 	return OptionalChain!T(value);
 }
-
 
 auto oc(T)(auto ref Nullable!T value)
 {
@@ -1124,7 +1202,14 @@ auto oc(T)(auto ref Nullable!T value)
 @("OptionalChain: Optional")
 unittest
 {
-	@safe pure class C { int fun() { return 3; } }
+	@safe pure class C
+	{
+		int fun()
+		{
+			return 3;
+		}
+	}
+
 	Optional!C a = null;
 	assertEquals(none!int, oc(a).fun);
 
@@ -1137,7 +1222,14 @@ unittest
 @("OptionalChain: Nullable")
 unittest
 {
-	@safe pure class C { int fun() { return 3; } }
+	@safe pure class C
+	{
+		int fun()
+		{
+			return 3;
+		}
+	}
+
 	Nullable!C a;
 	assertEquals(none!int, oc(a).fun);
 
@@ -1155,17 +1247,21 @@ unittest
 
 	// nullable c
 	@safe pure
-	class C {
+	class C
+	{
 		int c = 3;
 		alias c this;
 
 		// need this to not be ambigous
 		@safe pure
-		override string toString() const {
+		override string toString() const
+		{
 			import std.conv : to;
+
 			return c.to!string;
 		}
 	}
+
 	C c = null;
 	assertTrue(none!C == oc(c).value);
 	assertEquals(none!int, oc(c).c);

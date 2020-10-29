@@ -32,4 +32,3 @@ may be claimed as the property of others.
 For more info about intellectual property visit: aurorafoss.org or
 directly send an email to: contact (at) aurorafoss.org .
 */
-

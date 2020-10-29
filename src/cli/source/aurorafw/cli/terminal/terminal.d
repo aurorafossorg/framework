@@ -3,12 +3,13 @@ module aurorafw.cli.terminal.terminal;
 import aurorafw.core.input.events;
 import aurorafw.core.input.keys;
 
-version(Posix)
+version (Posix)
 {
 	import core.sys.posix.unistd;
 	import core.sys.posix.termios;
 	import core.sys.posix.sys.ioctl;
-} else version(Windows)
+}
+else version (Windows)
 {
 	import core.sys.windows.windows;
 }
@@ -33,7 +34,8 @@ import riverd.ncurses;
  * This exception is thrown when theres a problem with
  * terminal related issue.
  */
-class TerminalDieException : Exception {
+class TerminalDieException : Exception
+{
 	/** Terminal Die Exception Constructor
 	 * This construct a normal exception and disable
 	 * terminal raw mode.
@@ -44,8 +46,8 @@ class TerminalDieException : Exception {
 	 * @param next next throwable object
 	 */
 	this(ref Terminal term, string msg,
-		string file = __FILE__, size_t line = __LINE__,
-		Throwable next = null)
+			string file = __FILE__, size_t line = __LINE__,
+			Throwable next = null)
 	{
 		term.terminate();
 		super(msg, file, line, next);
@@ -61,7 +63,7 @@ class TerminalDieException : Exception {
 	 * @param line line code on file
 	 */
 	this(ref Terminal term, string msg, Throwable next,
-		string file = __FILE__, size_t line = __LINE__)
+			string file = __FILE__, size_t line = __LINE__)
 	{
 		this(term, msg, file, line, next);
 	}
@@ -74,7 +76,8 @@ class TerminalDieException : Exception {
  * a set of functions to manipulate it under the
  * defined i/o descriptors.
  */
-struct Terminal {
+struct Terminal
+{
 	// disable empty and copy constructors
 	@disable this();
 	@disable this(this);
@@ -105,7 +108,7 @@ struct Terminal {
 		initscr();
 
 		// for cell based output (grid-style)
-		if(outType == OutputType.CELL)
+		if (outType == OutputType.CELL)
 		{
 			saveTitle();
 			enableRawMode();
@@ -128,7 +131,7 @@ struct Terminal {
 	 */
 	package void terminate()
 	{
-		if(outType == OutputType.CELL)
+		if (outType == OutputType.CELL)
 		{
 			disableRawMode(true);
 			restoreTitle(true);
@@ -139,7 +142,7 @@ struct Terminal {
 
 	public void enableRawMode()
 	{
-		if(rawMode == true)
+		if (rawMode == true)
 			return;
 		rawMode = true;
 
@@ -171,12 +174,12 @@ struct Terminal {
 	public void viewCursor(bool val, bool flush = true)
 	{
 		string ret;
-		if(val)
+		if (val)
 			ret = "\x1b[?25h";
 		else
 			ret = "\x1b[?25l";
 
-		if(flush)
+		if (flush)
 			writeDescriptor(ret);
 		else
 			writeBuffer(ret);
@@ -185,12 +188,12 @@ struct Terminal {
 	public void alternateScreen(bool val, bool flush = false)
 	{
 		string ret;
-		if(val)
+		if (val)
 			ret = "\x1b[?1049h";
 		else
 			ret = "\x1b[?1049l";
 
-		if(flush)
+		if (flush)
 			writeDescriptor(ret);
 		else
 			writeBuffer(ret);
@@ -198,7 +201,7 @@ struct Terminal {
 
 	public void disableRawMode(bool flush = false)
 	{
-		if(rawMode == false)
+		if (rawMode == false)
 			return;
 		rawMode = false;
 
@@ -210,27 +213,25 @@ struct Terminal {
 
 	public void clear(bool flush = false)
 	{
-		if(outType == OutputType.CELL)
+		if (outType == OutputType.CELL)
 		{
 			string ret = "\x1b[2J\x1b[H";
-			if(flush)
+			if (flush)
 				writeDescriptor(ret);
 			else
 				writeBuffer(ret);
 		}
 	}
 
-
 	@safe
 	public void setCursorPos(int x = 0, int y = 0, bool flush = false)
 	{
-		string ret = "\x1b["~to!string(y + 1)~";"~to!string(x + 1)~"H";
-		if(flush)
+		string ret = "\x1b[" ~ to!string(y + 1) ~ ";" ~ to!string(x + 1) ~ "H";
+		if (flush)
 			writeDescriptor(ret);
 		else
 			writeBuffer(ret);
 	}
-
 
 	@safe
 	public void moveXPos(int val = 0, bool flush = false)
@@ -238,17 +239,16 @@ struct Terminal {
 		string ret = "\x1b[" ~ to!string(val);
 
 		// check if forward (+) or backward (-)
-		if(val > 0)
-			ret~= "C";
+		if (val > 0)
+			ret ~= "C";
 		else
-			ret~= "D";
+			ret ~= "D";
 
-		if(flush)
+		if (flush)
 			writeDescriptor(ret);
 		else
 			writeBuffer(ret);
 	}
-
 
 	@safe
 	public void moveYPos(int val = 0, bool flush = false)
@@ -256,24 +256,22 @@ struct Terminal {
 		string ret = "\x1b[" ~ to!string(val);
 
 		// check if forward (+) or backward (-)
-		if(val > 0)
-			ret~= 'B';
+		if (val > 0)
+			ret ~= 'B';
 		else
-			ret~= 'A';
+			ret ~= 'A';
 
-		if(flush)
+		if (flush)
 			writeDescriptor(ret);
 		else
 			writeBuffer(ret);
 	}
-
 
 	@safe
 	public void writeBuffer(char[] buf) pure
 	{
 		buffer ~= buf;
 	}
-
 
 	@safe
 	public void writeBuffer(dchar ch) pure
@@ -296,13 +294,12 @@ struct Terminal {
 	public void flushBuffer()
 	{
 		refresh();
-		if(buffer.length > 0)
+		if (buffer.length > 0)
 		{
 			writeDescriptor(buffer.toStringz, buffer.length);
 			buffer.length = 0;
 		}
 	}
-
 
 	@trusted
 	public void writeDescriptor(const(char*) cstr, size_t len)
@@ -319,7 +316,7 @@ struct Terminal {
 		nread = .read(inputDescriptor, &buf[0], buf.length);
 		if (nread == -1 && errno != EAGAIN)
 			throw new TerminalDieException(this, "read");
-		if(nread == 0)
+		if (nread == 0)
 			c = 0;
 		else
 		{
@@ -340,10 +337,11 @@ struct Terminal {
 		size_t nread;
 		string buf;
 
-		do {
+		do
+		{
 			dchar c;
 			nread = readCh(c);
-			if(nread != 0)
+			if (nread != 0)
 				buf ~= c;
 		}
 		while (nread != 0);
@@ -355,34 +353,43 @@ struct Terminal {
 	{
 		winsize ws;
 
-		if (ioctl(outputDescriptor, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0) {
-			if (core.sys.posix.unistd.write(outputDescriptor, "\x1b[999C\x1b[999B".toStringz, 12) != 12) return -1;
+		if (ioctl(outputDescriptor, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0)
+		{
+			if (core.sys.posix.unistd.write(outputDescriptor, "\x1b[999C\x1b[999B".toStringz, 12) != 12)
+				return -1;
 			return getCursorPosition(rows, cols);
-		} else {
+		}
+		else
+		{
 			rows = ws.ws_row;
 			cols = ws.ws_col;
 			return 0;
 		}
 	}
 
-
 	public int getCursorPosition(ref int rows, ref int cols)
 	{
 		char[32] buf;
 		uint i = 0;
 
-		if (core.sys.posix.unistd.write(outputDescriptor, "\x1b[6n".toStringz, 4) != 4) return -1;
+		if (core.sys.posix.unistd.write(outputDescriptor, "\x1b[6n".toStringz, 4) != 4)
+			return -1;
 
-		while (i < buf.sizeof - 1) {
-			if (.read(inputDescriptor, &buf[i], 1) != 1) break;
-			if (buf[i] == 'R') break;
+		while (i < buf.sizeof - 1)
+		{
+			if (.read(inputDescriptor, &buf[i], 1) != 1)
+				break;
+			if (buf[i] == 'R')
+				break;
 			i++;
 		}
 
 		buf[i] = '\0';
 
-		if (buf[0] != '\x1b' || buf[1] != '[') return -1;
-		if (sscanf(&buf[2], "%d;%d", &rows, &cols) != 2) return -1;
+		if (buf[0] != '\x1b' || buf[1] != '[')
+			return -1;
+		if (sscanf(&buf[2], "%d;%d", &rows, &cols) != 2)
+			return -1;
 
 		return 0;
 	}
@@ -394,20 +401,24 @@ struct Terminal {
 
 	public void setTitle(string title)
 	{
-		version(Windows) {
+		version (Windows)
+		{
 			SetConsoleTitleA(toStringz(title));
-		} else {
-			if(terminalInFamily("xterm", "rxvt", "screen"))
+		}
+		else
+		{
+			if (terminalInFamily("xterm", "rxvt", "screen"))
 				writeBuffer(format("\x1b]0;%s\007", title));
 		}
 	}
 
 	private void saveTitle(bool flush = false)
 	{
-		version(Posix)
+		version (Posix)
 		{
-			if(terminalInFamily("xterm", "rxvt", "screen")) {
-				if(flush)
+			if (terminalInFamily("xterm", "rxvt", "screen"))
+			{
+				if (flush)
 					writeDescriptor("\x1b[22;0t");
 				else
 					writeBuffer("\x1b[22;0t");
@@ -417,18 +428,17 @@ struct Terminal {
 
 	private void restoreTitle(bool flush = false)
 	{
-		version(Posix)
+		version (Posix)
 		{
-			if(terminalInFamily("xterm", "rxvt", "screen"))
+			if (terminalInFamily("xterm", "rxvt", "screen"))
 			{
-				if(flush)
+				if (flush)
 					writeDescriptor("\x1b[23;0t");
 				else
 					writeBuffer("\x1b[23;0t");
 			}
 		}
 	}
-
 
 	public Event pollEvents()
 	{
@@ -437,7 +447,7 @@ struct Terminal {
 			throw new TerminalDieException(this, "null stdscr");
 
 		int c = getch();
-		while(c != -1)
+		while (c != -1)
 		{
 			ret.flags |= processEvent(c);
 			++ret.eventsProcessed;
@@ -445,24 +455,26 @@ struct Terminal {
 			c = getch();
 		}
 
-		if(input.buf.length > 0)
+		if (input.buf.length > 0)
 			ret.flags |= EventFlag.InputBuffer;
 
-		if(buffer.length > 0)
+		if (buffer.length > 0)
 			ret.flags |= EventFlag.RawBuffer;
 
 		return ret;
 	}
 
-
 	public bool keyHit()
 	{
 		int ch = getch();
 
-		if (ch != ERR) {
+		if (ch != ERR)
+		{
 			ungetch(ch);
 			return true;
-		} else {
+		}
+		else
+		{
 			return false;
 		}
 	}
@@ -473,7 +485,7 @@ struct Terminal {
 		MouseScrollEvent sret;
 		EventFlag flags;
 
-		switch(ev)
+		switch (ev)
 		{
 			// dfmt off
 			case KEY_BACKSPACE:
@@ -539,62 +551,64 @@ struct Terminal {
 			// dfmt on
 		}
 
-		if(input.keyPressedCallback !is null) input.keyPressedCallback(kret);
+		if (input.keyPressedCallback !is null)
+			input.keyPressedCallback(kret);
 
 		return flags;
 	}
 
-
-	private KeyboardEvent processSpecialKeyEvent(int ev) {
+	private KeyboardEvent processSpecialKeyEvent(int ev)
+	{
 		string evbuf = to!string(unctrl(ev));
 		KeyboardEvent ret = KeyboardEvent(Keycode.Unknown, InputModifier.None);
 
-		if(evbuf.length == 1 || (evbuf.length > 1 && evbuf[0]!='^'))
+		if (evbuf.length == 1 || (evbuf.length > 1 && evbuf[0] != '^'))
 		{
-			if(isAlpha(evbuf[0]))
+			if (isAlpha(evbuf[0]))
 			{
 				string parsestr = to!string(toUpper(evbuf[0]));
 				ret.key = parse!Keycode(parsestr);
 			}
 			input.buf ~= evbuf;
 		}
-		else if(evbuf == "^[")
+		else if (evbuf == "^[")
 		{
 			ret.mods |= InputModifier.Alt;
 			evbuf ~= to!string(unctrl(getch()));
-			if(evbuf.length == 4 &&
-				evbuf[2] == '^' &&
-				isAlpha(evbuf[3]))
+			if (evbuf.length == 4 &&
+					evbuf[2] == '^' &&
+					isAlpha(evbuf[3]))
 			{
 				ret.mods |= InputModifier.Control;
 				string parsestr = to!string(evbuf[3]);
 				ret.key = parse!Keycode(parsestr);
-			} else if(evbuf.length == 3 && isAlpha(evbuf[2]))
+			}
+			else if (evbuf.length == 3 && isAlpha(evbuf[2]))
 			{
-				if(isUpper(evbuf[2]))
+				if (isUpper(evbuf[2]))
 					ret.mods |= InputModifier.Shift;
-				string parsestr =to!string(toUpper(evbuf[2]));
+				string parsestr = to!string(toUpper(evbuf[2]));
 				ret.key = parse!Keycode(parsestr);
 			}
-		} else if(evbuf.length == 2 &&
-			evbuf[0] == '^' &&
-			isAlpha(evbuf[1]))
+		}
+		else if (evbuf.length == 2 &&
+				evbuf[0] == '^' &&
+				isAlpha(evbuf[1]))
 		{
 			ret.mods |= InputModifier.Control;
-			string parsestr =to!string(evbuf[1]);
+			string parsestr = to!string(evbuf[1]);
 			ret.key = parse!Keycode(parsestr);
 		}
 		return ret;
 	}
 
-
-	version(Posix)
+	version (Posix)
 	{
 		public static bool terminalInFamily(string[] terms...)
 		{
 			auto term = environment.get("TERM");
-			foreach(t; terms)
-				if(indexOf(term, t) != -1)
+			foreach (t; terms)
+				if (indexOf(term, t) != -1)
 					return true;
 			return false;
 		}
@@ -606,7 +620,8 @@ struct Terminal {
 		}
 	}
 
-	struct Input {
+	struct Input
+	{
 		void delegate(immutable KeyboardEvent) keyPressedCallback;
 		string buffer()
 		{
@@ -617,7 +632,7 @@ struct Terminal {
 
 		dchar ch()
 		{
-			if(buf.length > 0)
+			if (buf.length > 0)
 			{
 				dchar ret = buf[0];
 				buf = buf[1 .. $];
@@ -631,12 +646,14 @@ struct Terminal {
 		private string buf;
 	}
 
-	struct Event {
+	struct Event
+	{
 		size_t eventsProcessed;
 		ubyte flags;
 	}
 
-	enum EventFlag : ubyte {
+	enum EventFlag : ubyte
+	{
 		None = 0,
 		RawBuffer = 1 << 0,
 		InputBuffer = 1 << 1,
@@ -651,9 +668,12 @@ struct Terminal {
 	private string buffer;
 	private bool rawMode = false;
 
-	version(Posix) {
+	version (Posix)
+	{
 		private termios origTermios;
-	} else version(Windows) {
+	}
+	else version (Windows)
+	{
 		private HANDLE hConsole;
 		private CONSOLE_SCREEN_BUFFER_INFO originalSbi;
 	}
