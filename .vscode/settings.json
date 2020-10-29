@@ -1,7 +1,4 @@
 {
-	"editor.rulers": [
-		80
-	],
 	"files.exclude": {
 		"**/.build": true,
 		"**/.dub": true,
@@ -10,14 +7,13 @@
 	},
 	"git.alwaysSignOff": true,
 	"C_Cpp.autoAddFileAssociations": false,
-	"dfmt.braceStyle": "otbs",
+	"dfmt.braceStyle": "allman",
 	"dfmt.alignSwitchStatements": true,
 	"dfmt.outdentAttributes": true,
-	"dfmt.splitOperatorAtLineEnd": false,
-	"dfmt.spaceAfterCast": false,
+	"dfmt.splitOperatorAtLineEnd": true,
+	"dfmt.spaceAfterCast": true,
 	"dfmt.selectiveImportSpace": true,
 	"dfmt.compactLabeledStatements": true,
 	"editor.tabSize": 4,
-	"editor.insertSpaces": false,
-	"telemetry.enableTelemetry": false
+	"editor.insertSpaces": false
 }
